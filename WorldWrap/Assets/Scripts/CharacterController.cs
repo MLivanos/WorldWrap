@@ -8,12 +8,14 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float speed;
     private Camera mainCamera;
     private GameObject mainCameraGameObject;
+    private Vector3 mainCameraFPPosition;
     private bool isFirstPerson;
 
     private void Start()
     {
         mainCamera = gameObject.GetComponentInChildren<Camera>();
         mainCameraGameObject = mainCamera.gameObject;
+        mainCameraFPPosition = mainCameraGameObject.transform.localPosition;
         isFirstPerson = true;
     }
 
@@ -48,7 +50,7 @@ public class CharacterController : MonoBehaviour
         {
             // Establish first-person view
             mainCameraGameObject.transform.parent = gameObject.transform;
-            mainCameraGameObject.transform.localPosition = new Vector3(0, 0.25f, 0.5f);
+            mainCameraGameObject.transform.localPosition = mainCameraFPPosition;
             mainCameraGameObject.transform.rotation = gameObject.transform.rotation;
         }
         isFirstPerson = !isFirstPerson;
