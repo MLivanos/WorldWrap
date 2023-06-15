@@ -107,29 +107,10 @@ public class WrapManager : MonoBehaviour
         // Initiate wrap
         if (!GameObject.ReferenceEquals(currentTrigger, initialTrigger))
         {
-            GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
-            int translationNumber = GetTranslationNumber();
-            switch (translationNumber)
-            {
-                case 3:
-                    TranslateLeft(newMatrix);
-                    break;
-                case 2:
-                    TranslateRight(newMatrix);
-                    break;
-                case 1:
-                    TranslateUp(newMatrix);
-                    break;
-                case 0:
-                    TranslateDown(newMatrix);
-                    break;
-                default:
-                    Exception missingManagerException = new Exception("Incorrect translation code");
-                    Debug.LogException(missingManagerException);
-                    break;
-            }
+            GameObject[,] newMatrix = GetTranslations();
             TranslateBlocks(GetBlockPositions(), newMatrix);
             blockMatrix = newMatrix;
+            initialTrigger = null;
         }
     }
 
@@ -151,9 +132,27 @@ public class WrapManager : MonoBehaviour
         }
     }
 
-    private int GetTranslationNumber()
+    private GameObject[,] GetTranslations()
     {
-        return 2;
+        GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
+        Vector3 translationVector = currentBlock.transform.position - previousBlock.transform.position;
+        if (translationVector.x > 0)
+        {
+            TranslateUp(newMatrix);
+        }
+        else if (translationVector.x < 0)
+        {
+            TranslateDown(newMatrix);
+        }
+        if (translationVector.z > 0)
+        {
+            TranslateLeft(newMatrix);
+        }
+        else if (translationVector.z < 0)
+        {
+            TranslateRight(newMatrix);
+        }
+        return newMatrix;
     }
 
     private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
