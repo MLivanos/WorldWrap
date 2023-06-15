@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WrapTrigger : TriggerBehavior
+public class BlockTrigger : TriggerBehavior
 {
 
     private void OnTriggerEnter(Collider other)
     {
-       wrapManager.LogTriggerEntry(gameObject);
+       wrapManager.LogBlockEntry(gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        wrapManager.LogTriggerExit(gameObject);
+        wrapManager.LogBlockExit(gameObject);
     }
 }

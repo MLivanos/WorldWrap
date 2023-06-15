@@ -4,18 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WarpManager : MonoBehaviour
+public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
     private GameObject[,] blockMatrix;
-    private GameObject initialBlock;
+    private GameObject initialTrigger;
+    private GameObject currentTrigger;
+    private GameObject previousBlock;
     private GameObject currentBlock;
     private bool isTransitioning;
 
     private void Start()
     {
-        initialBlock = null;
-        currentBlock = null;
+        initialTrigger = null;
+        currentTrigger = null;
         // Automatically detect matrix structure of blocks
         Vector2[] coordinatesByX;
         Vector2[] coordinatesByZ;
@@ -81,20 +83,20 @@ public class WarpManager : MonoBehaviour
         }
     }
 
-    public void LogEntry(GameObject entryBlock)
+    public void LogTriggerEntry(GameObject entryBlock)
     {
-        if(initialBlock == null)
+        if(initialTrigger == null)
         {
-            initialBlock = entryBlock;
+            initialTrigger = entryBlock;
         }
         else
         {
             isTransitioning = true;
         }
-        currentBlock = entryBlock;
+        currentTrigger = entryBlock;
     }
 
-    public void LogExit(GameObject exitBlock)
+    public void LogTriggerExit(GameObject exitBlock)
     {
         // If we are moving from one block to another, do nothing
         if (isTransitioning)
@@ -103,7 +105,7 @@ public class WarpManager : MonoBehaviour
             return;
         }
         // Initiate wrap
-        if (!GameObject.ReferenceEquals(currentBlock, initialBlock))
+        if (!GameObject.ReferenceEquals(currentTrigger, initialTrigger))
         {
             GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
             int translationNumber = GetTranslationNumber();
@@ -129,6 +131,16 @@ public class WarpManager : MonoBehaviour
             TranslateBlocks(GetBlockPositions(), newMatrix);
             blockMatrix = newMatrix;
         }
+    }
+
+    public void LogBlockEntry(GameObject enterBlock)
+    {
+        currentBlock = enterBlock;
+    }
+
+    public void LogBlockExit(GameObject exitBlock)
+    {
+        previousBlock = exitBlock;
     }
 
     private void PrintMatrix(GameObject[,] mat)
@@ -173,13 +185,13 @@ public class WarpManager : MonoBehaviour
         // Wrap rightmost column around
         for(int row=0; row < blockMatrix.GetLength(0); row++)
         {
-            newMatrix[row, 0] = blockMatrix[row,blockMatrix.GetLength(1)-1];
+            newMatrix[row, blockMatrix.GetLength(1)-1] = blockMatrix[row,0];
         }
         for(int row=0; row < blockMatrix.GetLength(0); row++)
         {
             for(int column=0; column < blockMatrix.GetLength(0) - 1; column++)
             {
-                newMatrix[row, column + 1] = blockMatrix[row, column];
+                newMatrix[row, column] = blockMatrix[row, column+1];
             }
         }
     }

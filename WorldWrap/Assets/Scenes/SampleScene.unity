@@ -295,7 +295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb9bdcef627f4349a3a93563c393f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerName: Yellow
 --- !u!65 &38465959
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1551,7 +1550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb9bdcef627f4349a3a93563c393f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerName: Pink
 --- !u!65 &981543908
 BoxCollider:
   m_ObjectHideFlags: 0
