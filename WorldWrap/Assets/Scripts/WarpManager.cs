@@ -99,17 +99,136 @@ public class WarpManager : MonoBehaviour
         // If we are moving from one block to another, do nothing
         if (isTransitioning)
         {
-            Debug.Log("We didn't wrap because we are moving between adjacent blocks");
             isTransitioning = false;
             return;
         }
+        // Initiate wrap
         if (!GameObject.ReferenceEquals(currentBlock, initialBlock))
         {
-            Debug.Log("Time to warp!");
+            GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
+            int translationNumber = GetTranslationNumber();
+            switch (translationNumber)
+            {
+                case 3:
+                    TranslateLeft(newMatrix);
+                    break;
+                case 2:
+                    TranslateRight(newMatrix);
+                    break;
+                case 1:
+                    TranslateUp(newMatrix);
+                    break;
+                case 0:
+                    TranslateDown(newMatrix);
+                    break;
+                default:
+                    Exception missingManagerException = new Exception("Incorrect translation code");
+                    Debug.LogException(missingManagerException);
+                    break;
+            }
+            TranslateBlocks(GetBlockPositions(), newMatrix);
+            blockMatrix = newMatrix;
         }
-        else
+    }
+
+    private void PrintMatrix(GameObject[,] mat)
+    {
+        for(int row = 0; row < mat.GetLength(0); row++)
         {
-            Debug.Log("We didn't wrap because we entered and left the same block");
+            Debug.Log(string.Format("{0}, {1}, {2}", mat[row,0],mat[row,1],mat[row,2]));
+        }
+    }
+
+    private int GetTranslationNumber()
+    {
+        return 2;
+    }
+
+    private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
+    {
+        for(int row = 0; row < oldPositions.GetLength(0); row++)
+        {
+            for(int column = 0; column < oldPositions.GetLength(1); column++)
+            {
+                newMatrix[row,column].transform.position = oldPositions[row,column];
+            }
+        }
+    }
+
+    private Vector3[,] GetBlockPositions()
+    {
+        Vector3[,] blockPositions = new Vector3[blockMatrix.GetLength(0),blockMatrix.GetLength(0)];
+        for(int row = 0; row < blockMatrix.GetLength(0); row++)
+        {
+            for(int column = 0; column < blockMatrix.GetLength(1); column++)
+            {
+                blockPositions[row,column] = blockMatrix[row,column].transform.position;
+            }
+        }
+        return blockPositions;
+    }
+
+    private void TranslateLeft(GameObject[,] newMatrix)
+    {
+        // Wrap rightmost column around
+        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        {
+            newMatrix[row, 0] = blockMatrix[row,blockMatrix.GetLength(1)-1];
+        }
+        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        {
+            for(int column=0; column < blockMatrix.GetLength(0) - 1; column++)
+            {
+                newMatrix[row, column + 1] = blockMatrix[row, column];
+            }
+        }
+    }
+
+    private void TranslateRight(GameObject[,] newMatrix)
+    {
+        // Wrap leftmost column around
+        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        {
+            newMatrix[row, 0] = blockMatrix[row, blockMatrix.GetLength(1)-1];
+        }
+        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        {
+            for(int column=1; column < blockMatrix.GetLength(1); column++)
+            {
+                newMatrix[row, column] = blockMatrix[row, column - 1];
+            }
+        }
+    }
+
+    private void TranslateUp(GameObject[,] newMatrix)
+    {
+        // Wrap lowest row around
+        for(int column=0; column < blockMatrix.GetLength(1); column++)
+        {
+            newMatrix[blockMatrix.GetLength(0)-1, column] = blockMatrix[0, column];
+        }
+        for(int row=1; row < blockMatrix.GetLength(0); row++)
+        {
+            for(int column=0; column < blockMatrix.GetLength(0); column++)
+            {
+                newMatrix[row - 1, column] = blockMatrix[row, column];
+            }
+        }
+    }
+
+    private void TranslateDown(GameObject[,] newMatrix)
+    {
+        // Wrap lowest row around
+        for(int column=0; column < blockMatrix.GetLength(1); column++)
+        {
+            newMatrix[0, column] = blockMatrix[blockMatrix.GetLength(0)-1, column];
+        }
+        for(int row=0; row < blockMatrix.GetLength(0) - 1; row++)
+        {
+            for(int column=0; column < blockMatrix.GetLength(0); column++)
+            {
+                newMatrix[row + 1, column] = blockMatrix[row, column];
+            }
         }
     }
 }
