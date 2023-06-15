@@ -7,6 +7,7 @@ using UnityEngine;
 public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
+    [SerializeField] private GameObject player;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -152,6 +153,7 @@ public class WrapManager : MonoBehaviour
         {
             TranslateRight(newMatrix);
         }
+        player.transform.Translate(-1*translationVector, Space.World);
         return newMatrix;
     }
 
