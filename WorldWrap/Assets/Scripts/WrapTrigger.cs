@@ -23,11 +23,11 @@ public class WrapTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-       warpManager.LogEntry(triggerName);
+       warpManager.LogEntry(gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        warpManager.LogExit(triggerName);
+        warpManager.LogExit(gameObject);
     }
 }

@@ -8,9 +8,14 @@ public class WarpManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
     private GameObject[,] blockMatrix;
+    private GameObject initialBlock;
+    private GameObject currentBlock;
+    private bool isTransitioning;
 
     private void Start()
     {
+        initialBlock = null;
+        currentBlock = null;
         // Automatically detect matrix structure of blocks
         Vector2[] coordinatesByX;
         Vector2[] coordinatesByZ;
@@ -76,12 +81,35 @@ public class WarpManager : MonoBehaviour
         }
     }
 
-    public void LogEntry(string triggerName)
+    public void LogEntry(GameObject entryBlock)
     {
-        Debug.Log(string.Format("WarpTrigger {0} has been entered", triggerName));
+        if(initialBlock == null)
+        {
+            initialBlock = entryBlock;
+        }
+        else
+        {
+            isTransitioning = true;
+        }
+        currentBlock = entryBlock;
     }
-    public void LogExit(string triggerName)
+
+    public void LogExit(GameObject exitBlock)
     {
-        Debug.Log(string.Format("WarpTrigger {0} has been exited", triggerName));
+        // If we are moving from one block to another, do nothing
+        if (isTransitioning)
+        {
+            Debug.Log("We didn't wrap because we are moving between adjacent blocks");
+            isTransitioning = false;
+            return;
+        }
+        if (!GameObject.ReferenceEquals(currentBlock, initialBlock))
+        {
+            Debug.Log("Time to warp!");
+        }
+        else
+        {
+            Debug.Log("We didn't wrap because we entered and left the same block");
+        }
     }
 }
