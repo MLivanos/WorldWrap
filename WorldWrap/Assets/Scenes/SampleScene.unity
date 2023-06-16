@@ -2680,6 +2680,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2863848475787073646, guid: ceba5eb1d50934849bcaafc8bdb93daa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2863848475787073646, guid: ceba5eb1d50934849bcaafc8bdb93daa,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 40189444cf4464419936cb7ed371287f,
+        type: 2}
+    - target: {fileID: 7036210407045304743, guid: ceba5eb1d50934849bcaafc8bdb93daa,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceba5eb1d50934849bcaafc8bdb93daa, type: 3}
 --- !u!4 &617185861 stripped
@@ -2933,7 +2949,7 @@ GameObject:
   - component: {fileID: 691913576}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

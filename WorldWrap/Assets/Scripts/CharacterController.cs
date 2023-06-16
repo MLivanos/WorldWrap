@@ -7,7 +7,7 @@ public class CharacterController : MonoBehaviour
     // Movement variables
     [SerializeField] private float rotationSensitivity;
     [SerializeField] private float speed;
-    private Rigidbody rb;
+    private Rigidbody playerRigidbody;
     // Camera variables
     private Camera mainCamera;
     private GameObject mainCameraGameObject;
@@ -23,7 +23,7 @@ public class CharacterController : MonoBehaviour
     private void Start()
     {
         SetupCamera();
-        rb = gameObject.GetComponent<Rigidbody>();
+        playerRigidbody = gameObject.GetComponent<Rigidbody>();
         isHoldingObject = false;
     }
 
@@ -52,7 +52,7 @@ public class CharacterController : MonoBehaviour
     {
         float rotationSpeed = Input.GetAxisRaw("Horizontal") * Time.deltaTime * rotationSensitivity;
         transform.Rotate(0, rotationSpeed, 0); 
-        rb.velocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
+        playerRigidbody.velocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
     }
 
     private void Interact()
