@@ -7,11 +7,17 @@ public class BlockTrigger : TriggerBehavior
 
     private void OnTriggerEnter(Collider other)
     {
-       wrapManager.LogBlockEntry(gameObject);
+        if (other.tag == "Player")
+        {
+            wrapManager.LogBlockEntry(gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        wrapManager.LogBlockExit(gameObject);
+        if (other.tag == "Player")
+        {
+            wrapManager.LogBlockExit(gameObject);
+        }
     }
 }
