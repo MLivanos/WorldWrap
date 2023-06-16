@@ -6,6 +6,7 @@ using UnityEngine;
 public class TriggerBehavior : MonoBehaviour
 {
     protected WrapManager wrapManager;
+    protected int wrapLayer;
 
     protected void Start()
     {
@@ -18,6 +19,7 @@ public class TriggerBehavior : MonoBehaviour
             Exception missingManagerException = new Exception("To use WarpTriggers, WarpManager object must exist and be called WarpManager");
             Debug.LogException(missingManagerException);
         }
+        wrapLayer = wrapManager.GetWrapLayer();
     }
 
 }

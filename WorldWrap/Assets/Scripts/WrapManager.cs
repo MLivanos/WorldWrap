@@ -8,6 +8,7 @@ public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private GameObject player;
+    [SerializeField] private int wrapLayer;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -243,5 +244,10 @@ public class WrapManager : MonoBehaviour
                 newMatrix[row + 1, column] = blockMatrix[row, column];
             }
         }
+    }
+
+    public int GetWrapLayer()
+    {
+        return wrapLayer;
     }
 }
