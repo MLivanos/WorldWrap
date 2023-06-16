@@ -76,7 +76,7 @@ public class CharacterController : MonoBehaviour
             if (hit.rigidbody != null && hit.rigidbody.tag == "Grabbable")
             {
                 hit.rigidbody.gameObject.transform.parent = gameObject.transform;
-                hit.rigidbody.useGravity = false;
+                hit.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
                 hit.rigidbody.gameObject.transform.localPosition = heldObjectPosition;
                 heldObject = hit.rigidbody.gameObject;
                 isHoldingObject = true;
@@ -86,7 +86,7 @@ public class CharacterController : MonoBehaviour
 
     private void ThrowObject()
     {
-        heldObject.GetComponent<Rigidbody>().useGravity = true;
+        heldObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         heldObject.transform.parent = null;
         Rigidbody objectRigidBody = heldObject.GetComponent<Rigidbody>();
         objectRigidBody.AddForce(throwStrength * transform.TransformDirection(Vector3.forward), ForceMode.Impulse);
