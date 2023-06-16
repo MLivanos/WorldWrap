@@ -1,5 +1,5 @@
 # WorldWrap
-Framework for creating lightweight seamless wrapping worlds in the Unity Game Engine (WIP)
+## A ramework for creating lightweight seamless wrapping worlds in the Unity Game Engine (Alpha)
 
 The goal of WorldWrap is to create a world that appears flat and ongoing, however if one were to walk across the entire map in a straight line, they would "wrap-around" the world and eventually come back to their initial starting point.
 
@@ -13,4 +13,4 @@ In brief, we accomplish this by tiling the world into discrete chunks, and then 
 
 In the figure above demonstrates this idea. The figure initially is in the red square in the center (leftmost image). They move to the left and enter the blue square, continue left to the purple, and continue left to return to the initial red square.*
 
-* This figure was created with accessibility towards people with color vision deficiency (CVD, also refered to as color blindness) in mind. Through my tools, the color-coding of each square should be distinct to people with the three major forms of CVD: protanopia, deuteranopia, and tritanopia. I do not have CVD myself, and therefore cannot confirm this. If you have any of the above forms of CVD, I'd love to hear from you to know if my attempt at accessible color-coding is successful, or if there is room for improvement.
+*This figure was created with accessibility towards people with color vision deficiency (CVD, also refered to as color blindness) in mind. Through my tools, the color-coding of each square should be distinct to people with the three major forms of CVD: protanopia, deuteranopia, and tritanopia. I do not have CVD myself, and therefore cannot confirm this. If you have any of the above forms of CVD, I'd love to hear from you to know if my attempt at accessible color-coding is successful, or if there is room for improvement.
