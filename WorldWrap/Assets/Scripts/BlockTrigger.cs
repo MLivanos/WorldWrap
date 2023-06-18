@@ -12,7 +12,10 @@ public class BlockTrigger : TriggerBehavior
         {
             wrapManager.LogBlockEntry(gameObject);
         }
-        objectsInsideBox.Add(other.gameObject);
+        if (other.gameObject.layer != wrapManager.GetWrapLayer())
+        {
+            objectsInsideBox.Add(other.gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -22,5 +25,10 @@ public class BlockTrigger : TriggerBehavior
             wrapManager.LogBlockExit(gameObject);
         }
         objectsInsideBox.Remove(other.gameObject);
+    }
+
+    public List<GameObject> getResidents()
+    {
+        return objectsInsideBox;
     }
 }
