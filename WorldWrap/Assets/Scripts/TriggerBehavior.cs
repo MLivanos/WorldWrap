@@ -8,7 +8,7 @@ public class TriggerBehavior : MonoBehaviour
     protected WrapManager wrapManager;
     protected int wrapLayer;
 
-    protected void Start()
+    protected virtual void Start()
     {
         try
         {
