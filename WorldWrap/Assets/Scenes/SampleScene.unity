@@ -3579,7 +3579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0780981c02669413e80cbba0650b7793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSensitivity: 1000
+  rotationSensitivity: 600
   speed: 10
   heldObjectPosition: {x: 0, y: 0.15, z: 0.75}
   grabbingRange: 10
