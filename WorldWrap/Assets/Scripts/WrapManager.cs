@@ -154,7 +154,6 @@ public class WrapManager : MonoBehaviour
         {
             TranslateRight(newMatrix);
         }
-        //player.transform.Translate(-1*translationVector, Space.World);
         return newMatrix;
     }
 
@@ -165,12 +164,7 @@ public class WrapManager : MonoBehaviour
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
             {
-                // TODO: For every BlockTrigger, move the objects NOT in the wrap layer that don't have parents
-                // Step 1: Get movement vector (newMatrix position - old matrix podition)
                 movementVector = oldPositions[row,column] - newMatrix[row,column].transform.position;
-                // Step 2: Get BlockTrigger inside list
-                // Step 3: Move everything from list NOT in wrap layer AND without parent via movement vector
-                // NOTE: Player will be in this list. Remove previous command to move them alone
                 TranslateObjects(newMatrix[row,column], movementVector);
                 newMatrix[row,column].transform.position = oldPositions[row,column];
             }
