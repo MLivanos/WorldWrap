@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BlockTrigger : TriggerBehavior
 {
-    private List<GameObject> objectsInsideBox = new List<GameObject>();
+    // Residents refers to the gameobjects inside the block
+    private List<GameObject> residents = new List<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +15,7 @@ public class BlockTrigger : TriggerBehavior
         }
         if (other.gameObject.layer != wrapManager.GetWrapLayer())
         {
-            objectsInsideBox.Add(other.gameObject);
+            residents.Add(other.gameObject);
         }
     }
 
@@ -24,11 +25,11 @@ public class BlockTrigger : TriggerBehavior
         {
             wrapManager.LogBlockExit(gameObject);
         }
-        objectsInsideBox.Remove(other.gameObject);
+        residents.Remove(other.gameObject);
     }
 
     public List<GameObject> getResidents()
     {
-        return objectsInsideBox;
+        return residents;
     }
 }
