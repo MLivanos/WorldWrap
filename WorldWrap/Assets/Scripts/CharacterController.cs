@@ -59,11 +59,13 @@ public class CharacterController : MonoBehaviour
 
     private void UpdatePosition()
     {
-        //float rotationSpeed = Input.GetAxisRaw("Horizontal") * Time.deltaTime * rotationSensitivity;
-        yRotation += Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSensitivity;
-        xRotation -= Input.GetAxisRaw("Mouse Y") * Time.deltaTime * rotationSensitivity;
-        xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
-        mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        if(isFirstPerson)
+        {
+            yRotation += Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSensitivity;
+            xRotation -= Input.GetAxisRaw("Mouse Y") * Time.deltaTime * rotationSensitivity;
+            xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
+            mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        }
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
         playerRigidbody.velocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
         playerRigidbody.velocity += transform.TransformDirection(Vector3.right) * speed * Input.GetAxisRaw("Horizontal");
