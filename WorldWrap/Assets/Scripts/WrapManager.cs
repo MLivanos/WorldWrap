@@ -8,6 +8,7 @@ public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private GameObject player;
+    [SerializeField] private int wrapLayer;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -153,17 +154,31 @@ public class WrapManager : MonoBehaviour
         {
             TranslateRight(newMatrix);
         }
-        player.transform.Translate(-1*translationVector, Space.World);
         return newMatrix;
     }
 
     private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
     {
+        Vector3 movementVector;
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
             {
+                movementVector = oldPositions[row,column] - newMatrix[row,column].transform.position;
+                TranslateObjects(newMatrix[row,column], movementVector);
                 newMatrix[row,column].transform.position = oldPositions[row,column];
+            }
+        }
+    }
+
+    private void TranslateObjects(GameObject block, Vector3 movementVector)
+    {
+        BlockTrigger triggerScript = block.GetComponentInChildren<BlockTrigger>();
+        foreach(GameObject resident in triggerScript.getResidents())
+        {
+            if (resident.transform.parent == null)
+            {
+                resident.transform.Translate(movementVector, Space.World);
             }
         }
     }
@@ -243,5 +258,10 @@ public class WrapManager : MonoBehaviour
                 newMatrix[row + 1, column] = blockMatrix[row, column];
             }
         }
+    }
+
+    public int GetWrapLayer()
+    {
+        return wrapLayer;
     }
 }
