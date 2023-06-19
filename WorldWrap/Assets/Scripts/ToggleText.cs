@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class ToggleText : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
+        if (Input.GetKeyDown("t"))
+        {
+            ToggleTextVisibility();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ToggleTextVisibility()
     {
-        
+        foreach(Transform child in transform)
+        {
+            child.gameObject.SetActive(!child.gameObject.activeSelf);
+        }
     }
 }
