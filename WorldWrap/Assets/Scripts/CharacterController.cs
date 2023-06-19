@@ -53,8 +53,8 @@ public class CharacterController : MonoBehaviour
 
     private void SetupScreenMovement()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void UpdatePosition()

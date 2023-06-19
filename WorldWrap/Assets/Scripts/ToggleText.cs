@@ -17,6 +17,16 @@ public class ToggleText : MonoBehaviour
         foreach(Transform child in transform)
         {
             child.gameObject.SetActive(!child.gameObject.activeSelf);
+            Cursor.visible = child.gameObject.activeSelf;
+            Cursor.lockState = CursorLockMode.Locked;
+            if(Cursor.visible)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
     }
 }
