@@ -1,8 +1,8 @@
-<p align="center">
+<div align="center">
 
 # WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.1.0-Alpha.1)
 
-</p>
+</div>
 
 ## Introduction
 
