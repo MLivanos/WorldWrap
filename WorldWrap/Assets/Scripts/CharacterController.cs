@@ -87,7 +87,8 @@ public class CharacterController : MonoBehaviour
     private void PickUpObject()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, grabbingRange))
+        Transform outlook = mainCamera.transform;
+        if (Physics.Raycast(outlook.position, outlook.TransformDirection(Vector3.forward), out hit, grabbingRange))
         {
             if (hit.rigidbody != null && hit.rigidbody.tag == "Grabbable")
             {
