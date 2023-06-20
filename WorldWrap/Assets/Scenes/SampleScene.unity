@@ -6874,7 +6874,7 @@ GameObject:
   - component: {fileID: 1244485131}
   - component: {fileID: 1244485130}
   m_Layer: 0
-  m_Name: WarpManager
+  m_Name: WrapManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
