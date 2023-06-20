@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2863848475787073647}
   - component: {fileID: 2863848475787073646}
   - component: {fileID: 7036210407045304743}
+  - component: {fileID: 4611643687686990611}
   m_Layer: 0
-  m_Name: Ball
-  m_TagString: Grabbable
+  m_Name: Dodgeball
+  m_TagString: Dodgeball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca1944116e6c34d7298c2558d161fdf5, type: 2}
+  - {fileID: 2100000, guid: b218e09d2d6374d9688d57be24dbcdfc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -114,3 +115,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4611643687686990611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2863848475787073640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a7398ac0bda4f8d8853813fc874c49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
