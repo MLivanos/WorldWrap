@@ -37,7 +37,7 @@ The figure above demonstrates this idea. The figure initially is in the red squa
 WorldWrap organizes the world into a matrix of tiles and, as the player walks around the world, rearranges those tiles to achieve the illusion of the game world taking place in some interesting shape.
 
 
-[INSERT UML FIGURE]
+<img width="1053" alt="Screen Shot 2023-06-19 at 2 13 54 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/32ef6218-799e-4dd5-bf06-7deb962800f5">
 
 
 UML class diagram for WorldWrap (v0.1.0-Alpha).
@@ -52,7 +52,9 @@ In the SampleScene, if the player moves west from the red block, they end up in 
 Similarly, if the player moved north, eventually the WrapManager would shift the gameworld South. Effectively, the WrapManager keeps the player in the center of the world by moving tiles whenever it needs to, and the neighbors of every block stay the same (e.g. the red block is always east of the blue block, south of the green block, etc). To visualize the space this system is simulating, imagine rolling the world up into a cylinder, with the yellow block touching orange, blue touching purple, and gray touching white. Now, imagine twisting that cylinder such that the orange, yellow, and green blocks touch the teal gray, and white. This shape is a torus, colloquially referred to as a donut.
 
 
-[INSERT TORUS MUTATION FIGURE]
+<img width="621" alt="Screen Shot 2023-06-19 at 10 49 36 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/d80138b0-d1cc-4f28-a603-a1fba6c27d05">
+
+Transformation from our 3x3 grid game world to a Torus.
 
 
 There are other ways to wrap worlds that can accomplish different shapes, such as the sphere shape below, but the current version of WorldWrap is designed to mimic toric space. Stay tuned to see more, or play around with the code and try to create something new yourself!
@@ -70,7 +72,7 @@ The WrapManager handles how and when wraps are made. To instantiate this manager
 The WrapManager will interact with your world as a series of blocks arranged in a predefined pattern. In the example project, each of these blocks is a different color and arranged in a 3x3 matrix. At the moment, WorldWrap can handle any mxn matrix such that m > 1 and n > 1. The ability to recognize more complex patterns is currently in progress.
 
 
-[INSERT WRAPMANAGER INSTANTIATION FIGURE]
+<img width="1680" alt="Screen Shot 2023-06-19 at 10 52 08 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/154ae4d5-de43-415b-a832-1e9109f991df">
 
 
 The empty game world with a WrapManager object.
@@ -79,8 +81,7 @@ The empty game world with a WrapManager object.
 There are three fields for you to fill under the WrapManager component. You must drag the Player game object to the "player" field, label the wrapLayer field with the integer that represents that layer, and add all blocks (in any order) into the "blocks" list. The WrapManager will automatically detect the structure and organize itself accordingly, creating the block matrix data structure behind the scenes.
 
 
-[INSERT WRAPMANAGER FIELDS FIGURE]
-
+<img width="1680" alt="Screen Shot 2023-06-19 at 10 53 15 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/ab34d4b9-a80f-473d-a672-ba3a85c4b3e2">
 
 The WrapManager filled with fields.
 
@@ -91,7 +92,7 @@ A block is a chunk of your game world that will be rearranged to create the wrap
 It is recommended that blocks parent static environmental pieces, such as buildings, structures, and vegetation. Other game objects do NOT have to be parented for WorldWrap to work properly.
 
 
-[INSERT BLOCK AND TRIGGER FIGURE]
+<img width="1004" alt="Screen Shot 2023-06-19 at 10 58 32 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/dce3c593-45fd-4b21-a4cc-7c53aa9f078a">
 
 
 A block with BlockTrigger and WrapTrigger objects is set up correctly. Your setup may look different depending on how your world is created.
@@ -100,7 +101,7 @@ A block with BlockTrigger and WrapTrigger objects is set up correctly. Your setu
 It is recommended that you use a BoundsTrigger object. This is an object that covers the entire game world and makes sure that objects which are not the player's are wrapping around the world properly, even when out of sight. If no such objects exist (ie the player is the only object that can move or objects only move with the player), then this is not necessary. You may choose to parent all of the blocks under the BoundsTrigger object if you would like. This helps keep the hierarchy neat but is not required.
 
 
-[INSERT BOUNDS TRIGGER FIGURE]
+<img width="1004" alt="Screen Shot 2023-06-19 at 11 00 37 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/c5244e71-9f31-466f-92fb-195ababfc47f">
 
 
 The BoundsTrigger is set over the game world.
