@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.1.0-Alpha.1)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.1.0)
 
 
 </div>
@@ -40,7 +40,7 @@ WorldWrap organizes the world into a matrix of tiles and, as the player walks ar
 <img width="1053" alt="Screen Shot 2023-06-19 at 2 13 54 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/32ef6218-799e-4dd5-bf06-7deb962800f5">
 
 
-UML class diagram for WorldWrap (v0.1.0-Alpha).
+UML class diagram for WorldWrap (v0.1.0).
 
 
 As demonstrated in the above figure, WorldWrap is managed by WrapManager keeps track of the tiles and aggregates information, a series of TriggerBehaviors that map where the player is and where they are going, and the blocks that tile the world. Blocks are just pieces of the world that can be picked up and dropped somewhere else. In the introduction figure (and the SampleScene), each large colored square is a block. Every block has WrapTriggers surrounding it, and when the player enters the WrapTrigger of one block and exits out of another, the WrapManager detects where that action takes place and rearranges the blocks to mimic movement on some non-Euclidean space.
@@ -162,7 +162,7 @@ In small worlds with few obstacles in between, the player may be able to see Wor
 ### Running Out Of Layers (And Workaround)
 
 
-Out of the box, WorldWrap uses a layer to separate some of its objects. Unfortunately, Unity only allows a maximum of 32 layers to be used, making this a scarce resource. As of version 0.1.0-Alpha, the layer system can be refactored by using tags instead, as Unity can support virtually as many tags as one would like. I chose to use a layer to make use of layer masks, however, I do not use layer masks as of yet. If you believe that you may need the extra layer, feel free to make this change while being reasonably confident that it will not impact any existing systems.
+Out of the box, WorldWrap uses a layer to separate some of its objects. Unfortunately, Unity only allows a maximum of 32 layers to be used, making this a scarce resource. As of version 0.1.0, the layer system can be refactored by using tags instead, as Unity can support virtually as many tags as one would like. I chose to use a layer to make use of layer masks, however, I do not use layer masks as of yet. If you believe that you may need the extra layer, feel free to make this change while being reasonably confident that it will not impact any existing systems.
 
 
 ### Multiplayer (And Workaround)
