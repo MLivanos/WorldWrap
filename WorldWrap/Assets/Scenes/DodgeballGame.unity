@@ -3600,7 +3600,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 691913570}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -9269,6 +9269,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7523628563119053753, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7523628563119053753, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: seekRadius
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9131835840657053792, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}

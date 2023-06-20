@@ -14,7 +14,6 @@ public class Dodgeball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         DodgeballActor actorScript = collision.gameObject.GetComponent<DodgeballActor>();
-        Debug.Log(actorScript);
         if (isActive && actorScript)
         {
             actorScript.decrementHealth();
