@@ -12,11 +12,11 @@ public class TriggerBehavior : MonoBehaviour
     {
         try
         {
-            wrapManager = GameObject.Find("WarpManager").GetComponent<WrapManager>();
+            wrapManager = GameObject.Find("WrapManager").GetComponent<WrapManager>();
         }
         catch
         {
-            Exception missingManagerException = new Exception("To use WarpTriggers, WarpManager object must exist and be called WarpManager");
+            Exception missingManagerException = new Exception("To use TriggerBehavior, WrapManager object must exist and be called WrapManager");
             Debug.LogException(missingManagerException);
         }
         wrapLayer = wrapManager.GetWrapLayer();
