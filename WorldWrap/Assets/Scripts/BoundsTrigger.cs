@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BoundsTrigger : TriggerBehavior
 {
@@ -21,6 +22,7 @@ public class BoundsTrigger : TriggerBehavior
     private void OnTriggerExit(Collider other)
     {
         Vector3 otherTransform = other.gameObject.transform.position;
+        Debug.Log(otherTransform);
         float otherX = otherTransform.x;
         float otherZ = otherTransform.z;
         if (otherX <= lowerXBound)
@@ -38,6 +40,13 @@ public class BoundsTrigger : TriggerBehavior
         else if (otherZ >= upperZBound)
         {
             otherTransform.z = lowerZBound;
+        }
+        // NavMeshAgents will glitch if transform is modified directly
+        NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.Warp(otherTransform);
+            return;
         }
         other.gameObject.transform.position = otherTransform;
     }
