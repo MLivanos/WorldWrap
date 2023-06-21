@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DodgeballEnemy : DodgeballActor
 {
     [SerializeField] private float seekRadius;
     [SerializeField] private float searchForBallTime;
+    // TODO: Remove before release
+    [SerializeField] private Transform pointToFollow;
+    private NavMeshAgent navMeshAgent;
     private int dodgeballLayer;
     private bool isSearchingForBall;
     private bool isGrabbingBall;
@@ -16,6 +20,7 @@ public class DodgeballEnemy : DodgeballActor
     private void Start()
     {
         health = 2;
+        navMeshAgent = GetComponent<NavMeshAgent>();
         dodgeballLayer = LayerMask.NameToLayer("Dodgeballs");;
         isSearchingForBall = true;
         isNearEnemy = false;
@@ -37,6 +42,7 @@ public class DodgeballEnemy : DodgeballActor
         {
             Debug.Log(IsPlayerInRange());
         }
+        navMeshAgent.destination = pointToFollow.position;
     }
 
     private void SearchForBall()
@@ -81,4 +87,5 @@ public class DodgeballEnemy : DodgeballActor
         }
         return false;
     }
+
 }

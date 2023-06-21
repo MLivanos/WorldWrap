@@ -128,4 +128,9 @@ public class CharacterController : MonoBehaviour
         }
         isFirstPerson = !isFirstPerson;
     }
+
+    public bool IsHoldingBall()
+    {
+        return isHoldingObject;
+    }
 }
