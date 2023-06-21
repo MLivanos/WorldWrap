@@ -176,6 +176,7 @@ public class WrapManager : MonoBehaviour
         BlockTrigger triggerScript = block.GetComponentInChildren<BlockTrigger>();
         foreach(GameObject resident in triggerScript.getResidents())
         {
+            Debug.Log(resident);
             if (resident.transform.parent == null)
             {
                 resident.transform.Translate(movementVector, Space.World);

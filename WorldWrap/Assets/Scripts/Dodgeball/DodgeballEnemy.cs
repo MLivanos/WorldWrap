@@ -7,8 +7,6 @@ public class DodgeballEnemy : DodgeballActor
 {
     [SerializeField] private float seekRadius;
     [SerializeField] private float searchForBallTime;
-    // TODO: Remove before release
-    [SerializeField] private Transform pointToFollow;
     private NavMeshAgent navMeshAgent;
     private int dodgeballLayer;
     private bool isSearchingForBall;
@@ -42,7 +40,6 @@ public class DodgeballEnemy : DodgeballActor
         {
             Debug.Log(IsPlayerInRange());
         }
-        navMeshAgent.destination = pointToFollow.position;
     }
 
     private void SearchForBall()
