@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class BoundsTrigger : TriggerBehavior
 {
-    float lowerXBound;
-    float lowerZBound;
-    float upperXBound;
-    float upperZBound;
+    private float lowerXBound;
+    private float lowerZBound;
+    private float upperXBound;
+    private float upperZBound;
 
     protected override void Start()
     {
@@ -22,7 +22,6 @@ public class BoundsTrigger : TriggerBehavior
     private void OnTriggerExit(Collider other)
     {
         Vector3 otherTransform = other.gameObject.transform.position;
-        Debug.Log(otherTransform);
         float otherX = otherTransform.x;
         float otherZ = otherTransform.z;
         if (otherX <= lowerXBound)
