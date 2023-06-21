@@ -29,6 +29,32 @@ public class DodgeballEnemy : DodgeballActor
         {
             Debug.Log(IsBallInRange());
         }
+        if(Input.GetKeyDown("s"))
+        {
+            SearchForBall();
+        }
+        if(Input.GetKeyDown("p"))
+        {
+            Debug.Log(IsPlayerInRange());
+        }
+    }
+
+    private void SearchForBall()
+    {
+        
+    }
+
+    private bool IsPlayerInRange()
+    {
+        Collider[] objectsInRange = Physics.OverlapSphere(transform.position, seekRadius);
+        foreach (Collider collider in objectsInRange)
+        {
+            if (collider.gameObject.tag == "Player" && IsObjectVisible(collider.gameObject))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private bool IsBallInRange()
@@ -37,7 +63,7 @@ public class DodgeballEnemy : DodgeballActor
         Collider[] dodgeballsInRange = Physics.OverlapSphere(transform.position, seekRadius, dodgeballMask);
         foreach (Collider ball in dodgeballsInRange)
         {
-            if (IsBallVisible(ball.gameObject.transform.position - transform.position))
+            if (IsObjectVisible(ball.gameObject))
             {
                 return true;
             }
@@ -45,14 +71,14 @@ public class DodgeballEnemy : DodgeballActor
         return false;
     }
 
-    private bool IsBallVisible(Vector3 angleToBall)
+    private bool IsObjectVisible(GameObject objectInQuestion)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, angleToBall, out hit, seekRadius))
+        Vector3 angleToObject = objectInQuestion.transform.position - transform.position;
+        if (Physics.Raycast(transform.position, angleToObject, out hit, seekRadius))
         {
-            return hit.collider.gameObject.layer == dodgeballLayer;
+            return hit.collider.gameObject == objectInQuestion;
         }
-        Debug.DrawRay(transform.position, angleToBall * seekRadius, Color.white, 10.0f);
         return false;
     }
 }
