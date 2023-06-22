@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BoundsTrigger : TriggerBehavior
 {
-    float lowerXBound;
-    float lowerZBound;
-    float upperXBound;
-    float upperZBound;
+    private float lowerXBound;
+    private float lowerZBound;
+    private float upperXBound;
+    private float upperZBound;
 
     protected override void Start()
     {
@@ -20,25 +21,42 @@ public class BoundsTrigger : TriggerBehavior
 
     private void OnTriggerExit(Collider other)
     {
-        Vector3 otherTransform = other.gameObject.transform.position;
-        float otherX = otherTransform.x;
-        float otherZ = otherTransform.z;
+        Vector3 otherPosition = other.gameObject.transform.position;
+        float otherX = otherPosition.x;
+        float otherZ = otherPosition.z;
         if (otherX <= lowerXBound)
         {
-            otherTransform.x = upperXBound;
+            otherPosition.x = upperXBound;
         }
         else if (otherX >= upperXBound)
         {
-            otherTransform.x = lowerXBound;
+            otherPosition.x = lowerXBound;
         }
         if (otherZ <= lowerZBound)
         {
-            otherTransform.z = upperZBound;
+            otherPosition.z = upperZBound;
         }
         else if (otherZ >= upperZBound)
         {
-            otherTransform.z = lowerZBound;
+            otherPosition.z = lowerZBound;
         }
-        other.gameObject.transform.position = otherTransform;
+        // NavMeshAgents will glitch if transform is modified directly and may gitch on barrier
+        NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.Warp(otherPosition + (other.gameObject.transform.position - otherPosition).normalized);
+            return;
+        }
+        other.gameObject.transform.position = otherPosition;
+    }
+
+    public Vector2 getXBounds()
+    {
+        return new Vector2(lowerXBound, upperXBound);
+    }
+
+    public Vector2 getZBounds()
+    {
+        return new Vector2(lowerZBound, upperZBound);
     }
 }

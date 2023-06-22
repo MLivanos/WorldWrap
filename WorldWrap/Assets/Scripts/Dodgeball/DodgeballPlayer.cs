@@ -17,15 +17,11 @@ public class DodgeballPlayer : DodgeballActor
     // Interaction variables
     [SerializeField] private Vector3 heldObjectPosition;
     [SerializeField] private float grabbingRange;
-    [SerializeField] private float throwStrength;
-    private GameObject heldObject;
-    private bool isHoldingObject;
 
     private void Start()
     {
         SetupCamera();
         SetupScreenMovement();
-        health = 2;
         playerRigidbody = gameObject.GetComponent<Rigidbody>();
         isHoldingObject = false;
     }
@@ -76,7 +72,7 @@ public class DodgeballPlayer : DodgeballActor
         
     }
 
-    private void PickUpObject()
+    protected void PickUpObject()
     {
         RaycastHit hit;
         Transform outlook = mainCamera.transform;
@@ -94,14 +90,4 @@ public class DodgeballPlayer : DodgeballActor
             }
         }
     }
-
-    private void ThrowObject()
-    {
-        heldObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        heldObject.transform.parent = null;
-        Rigidbody objectRigidBody = heldObject.GetComponent<Rigidbody>();
-        objectRigidBody.AddForce(throwStrength * transform.TransformDirection(Vector3.forward), ForceMode.Impulse);
-        isHoldingObject = false;
-    }
-
 }

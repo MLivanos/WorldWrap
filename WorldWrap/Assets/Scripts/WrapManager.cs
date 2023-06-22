@@ -3,12 +3,15 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject lureObject;
     [SerializeField] private int wrapLayer;
+    [SerializeField] private bool isUsingNavmesh;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -28,6 +31,10 @@ public class WrapManager : MonoBehaviour
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
+        if (isUsingNavmesh)
+        {
+            CreateNavMeshLure();
+        }
     }
 
     // Given the unorganized array of blocks, organize them into a matrix
@@ -82,6 +89,54 @@ public class WrapManager : MonoBehaviour
             int row = xToRow[block.transform.position.x];
             int column = xToRow[block.transform.position.z];
             blockMatrix[row, column] = block;
+        }
+    }
+
+    private void CreateNavMeshLure()
+    {
+        Dictionary<float, GameObject> xToLure = new Dictionary<float, GameObject>();
+        Dictionary<float, GameObject> zToLure = new Dictionary<float, GameObject>();
+        foreach(Transform lurePlane in lureObject.transform)
+        {
+            if (xToLure.ContainsKey(lurePlane.position.x))
+            {
+                AddNavMeshLinks(lurePlane.gameObject, xToLure[lurePlane.position.x]);
+            }
+            else if (zToLure.ContainsKey(lurePlane.position.z))
+            {
+                AddNavMeshLinks(lurePlane.gameObject, zToLure[lurePlane.position.z]);
+            }
+            else
+            {
+                xToLure[lurePlane.position.x] = lurePlane.gameObject;
+                zToLure[lurePlane.position.z] = lurePlane.gameObject;
+            }
+        }
+    }
+
+    private void AddNavMeshLinks(GameObject plane1, GameObject plane2, int numberOfLinks = 20)
+    {
+        Vector3 plane1ToPlane2 = plane2.transform.position - plane1.transform.position;
+        Vector3 newLinkPosition;
+        // TODO: Replace with more precise figure than *10
+        float planeLength = Mathf.Max(plane1.transform.lossyScale.x, plane1.transform.lossyScale.z) * 10;
+        float linkIncrement = planeLength / numberOfLinks;
+        int longDirection = 0;
+        if (plane1.transform.position.z > plane1.transform.position.x)
+        {
+            longDirection = 2;
+        }
+        for (int linkNumber = 0; linkNumber < numberOfLinks; linkNumber++)
+        {
+            newLinkPosition = plane1.transform.position;
+            newLinkPosition[longDirection] += -planeLength / 2 + linkNumber * linkIncrement;
+            NavMeshLinkData newLink = new NavMeshLinkData();
+            newLink.area = 0;
+            newLink.bidirectional = true;
+            newLink.costModifier = 0.02f;
+            newLink.startPosition = newLinkPosition;
+            newLink.endPosition = newLinkPosition + plane1ToPlane2;
+            NavMesh.AddLink(newLink);
         }
     }
 
