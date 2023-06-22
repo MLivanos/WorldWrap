@@ -60,7 +60,6 @@ public class DodgeballEnemy : DodgeballActor
             case EnemyBehaviorState.MovingTowardsBall:
                 Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
                 Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
-                Debug.Log(Vector2.Distance(ballXZPosition, myXZPosition));    
                 if (ballOfInterest.transform.parent != null)
                 {
                     currentState = EnemyBehaviorState.SearchingForBall;

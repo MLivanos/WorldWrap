@@ -21,33 +21,33 @@ public class BoundsTrigger : TriggerBehavior
 
     private void OnTriggerExit(Collider other)
     {
-        Vector3 otherTransform = other.gameObject.transform.position;
-        float otherX = otherTransform.x;
-        float otherZ = otherTransform.z;
+        Vector3 otherPosition = other.gameObject.transform.position;
+        float otherX = otherPosition.x;
+        float otherZ = otherPosition.z;
         if (otherX <= lowerXBound)
         {
-            otherTransform.x = upperXBound;
+            otherPosition.x = upperXBound;
         }
         else if (otherX >= upperXBound)
         {
-            otherTransform.x = lowerXBound;
+            otherPosition.x = lowerXBound;
         }
         if (otherZ <= lowerZBound)
         {
-            otherTransform.z = upperZBound;
+            otherPosition.z = upperZBound;
         }
         else if (otherZ >= upperZBound)
         {
-            otherTransform.z = lowerZBound;
+            otherPosition.z = lowerZBound;
         }
-        // NavMeshAgents will glitch if transform is modified directly
+        // NavMeshAgents will glitch if transform is modified directly and may gitch on barrier
         NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
-            agent.Warp(otherTransform);
+            agent.Warp(otherPosition + (other.gameObject.transform.position - otherPosition).normalized);
             return;
         }
-        other.gameObject.transform.position = otherTransform;
+        other.gameObject.transform.position = otherPosition;
     }
 
     public Vector2 getXBounds()
