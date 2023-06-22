@@ -72,7 +72,7 @@ public class DodgeballPlayer : DodgeballActor
         
     }
 
-    private void PickUpObject()
+    protected void PickUpObject()
     {
         RaycastHit hit;
         Transform outlook = mainCamera.transform;
@@ -90,5 +90,4 @@ public class DodgeballPlayer : DodgeballActor
             }
         }
     }
-
 }

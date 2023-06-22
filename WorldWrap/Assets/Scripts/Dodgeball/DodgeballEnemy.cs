@@ -36,8 +36,16 @@ public class DodgeballEnemy : DodgeballActor
 
     private void Update()
     {
+        if (Input.GetKeyDown("q"))
+        {
+            Debug.Log(currentState);
+        }
+        CheckIfHunted();
         switch (currentState)
         {
+            case EnemyBehaviorState.Fleeing:
+                Flee();
+                break;
             case EnemyBehaviorState.SearchingForBall:
                 SearchForBall();
                 break;
@@ -52,13 +60,32 @@ public class DodgeballEnemy : DodgeballActor
         }
     }
 
-    private void SearchForBall()
-    {   
-        if (IsBallInRange())
+    private void CheckIfHunted()
+    {
+        if (isHoldingObject)
         {
-            currentState = EnemyBehaviorState.MovingTowardsBall;
-            return;
+            currentState = EnemyBehaviorState.HuntingForPlayer;
         }
+        if (playerTransform.childCount > 1 && Vector3.Distance(playerTransform.position, transform.position) < seekRadius)
+        {
+            currentState = EnemyBehaviorState.Fleeing;
+        }
+    }
+
+    private void Flee()
+    {
+        CheckForBall();
+        MoveToRandomPoint(playerTransform.position.x, playerTransform.position.z);
+    }
+
+    private void SearchForBall()
+    {
+        CheckForBall();
+        MoveToRandomPoint();
+    }
+
+    private void MoveToRandomPoint(float? limitX = null, float? limitZ = null)
+    {   
         if (isActivelySearching)
         {
             float distanceToPOI = Vector3.Distance(transform.position, lureObject.transform.position);
@@ -72,19 +99,52 @@ public class DodgeballEnemy : DodgeballActor
         {
             searchTimer = 0.0f;
             isActivelySearching = true;
-            lureObject.transform.position = getRandomPointOnNavMesh();
+            lureObject.transform.position = getRandomPointOnNavMesh(limitX, limitZ);
             navMeshAgent.destination = lureObject.transform.position;
         }
     }
 
-    private Vector3 getRandomPointOnNavMesh()
+    private void CheckForBall()
+    {
+        if (IsBallInRange())
+        {
+            if (!isHoldingObject)
+            {
+                currentState = EnemyBehaviorState.MovingTowardsBall;
+            }
+            return;
+        }
+    }
+
+    private Vector3 getRandomPointOnNavMesh(float? threatX = null, float? threatZ = null)
     {
         Vector2 xBounds = bounds.getXBounds();
         Vector2 zBounds = bounds.getZBounds();
+        if (threatX != null && threatZ != null)
+        {
+            /*xBounds = limitBoundsToThreat(xBounds, threatX, 0);
+            zBounds = limitBoundsToThreat(zBounds, threatZ, 2);*/
+            limitBoundsToThreat(xBounds, threatX ?? 0, 0);
+            limitBoundsToThreat(zBounds, threatZ ?? 0, 2);
+        }
         Vector3 randomPoint = new Vector3(UnityEngine.Random.Range(xBounds.x, xBounds.y), 0.0f, UnityEngine.Random.Range(zBounds.x, zBounds.y));
         NavMeshHit hit;
         NavMesh.SamplePosition(randomPoint, out hit, 10.5f, 1);
         return hit.position;
+    }
+
+    // TODO: Ensure Vectors are mutable
+    private void limitBoundsToThreat(Vector2 bounds, float threat, int axis)
+    {
+        if (transform.position[axis] > threat)
+        {
+            bounds.x = transform.position.x;
+        }
+        else
+        {
+            bounds.y = transform.position.x;
+        }
+        //return bounds;
     }
 
     private bool IsPlayerInRange()
@@ -137,7 +197,12 @@ public class DodgeballEnemy : DodgeballActor
         }
         if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
         {
+            if (isHoldingObject)
+            {
+                return;
+            }
             ballOfInterest.transform.parent = transform;
+            isHoldingObject = true;
             ballOfInterest.transform.localPosition = heldObjectPosition;
             heldObject = ballOfInterest;
             Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
@@ -153,9 +218,9 @@ public class DodgeballEnemy : DodgeballActor
         navMeshAgent.destination = playerTransform.position;
         if (Vector3.Distance(playerTransform.position, transform.position) < distanceToThrow)
         {
-        ThrowObject();
+            ThrowObject();
+            currentState = EnemyBehaviorState.SearchingForBall;
         }
-        currentState = EnemyBehaviorState.SearchingForBall;
     }
 
     private void SetupNavMesh()
@@ -170,9 +235,9 @@ public class DodgeballEnemy : DodgeballActor
     private void SetupStateMachine()
     {
         lureObject = new GameObject("LureObject");
-        playerTransform = GameObject.Find("Player").transform;
         Collider lureCollider = lureObject.AddComponent<BoxCollider>();
         lureCollider.isTrigger = true;
+        playerTransform = GameObject.Find("Player").transform;
         bounds = GameObject.Find("GlobalBounds").GetComponent<BoundsTrigger>();
     }
 }
