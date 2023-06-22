@@ -22,7 +22,6 @@ public class DodgeballPlayer : DodgeballActor
     {
         SetupCamera();
         SetupScreenMovement();
-        health = 2;
         playerRigidbody = gameObject.GetComponent<Rigidbody>();
         isHoldingObject = false;
     }

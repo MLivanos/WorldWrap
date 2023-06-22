@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class DodgeballActor : MonoBehaviour
 {
-    protected int health;
+    [SerializeField] private float throwStrength;
+    [SerializeField] protected int health;
     protected GameObject heldObject;
     protected bool isHoldingObject;
-    [SerializeField] private float throwStrength;
     
     public void decrementHealth()
     {

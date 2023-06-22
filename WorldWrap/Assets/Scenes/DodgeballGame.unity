@@ -3827,7 +3827,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0.95
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!1 &691913570
@@ -3960,6 +3960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwStrength: 20
+  health: 0
   rotationSensitivity: 600
   speed: 10
   heldObjectPosition: {x: 0, y: 0.15, z: 0.75}
@@ -10189,6 +10190,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5598573528055106792, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7057210561565981024, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -10203,6 +10209,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Constraints
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7523628563119053753, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}

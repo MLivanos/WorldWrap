@@ -30,17 +30,8 @@ public class DodgeballEnemy : DodgeballActor
 
     private void Start()
     {
-        health = 2;
-        searchTimer = 0.0f;
-        currentState = EnemyBehaviorState.SearchingForBall;
-        isActivelySearching = false;
-        lureObject = new GameObject("LureObject");
-        playerTransform = GameObject.Find("Player").transform;
-        Collider lureCollider = lureObject.AddComponent<BoxCollider>();
-        lureCollider.isTrigger = true;
-        bounds = GameObject.Find("GlobalBounds").GetComponent<BoundsTrigger>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        dodgeballLayer = LayerMask.NameToLayer("Dodgeballs");;
+        SetupNavMesh();
+        SetupStateMachine();
     }
 
     private void Update()
@@ -48,49 +39,26 @@ public class DodgeballEnemy : DodgeballActor
         switch (currentState)
         {
             case EnemyBehaviorState.SearchingForBall:
-                if (IsBallInRange())
-                {
-                    currentState = EnemyBehaviorState.MovingTowardsBall;
-                }
-                else
-                {
-                    SearchForBall();
-                }
+                SearchForBall();
                 break;
             case EnemyBehaviorState.MovingTowardsBall:
-                Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
-                Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
-                if (ballOfInterest.transform.parent != null)
-                {
-                    currentState = EnemyBehaviorState.SearchingForBall;
-                }
-                if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
-                {
-                    ballOfInterest.transform.parent = transform;
-                    ballOfInterest.transform.localPosition = heldObjectPosition;
-                    heldObject = ballOfInterest;
-                    Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
-                    ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
-                    currentState = EnemyBehaviorState.HuntingForPlayer;
-                    distanceToThrow = Random.Range(minThrowRadius, maxThrowRadius);
-                }
-                navMeshAgent.destination = ballOfInterest.transform.position;
+                MoveTowardsBall();
                 break;
             case EnemyBehaviorState.HuntingForPlayer:
-                 navMeshAgent.destination = playerTransform.position;
-                 if (Vector3.Distance(playerTransform.position, transform.position) < distanceToThrow)
-                 {
-                    ThrowObject();
-                 }
-                 currentState = EnemyBehaviorState.SearchingForBall;
-                 break;
+                HuntForPlayer();
+                break;
             default:
                 break;
         }
     }
 
     private void SearchForBall()
-    {
+    {   
+        if (IsBallInRange())
+        {
+            currentState = EnemyBehaviorState.MovingTowardsBall;
+            return;
+        }
         if (isActivelySearching)
         {
             float distanceToPOI = Vector3.Distance(transform.position, lureObject.transform.position);
@@ -159,4 +127,52 @@ public class DodgeballEnemy : DodgeballActor
         return false;
     }
 
+    private void MoveTowardsBall()
+    {
+        Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
+        Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
+        if (ballOfInterest.transform.parent != null)
+        {
+            currentState = EnemyBehaviorState.SearchingForBall;
+        }
+        if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
+        {
+            ballOfInterest.transform.parent = transform;
+            ballOfInterest.transform.localPosition = heldObjectPosition;
+            heldObject = ballOfInterest;
+            Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
+            ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
+            currentState = EnemyBehaviorState.HuntingForPlayer;
+            distanceToThrow = Random.Range(minThrowRadius, maxThrowRadius);
+        }
+        navMeshAgent.destination = ballOfInterest.transform.position;
+    }
+
+    private void HuntForPlayer()
+    {
+        navMeshAgent.destination = playerTransform.position;
+        if (Vector3.Distance(playerTransform.position, transform.position) < distanceToThrow)
+        {
+        ThrowObject();
+        }
+        currentState = EnemyBehaviorState.SearchingForBall;
+    }
+
+    private void SetupNavMesh()
+    {
+        searchTimer = 0.0f;
+        currentState = EnemyBehaviorState.SearchingForBall;
+        isActivelySearching = false;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        dodgeballLayer = LayerMask.NameToLayer("Dodgeballs");
+    }
+
+    private void SetupStateMachine()
+    {
+        lureObject = new GameObject("LureObject");
+        playerTransform = GameObject.Find("Player").transform;
+        Collider lureCollider = lureObject.AddComponent<BoxCollider>();
+        lureCollider.isTrigger = true;
+        bounds = GameObject.Find("GlobalBounds").GetComponent<BoundsTrigger>();
+    }
 }
