@@ -49,4 +49,14 @@ public class BoundsTrigger : TriggerBehavior
         }
         other.gameObject.transform.position = otherTransform;
     }
+
+    public Vector2 getXBounds()
+    {
+        return new Vector2(lowerXBound, upperXBound);
+    }
+
+    public Vector2 getZBounds()
+    {
+        return new Vector2(lowerZBound, upperZBound);
+    }
 }
