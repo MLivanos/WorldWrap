@@ -6,8 +6,15 @@ using UnityEngine.AI;
 public class DodgeballEnemy : DodgeballActor
 {
     [SerializeField] private float seekRadius;
+    [SerializeField] private float pickupRadius;
+    [SerializeField] private Vector3 heldObjectPosition;
     [SerializeField] private float searchForBallTime;
+    [SerializeField] private float minThrowRadius;
+    [SerializeField] private float maxThrowRadius;
     private GameObject lureObject;
+    private GameObject heldObject;
+    private GameObject ballOfInterest;
+    private Transform playerTransform;
     private BoundsTrigger bounds;
     private NavMeshAgent navMeshAgent;
     private enum EnemyBehaviorState{
@@ -28,6 +35,7 @@ public class DodgeballEnemy : DodgeballActor
         currentState = EnemyBehaviorState.SearchingForBall;
         isActivelySearching = false;
         lureObject = new GameObject("LureObject");
+        playerTransform = GameObject.Find("Player").transform;
         Collider lureCollider = lureObject.AddComponent<BoxCollider>();
         lureCollider.isTrigger = true;
         bounds = GameObject.Find("GlobalBounds").GetComponent<BoundsTrigger>();
@@ -43,12 +51,30 @@ public class DodgeballEnemy : DodgeballActor
                 if (IsBallInRange())
                 {
                     currentState = EnemyBehaviorState.MovingTowardsBall;
-                    Debug.Log("Ball Found");
                 }
                 else
                 {
                     SearchForBall();
                 }
+                break;
+            case EnemyBehaviorState.MovingTowardsBall:
+                Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
+                Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
+                Debug.Log(Vector2.Distance(ballXZPosition, myXZPosition));    
+                if (ballOfInterest.transform.parent != null)
+                {
+                    currentState = EnemyBehaviorState.SearchingForBall;
+                }
+                if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
+                {
+                    ballOfInterest.transform.parent = transform;
+                    ballOfInterest.transform.localPosition = heldObjectPosition;
+                    heldObject = ballOfInterest;
+                    Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
+                    ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
+                    currentState = EnemyBehaviorState.HuntingForPlayer;
+                }
+                navMeshAgent.destination = ballOfInterest.transform.position;
                 break;
             default:
                 break;
@@ -106,6 +132,7 @@ public class DodgeballEnemy : DodgeballActor
         {
             if (IsObjectVisible(ball.gameObject))
             {
+                ballOfInterest = ball.gameObject;
                 lureObject.transform.position = ball.gameObject.transform.position;
                 return true;
             }

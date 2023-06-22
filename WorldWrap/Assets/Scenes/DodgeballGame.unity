@@ -10212,7 +10212,12 @@ PrefabInstance:
     - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}
       propertyPath: seekRadius
-      value: 2
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: pickupRadius
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}
@@ -10223,6 +10228,16 @@ PrefabInstance:
         type: 3}
       propertyPath: searchForBallTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: heldObjectPosition.y
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: heldObjectPosition.z
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 9131835840657053792, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}

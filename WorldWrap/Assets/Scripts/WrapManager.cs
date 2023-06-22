@@ -120,7 +120,6 @@ public class WrapManager : MonoBehaviour
         Vector3 newLinkPosition;
         // TODO: Replace with more precise figure than *10
         float planeLength = Mathf.Max(plane1.transform.lossyScale.x, plane1.transform.lossyScale.z) * 10;
-        Debug.Log(planeLength);
         float linkIncrement = planeLength / numberOfLinks;
         int longDirection = 0;
         if (plane1.transform.position.z > plane1.transform.position.x)
