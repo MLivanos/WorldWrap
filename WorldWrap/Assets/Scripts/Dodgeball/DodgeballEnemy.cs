@@ -36,10 +36,6 @@ public class DodgeballEnemy : DodgeballActor
 
     private void Update()
     {
-        if (Input.GetKeyDown("q"))
-        {
-            Debug.Log(currentState);
-        }
         CheckIfHunted();
         switch (currentState)
         {
@@ -122,8 +118,6 @@ public class DodgeballEnemy : DodgeballActor
         Vector2 zBounds = bounds.getZBounds();
         if (threatX != null && threatZ != null)
         {
-            /*xBounds = limitBoundsToThreat(xBounds, threatX, 0);
-            zBounds = limitBoundsToThreat(zBounds, threatZ, 2);*/
             limitBoundsToThreat(xBounds, threatX ?? 0, 0);
             limitBoundsToThreat(zBounds, threatZ ?? 0, 2);
         }
@@ -133,7 +127,6 @@ public class DodgeballEnemy : DodgeballActor
         return hit.position;
     }
 
-    // TODO: Ensure Vectors are mutable
     private void limitBoundsToThreat(Vector2 bounds, float threat, int axis)
     {
         if (transform.position[axis] > threat)
@@ -144,7 +137,6 @@ public class DodgeballEnemy : DodgeballActor
         {
             bounds.y = transform.position.x;
         }
-        //return bounds;
     }
 
     private bool IsPlayerInRange()

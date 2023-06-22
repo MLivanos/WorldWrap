@@ -233,7 +233,7 @@ public class WrapManager : MonoBehaviour
         {
             if (resident.transform.parent == null)
             {
-                resident.transform.Translate(movementVector, Space.World);
+                MoveObject(resident, movementVector);
             }
         }
     }
@@ -313,6 +313,17 @@ public class WrapManager : MonoBehaviour
                 newMatrix[row + 1, column] = blockMatrix[row, column];
             }
         }
+    }
+
+    private void MoveObject(GameObject objectToMove, Vector3 movementVector)
+    {
+        NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.Warp(objectToMove.transform.position + movementVector);
+            return;
+        }
+        objectToMove.transform.Translate(movementVector, Space.World);
     }
 
     public int GetWrapLayer()
