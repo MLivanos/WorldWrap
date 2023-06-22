@@ -17,9 +17,6 @@ public class DodgeballPlayer : DodgeballActor
     // Interaction variables
     [SerializeField] private Vector3 heldObjectPosition;
     [SerializeField] private float grabbingRange;
-    [SerializeField] private float throwStrength;
-    private GameObject heldObject;
-    private bool isHoldingObject;
 
     private void Start()
     {
@@ -93,15 +90,6 @@ public class DodgeballPlayer : DodgeballActor
                 isHoldingObject = true;
             }
         }
-    }
-
-    private void ThrowObject()
-    {
-        heldObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        heldObject.transform.parent = null;
-        Rigidbody objectRigidBody = heldObject.GetComponent<Rigidbody>();
-        objectRigidBody.AddForce(throwStrength * transform.TransformDirection(Vector3.forward), ForceMode.Impulse);
-        isHoldingObject = false;
     }
 
 }

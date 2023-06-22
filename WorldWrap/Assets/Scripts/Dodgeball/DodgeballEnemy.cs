@@ -11,8 +11,8 @@ public class DodgeballEnemy : DodgeballActor
     [SerializeField] private float searchForBallTime;
     [SerializeField] private float minThrowRadius;
     [SerializeField] private float maxThrowRadius;
+    private float distanceToThrow;
     private GameObject lureObject;
-    private GameObject heldObject;
     private GameObject ballOfInterest;
     private Transform playerTransform;
     private BoundsTrigger bounds;
@@ -73,9 +73,18 @@ public class DodgeballEnemy : DodgeballActor
                     Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
                     ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
                     currentState = EnemyBehaviorState.HuntingForPlayer;
+                    distanceToThrow = Random.Range(minThrowRadius, maxThrowRadius);
                 }
                 navMeshAgent.destination = ballOfInterest.transform.position;
                 break;
+            case EnemyBehaviorState.HuntingForPlayer:
+                 navMeshAgent.destination = playerTransform.position;
+                 if (Vector3.Distance(playerTransform.position, transform.position) < distanceToThrow)
+                 {
+                    ThrowObject();
+                 }
+                 currentState = EnemyBehaviorState.SearchingForBall;
+                 break;
             default:
                 break;
         }

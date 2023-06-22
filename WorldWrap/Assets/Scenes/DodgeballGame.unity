@@ -3959,11 +3959,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2de6f3d74cb4ef1aec6e9c42b4fb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwStrength: 20
   rotationSensitivity: 600
   speed: 10
   heldObjectPosition: {x: 0, y: 0.15, z: 0.75}
   grabbingRange: 5
-  throwStrength: 20
 --- !u!1 &699699323
 GameObject:
   m_ObjectHideFlags: 0
@@ -10223,6 +10223,21 @@ PrefabInstance:
         type: 3}
       propertyPath: pointToFollow
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: throwStrength
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: maxThrowRadius
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: minThrowRadius
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}
