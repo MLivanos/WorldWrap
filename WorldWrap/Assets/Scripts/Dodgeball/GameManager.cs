@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,12 +15,13 @@ public class GameManager : MonoBehaviour
     private GameObject[] enemies;
     private GameObject player;
     private bool isGameOn;
+    private bool startingNewGame;
     
     private void Start()
     {
         enemies = new GameObject[numberOfEnemies];
         isGameOn = false;
-        CreateEnemies();
+        startingNewGame = true;
     }
 
     private void Update()
@@ -28,6 +30,11 @@ public class GameManager : MonoBehaviour
         {
             CheckForWin();
             CheckForLoss();
+        }
+        if (startingNewGame)
+        {
+            CreateEnemies();
+            startingNewGame = false;
         }
     }
 
@@ -58,14 +65,21 @@ public class GameManager : MonoBehaviour
     {
         for (int enemyID = 0; enemyID < numberOfEnemies; enemyID ++)
         {
-            // CREATE ENEMY
-            // enemy = ...
-            // PLACE ENEMY
-            // enemy.SetRandomLocation();
-            /* SetEnemyStats(enemy);
-            enemies[enemyID] = enemy;
-            */
+            GameObject newEnemy = AddNewEnemy(enemyID);
+            SetEnemyStats(newEnemy);
         }
+    }
+
+    private GameObject AddNewEnemy(int enemyID)
+    {
+        GameObject enemy = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        NavMeshAgent agent = enemy.AddComponent(typeof(NavMeshAgent)) as NavMeshAgent;
+        DodgeballEnemy enemyScript = enemy.AddComponent(typeof(DodgeballEnemy)) as DodgeballEnemy;
+        agent.baseOffset = 0.95f;
+        enemyScript.PlaceRandomly();
+        SetEnemyStats(enemy);
+        enemies[enemyID] = enemy;
+        return enemy;
     }
 
     private void SetEnemyStats(GameObject enemy)
@@ -75,12 +89,9 @@ public class GameManager : MonoBehaviour
         float spread = enemySpreadByDifficulty[difficulty];
         float speed = enemySpeedByDifficulty[difficulty];
         DodgeballEnemy enemyScript = enemy.GetComponent<DodgeballEnemy>();
-        // EDIT STATS
-        /*
         enemyScript.SetHealth(health);
-        enemyScript.SetThrowStrength(health);
-        enemyScript.SetSpread(health);
-        enemyScript.SetSpeed(health);
-        */
+        enemyScript.SetThrowStrength(throwStrength);
+        enemyScript.SetSpread(spread);
+        enemyScript.SetSpeed(speed);
     }
 }

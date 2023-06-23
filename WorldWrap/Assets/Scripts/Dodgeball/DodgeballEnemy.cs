@@ -5,32 +5,34 @@ using UnityEngine.AI;
 
 public class DodgeballEnemy : DodgeballActor
 {
-    [SerializeField] private float seekRadius;
-    [SerializeField] private float pickupRadius;
-    [SerializeField] private float searchForBallTime;
-    [SerializeField] private float minThrowRadius;
-    [SerializeField] private float maxThrowRadius;
-    private float distanceToThrow;
-    private GameObject lureObject;
-    private GameObject ballOfInterest;
-    private Transform playerTransform;
-    private BoundsTrigger bounds;
-    private NavMeshAgent navMeshAgent;
     private enum EnemyBehaviorState{
         Fleeing,
         SearchingForBall,
         MovingTowardsBall,
         HuntingForPlayer,
     };
+    private float seekRadius;
+    private float pickupRadius;
+    private float searchForBallTime;
+    private float minThrowRadius;
+    private float maxThrowRadius;
+    private GameObject lureObject;
+    private GameObject ballOfInterest;
+    private Transform playerTransform;
+    private BoundsTrigger bounds;
+    private NavMeshAgent navMeshAgent;
     private EnemyBehaviorState currentState;
     private int dodgeballLayer;
     private bool isActivelySearching;
     private float searchTimer;
+    private float spread;
+    private float distanceToThrow;
 
-    private void Start()
+    private void Awake()
     {
         SetupNavMesh();
         SetupStateMachine();
+        SetupCharacteristics();
     }
 
     private void Update()
@@ -53,6 +55,11 @@ public class DodgeballEnemy : DodgeballActor
             default:
                 break;
         }
+    }
+
+    public void PlaceRandomly()
+    {
+        navMeshAgent.Warp(getRandomPointOnNavMesh());
     }
 
     private void CheckIfHunted()
@@ -221,5 +228,34 @@ public class DodgeballEnemy : DodgeballActor
         lureCollider.isTrigger = true;
         playerTransform = GameObject.Find("Player").transform;
         bounds = GameObject.Find("GlobalBounds").GetComponent<BoundsTrigger>();
+    }
+
+    public void SetHealth(int healthValue)
+    {
+        health = healthValue;
+    }
+
+    public void SetThrowStrength(float strengthValue)
+    {
+        throwStrength = strengthValue;
+    }
+
+    public void SetSpread(float spreadValue)
+    {
+        spread = spreadValue;
+    }
+
+    public void SetSpeed(float speedValue)
+    {
+        navMeshAgent.speed = speedValue;
+    }
+
+    private void SetupCharacteristics()
+    {
+        seekRadius = 10;
+        pickupRadius = 3;
+        searchForBallTime = 7.0f;
+        minThrowRadius = 8;
+        minThrowRadius = 20;
     }
 }
