@@ -27,6 +27,7 @@ public class Dodgeball : MonoBehaviour
             {
                 Debug.Log(collision.gameObject.name + " Has died");
             }
+            gameObject.SetActive(false);
         }
         SetActive(false);
     }
