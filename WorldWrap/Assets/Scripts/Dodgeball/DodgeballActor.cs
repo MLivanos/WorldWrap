@@ -15,7 +15,7 @@ public class DodgeballActor : MonoBehaviour
         health --;
     }
 
-    public bool isDead()
+    public bool IsDead()
     {
         return health <= 0;
     }

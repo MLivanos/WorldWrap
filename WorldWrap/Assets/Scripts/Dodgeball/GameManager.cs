@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     private void CheckForLoss()
     {
         DodgeballPlayer playerScript = player.GetComponent<DodgeballPlayer>();
-        if (playerScript.isDead())
+        if (playerScript.IsDead())
         {
             Debug.Log("The Game Is Over: You Lose!");
             isGameOn = false;

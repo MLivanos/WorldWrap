@@ -37,6 +37,11 @@ public class DodgeballEnemy : DodgeballActor
 
     private void Update()
     {
+        if (IsDead())
+        {
+            Destroy(gameObject);
+            return;
+        }
         CheckIfHunted();
         switch (currentState)
         {
@@ -164,7 +169,7 @@ public class DodgeballEnemy : DodgeballActor
         Collider[] dodgeballsInRange = Physics.OverlapSphere(transform.position, seekRadius, dodgeballMask);
         foreach (Collider ball in dodgeballsInRange)
         {
-            if (IsObjectVisible(ball.gameObject))
+            if (IsObjectVisible(ball.gameObject) && !ball.GetComponent<Dodgeball>().IsActive())
             {
                 ballOfInterest = ball.gameObject;
                 lureObject.transform.position = ball.gameObject.transform.position;
@@ -187,19 +192,25 @@ public class DodgeballEnemy : DodgeballActor
 
     private void MoveTowardsBall()
     {
-        Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
-        Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
         if (ballOfInterest.transform.parent != null)
         {
             currentState = EnemyBehaviorState.SearchingForBall;
         }
-        if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
+        if (CanBePickedUp())
         {
             PickupObject(ballOfInterest);
             currentState = EnemyBehaviorState.HuntingForPlayer;
             distanceToThrow = Random.Range(minThrowRadius, maxThrowRadius);
         }
         navMeshAgent.destination = ballOfInterest.transform.position;
+    }
+
+    private bool CanBePickedUp()
+    {
+        Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
+        Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
+        Dodgeball ballOfInterestScript = ballOfInterest.GetComponent<Dodgeball>();
+        return Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius && !ballOfInterestScript.IsActive();
     }
 
     private void HuntForPlayer()

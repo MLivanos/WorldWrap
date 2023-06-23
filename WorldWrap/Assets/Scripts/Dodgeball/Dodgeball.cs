@@ -32,7 +32,7 @@ public class Dodgeball : MonoBehaviour
         {
             actorScript.decrementHealth();
             Debug.Log(collision.gameObject.name + " is hit, current health: " + actorScript.GetHealth());
-            if (actorScript.isDead())
+            if (actorScript.IsDead())
             {
                 Debug.Log(collision.gameObject.name + " Has died");
             }
@@ -47,9 +47,9 @@ public class Dodgeball : MonoBehaviour
         isActive = activity;
     }
 
-    public void IsActive(bool activity)
+    public bool IsActive()
     {
-        isActive = activity;
+        return isActive;
     }
-    
+
 }
