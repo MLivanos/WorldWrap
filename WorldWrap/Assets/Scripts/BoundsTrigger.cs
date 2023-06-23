@@ -40,11 +40,12 @@ public class BoundsTrigger : TriggerBehavior
         {
             otherPosition.z = lowerZBound;
         }
-        // NavMeshAgents will glitch if transform is modified directly and may gitch on barrier
+        // NavMeshAgents will glitch if transform is modified directly
         NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
-            agent.Warp(otherPosition + (other.gameObject.transform.position - otherPosition).normalized);
+            agent.Warp(otherPosition);
+            Debug.Log(agent.pathPending);
             return;
         }
         other.gameObject.transform.position = otherPosition;

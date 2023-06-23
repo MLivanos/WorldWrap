@@ -36,10 +36,6 @@ public class DodgeballEnemy : DodgeballActor
 
     private void Update()
     {
-        if (Input.GetKeyDown("q"))
-        {
-            Debug.Log(currentState);
-        }
         CheckIfHunted();
         switch (currentState)
         {
@@ -100,8 +96,8 @@ public class DodgeballEnemy : DodgeballActor
             searchTimer = 0.0f;
             isActivelySearching = true;
             lureObject.transform.position = getRandomPointOnNavMesh(limitX, limitZ);
-            navMeshAgent.destination = lureObject.transform.position;
         }
+        navMeshAgent.destination = lureObject.transform.position;
     }
 
     private void CheckForBall()
@@ -118,12 +114,11 @@ public class DodgeballEnemy : DodgeballActor
 
     private Vector3 getRandomPointOnNavMesh(float? threatX = null, float? threatZ = null)
     {
+        return new Vector3(0.0f,0.0f,-21.0f);
         Vector2 xBounds = bounds.getXBounds();
         Vector2 zBounds = bounds.getZBounds();
         if (threatX != null && threatZ != null)
         {
-            /*xBounds = limitBoundsToThreat(xBounds, threatX, 0);
-            zBounds = limitBoundsToThreat(zBounds, threatZ, 2);*/
             limitBoundsToThreat(xBounds, threatX ?? 0, 0);
             limitBoundsToThreat(zBounds, threatZ ?? 0, 2);
         }
@@ -133,7 +128,6 @@ public class DodgeballEnemy : DodgeballActor
         return hit.position;
     }
 
-    // TODO: Ensure Vectors are mutable
     private void limitBoundsToThreat(Vector2 bounds, float threat, int axis)
     {
         if (transform.position[axis] > threat)
@@ -144,7 +138,6 @@ public class DodgeballEnemy : DodgeballActor
         {
             bounds.y = transform.position.x;
         }
-        //return bounds;
     }
 
     private bool IsPlayerInRange()

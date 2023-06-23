@@ -181,6 +181,11 @@ public class WrapManager : MonoBehaviour
         previousBlock = exitBlock;
     }
 
+    public void HandleObjectBlockEnter(GameObject resident)
+    {
+
+    }
+
     private void PrintMatrix(GameObject[,] mat)
     {
         for(int row = 0; row < mat.GetLength(0); row++)
@@ -215,25 +220,28 @@ public class WrapManager : MonoBehaviour
     private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
     {
         Vector3 movementVector;
+        HashSet<int> objectAlreadyMoved = new HashSet<int>();
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
             {
                 movementVector = oldPositions[row,column] - newMatrix[row,column].transform.position;
-                TranslateObjects(newMatrix[row,column], movementVector);
+                TranslateObjects(newMatrix[row,column], movementVector, objectAlreadyMoved);
                 newMatrix[row,column].transform.position = oldPositions[row,column];
             }
         }
     }
 
-    private void TranslateObjects(GameObject block, Vector3 movementVector)
+    private void TranslateObjects(GameObject block, Vector3 movementVector, HashSet<int> objectAlreadyMoved)
     {
         BlockTrigger triggerScript = block.GetComponentInChildren<BlockTrigger>();
         foreach(GameObject resident in triggerScript.getResidents())
         {
-            if (resident.transform.parent == null)
+            int key = resident.GetInstanceID();
+            if (resident.transform.parent == null && !objectAlreadyMoved.Contains(key))
             {
-                resident.transform.Translate(movementVector, Space.World);
+                objectAlreadyMoved.Add(key);
+                MoveObject(resident, movementVector);
             }
         }
     }
@@ -313,6 +321,17 @@ public class WrapManager : MonoBehaviour
                 newMatrix[row + 1, column] = blockMatrix[row, column];
             }
         }
+    }
+
+    private void MoveObject(GameObject objectToMove, Vector3 movementVector)
+    {
+        NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.Warp(objectToMove.transform.position + movementVector);
+            return;
+        }
+        objectToMove.transform.Translate(movementVector, Space.World);
     }
 
     public int GetWrapLayer()
