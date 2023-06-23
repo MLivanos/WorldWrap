@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float[] enemySpeedByDifficulty;
     [SerializeField] private int[] enemyHealthByDifficulty;
     private GameObject[] enemies;
-    private GameObject player;
+    private DodgeballPlayer player;
     private bool isGameOn;
     private bool startingNewGame;
     
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         enemies = new GameObject[numberOfEnemies];
         isGameOn = false;
         startingNewGame = true;
+        player = GameObject.Find("Player").GetComponent<DodgeballPlayer>();
     }
 
     private void Update()
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         {
             CreateEnemies();
             startingNewGame = false;
+            isGameOn = true;
         }
     }
 
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         foreach(GameObject enemy in enemies)
         {
-            if (enemy.activeInHierarchy)
+            if (enemy)
             {
                 return;
             }
@@ -53,8 +55,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckForLoss()
     {
-        DodgeballPlayer playerScript = player.GetComponent<DodgeballPlayer>();
-        if (playerScript.IsDead())
+        if (player.IsDead())
         {
             Debug.Log("The Game Is Over: You Lose!");
             isGameOn = false;
