@@ -96,8 +96,8 @@ public class DodgeballEnemy : DodgeballActor
             searchTimer = 0.0f;
             isActivelySearching = true;
             lureObject.transform.position = getRandomPointOnNavMesh(limitX, limitZ);
-            navMeshAgent.destination = lureObject.transform.position;
         }
+        navMeshAgent.destination = lureObject.transform.position;
     }
 
     private void CheckForBall()
@@ -114,6 +114,7 @@ public class DodgeballEnemy : DodgeballActor
 
     private Vector3 getRandomPointOnNavMesh(float? threatX = null, float? threatZ = null)
     {
+        return new Vector3(0.0f,0.0f,-21.0f);
         Vector2 xBounds = bounds.getXBounds();
         Vector2 zBounds = bounds.getZBounds();
         if (threatX != null && threatZ != null)
