@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DodgeballActor : MonoBehaviour
 {
-    [SerializeField] private float throwStrength;
+    [SerializeField] protected Vector3 heldObjectPosition;
+    [SerializeField] protected float throwStrength;
     [SerializeField] protected int health;
     protected GameObject heldObject;
     protected bool isHoldingObject;
@@ -22,6 +23,20 @@ public class DodgeballActor : MonoBehaviour
     public int GetHealth()
     {
         return health;
+    }
+
+    protected void PickupObject(GameObject ball)
+    {
+        if (isHoldingObject)
+        {
+            return;
+        }
+        ball.transform.parent = transform;
+        ball.transform.localPosition = heldObjectPosition;
+        heldObject = ball;
+        isHoldingObject = true;
+        Rigidbody ballRidigBody = ball.GetComponent<Rigidbody>();
+        ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
     }
 
     protected void ThrowObject()

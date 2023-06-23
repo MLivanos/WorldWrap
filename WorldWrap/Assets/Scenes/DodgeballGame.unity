@@ -9776,6 +9776,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9850360eb82470698f295427d64301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficulty: 0
+  numberOfEnemies: 0
+  dodgeballSpawnFrequency: 0
+  enemyThrowStrengthByDifficulty: []
+  enemySpreadByDifficulty: []
+  enemySpeedByDifficulty: []
+  enemyHealthByDifficulty: 
 --- !u!4 &2009386968
 Transform:
   m_ObjectHideFlags: 0
@@ -10179,7 +10186,7 @@ PrefabInstance:
     - target: {fileID: 1384685016907613741, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.700001
+      value: 28.7
       objectReference: {fileID: 0}
     - target: {fileID: 1384685016907613741, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}

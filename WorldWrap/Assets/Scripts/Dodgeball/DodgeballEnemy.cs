@@ -7,7 +7,6 @@ public class DodgeballEnemy : DodgeballActor
 {
     [SerializeField] private float seekRadius;
     [SerializeField] private float pickupRadius;
-    [SerializeField] private Vector3 heldObjectPosition;
     [SerializeField] private float searchForBallTime;
     [SerializeField] private float minThrowRadius;
     [SerializeField] private float maxThrowRadius;
@@ -189,16 +188,7 @@ public class DodgeballEnemy : DodgeballActor
         }
         if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
         {
-            if (isHoldingObject)
-            {
-                return;
-            }
-            ballOfInterest.transform.parent = transform;
-            isHoldingObject = true;
-            ballOfInterest.transform.localPosition = heldObjectPosition;
-            heldObject = ballOfInterest;
-            Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
-            ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
+            PickupObject(ballOfInterest);
             currentState = EnemyBehaviorState.HuntingForPlayer;
             distanceToThrow = Random.Range(minThrowRadius, maxThrowRadius);
         }
