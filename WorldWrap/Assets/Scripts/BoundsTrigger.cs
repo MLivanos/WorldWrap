@@ -45,7 +45,6 @@ public class BoundsTrigger : TriggerBehavior
         if (agent != null)
         {
             agent.Warp(otherPosition);
-            Debug.Log(agent.pathPending);
             return;
         }
         other.gameObject.transform.position = otherPosition;

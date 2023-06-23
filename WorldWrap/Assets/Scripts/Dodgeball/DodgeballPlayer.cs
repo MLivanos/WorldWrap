@@ -15,7 +15,6 @@ public class DodgeballPlayer : DodgeballActor
     private GameObject mainCameraGameObject;
     private Vector3 mainCameraFPPosition;
     // Interaction variables
-    [SerializeField] private Vector3 heldObjectPosition;
     [SerializeField] private float grabbingRange;
 
     private void Start()
@@ -61,32 +60,18 @@ public class DodgeballPlayer : DodgeballActor
 
     private void Interact()
     {
+        RaycastHit hit;
+        Transform outlook = mainCamera.transform;
         if (isHoldingObject)
         {
             ThrowObject();
         }
-        else
-        {
-            PickUpObject();
-        }
-        
-    }
-
-    protected void PickUpObject()
-    {
-        RaycastHit hit;
-        Transform outlook = mainCamera.transform;
-        if (Physics.Raycast(outlook.position, outlook.TransformDirection(Vector3.forward), out hit, grabbingRange))
+        // If object in view
+        else if (Physics.Raycast(outlook.position, outlook.TransformDirection(Vector3.forward), out hit, grabbingRange))
         {
             if (hit.rigidbody != null && hit.rigidbody.tag == "Dodgeball")
             {
-                Dodgeball dodgeballScript = hit.rigidbody.gameObject.GetComponent<Dodgeball>();
-                dodgeballScript.SetActive(true);
-                hit.rigidbody.gameObject.transform.parent = gameObject.transform;
-                hit.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
-                hit.rigidbody.gameObject.transform.localPosition = heldObjectPosition;
-                heldObject = hit.rigidbody.gameObject;
-                isHoldingObject = true;
+                PickupObject(hit.rigidbody.gameObject);
             }
         }
     }

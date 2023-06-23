@@ -5,37 +5,43 @@ using UnityEngine.AI;
 
 public class DodgeballEnemy : DodgeballActor
 {
-    [SerializeField] private float seekRadius;
-    [SerializeField] private float pickupRadius;
-    [SerializeField] private Vector3 heldObjectPosition;
-    [SerializeField] private float searchForBallTime;
-    [SerializeField] private float minThrowRadius;
-    [SerializeField] private float maxThrowRadius;
-    private float distanceToThrow;
-    private GameObject lureObject;
-    private GameObject ballOfInterest;
-    private Transform playerTransform;
-    private BoundsTrigger bounds;
-    private NavMeshAgent navMeshAgent;
     private enum EnemyBehaviorState{
         Fleeing,
         SearchingForBall,
         MovingTowardsBall,
         HuntingForPlayer,
     };
+    private float seekRadius;
+    private float pickupRadius;
+    private float searchForBallTime;
+    private float minThrowRadius;
+    private float maxThrowRadius;
+    private GameObject lureObject;
+    private GameObject ballOfInterest;
+    private Transform playerTransform;
+    private BoundsTrigger bounds;
+    private NavMeshAgent navMeshAgent;
     private EnemyBehaviorState currentState;
     private int dodgeballLayer;
     private bool isActivelySearching;
     private float searchTimer;
+    private float spread;
+    private float distanceToThrow;
 
-    private void Start()
+    private void Awake()
     {
         SetupNavMesh();
         SetupStateMachine();
+        SetupCharacteristics();
     }
 
     private void Update()
     {
+        if (IsDead())
+        {
+            Destroy(gameObject);
+            return;
+        }
         CheckIfHunted();
         switch (currentState)
         {
@@ -54,6 +60,11 @@ public class DodgeballEnemy : DodgeballActor
             default:
                 break;
         }
+    }
+
+    public void PlaceRandomly()
+    {
+        navMeshAgent.Warp(getRandomPointOnNavMesh());
     }
 
     private void CheckIfHunted()
@@ -114,7 +125,6 @@ public class DodgeballEnemy : DodgeballActor
 
     private Vector3 getRandomPointOnNavMesh(float? threatX = null, float? threatZ = null)
     {
-        return new Vector3(0.0f,0.0f,-21.0f);
         Vector2 xBounds = bounds.getXBounds();
         Vector2 zBounds = bounds.getZBounds();
         if (threatX != null && threatZ != null)
@@ -159,7 +169,7 @@ public class DodgeballEnemy : DodgeballActor
         Collider[] dodgeballsInRange = Physics.OverlapSphere(transform.position, seekRadius, dodgeballMask);
         foreach (Collider ball in dodgeballsInRange)
         {
-            if (IsObjectVisible(ball.gameObject))
+            if (IsObjectVisible(ball.gameObject) && !ball.GetComponent<Dodgeball>().IsActive())
             {
                 ballOfInterest = ball.gameObject;
                 lureObject.transform.position = ball.gameObject.transform.position;
@@ -182,28 +192,25 @@ public class DodgeballEnemy : DodgeballActor
 
     private void MoveTowardsBall()
     {
-        Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
-        Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
         if (ballOfInterest.transform.parent != null)
         {
             currentState = EnemyBehaviorState.SearchingForBall;
         }
-        if (Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius)
+        if (CanBePickedUp())
         {
-            if (isHoldingObject)
-            {
-                return;
-            }
-            ballOfInterest.transform.parent = transform;
-            isHoldingObject = true;
-            ballOfInterest.transform.localPosition = heldObjectPosition;
-            heldObject = ballOfInterest;
-            Rigidbody ballRidigBody = ballOfInterest.GetComponent<Rigidbody>();
-            ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
+            PickupObject(ballOfInterest);
             currentState = EnemyBehaviorState.HuntingForPlayer;
             distanceToThrow = Random.Range(minThrowRadius, maxThrowRadius);
         }
         navMeshAgent.destination = ballOfInterest.transform.position;
+    }
+
+    private bool CanBePickedUp()
+    {
+        Vector2 ballXZPosition = new Vector2(ballOfInterest.transform.position.x, ballOfInterest.transform.position.z);
+        Vector2 myXZPosition = new Vector2(transform.position.x, transform.position.z);
+        Dodgeball ballOfInterestScript = ballOfInterest.GetComponent<Dodgeball>();
+        return Vector2.Distance(ballXZPosition, myXZPosition) <= pickupRadius && !ballOfInterestScript.IsActive();
     }
 
     private void HuntForPlayer()
@@ -232,5 +239,34 @@ public class DodgeballEnemy : DodgeballActor
         lureCollider.isTrigger = true;
         playerTransform = GameObject.Find("Player").transform;
         bounds = GameObject.Find("GlobalBounds").GetComponent<BoundsTrigger>();
+    }
+
+    public void SetHealth(int healthValue)
+    {
+        health = healthValue;
+    }
+
+    public void SetThrowStrength(float strengthValue)
+    {
+        throwStrength = strengthValue;
+    }
+
+    public void SetSpread(float spreadValue)
+    {
+        spread = spreadValue;
+    }
+
+    public void SetSpeed(float speedValue)
+    {
+        navMeshAgent.speed = speedValue;
+    }
+
+    private void SetupCharacteristics()
+    {
+        seekRadius = 10;
+        pickupRadius = 3;
+        searchForBallTime = 7.0f;
+        minThrowRadius = 8;
+        minThrowRadius = 20;
     }
 }
