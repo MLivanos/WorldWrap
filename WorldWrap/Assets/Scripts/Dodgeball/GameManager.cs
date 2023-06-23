@@ -75,6 +75,9 @@ public class GameManager : MonoBehaviour
         GameObject enemy = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         NavMeshAgent agent = enemy.AddComponent(typeof(NavMeshAgent)) as NavMeshAgent;
         DodgeballEnemy enemyScript = enemy.AddComponent(typeof(DodgeballEnemy)) as DodgeballEnemy;
+        Rigidbody enemyRigidBody = enemy.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        enemyRigidBody.mass = 10.0f;
+        enemyRigidBody.isKinematic = true;
         agent.baseOffset = 0.95f;
         enemyScript.PlaceRandomly();
         SetEnemyStats(enemy);
