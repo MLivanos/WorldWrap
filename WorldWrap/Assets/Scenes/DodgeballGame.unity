@@ -3960,7 +3960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwStrength: 20
-  health: 0
+  health: 3
   rotationSensitivity: 600
   speed: 10
   heldObjectPosition: {x: 0, y: 0.15, z: 0.75}
@@ -9102,7 +9102,7 @@ PrefabInstance:
     - target: {fileID: 2863848475787073641, guid: 7633c8dec971c4d8eb47b05d4efecec8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.250198
+      value: -12.750198
       objectReference: {fileID: 0}
     - target: {fileID: 2863848475787073641, guid: 7633c8dec971c4d8eb47b05d4efecec8,
         type: 3}
@@ -9112,7 +9112,7 @@ PrefabInstance:
     - target: {fileID: 2863848475787073641, guid: 7633c8dec971c4d8eb47b05d4efecec8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.751854
+      value: 7.001854
       objectReference: {fileID: 0}
     - target: {fileID: 2863848475787073641, guid: 7633c8dec971c4d8eb47b05d4efecec8,
         type: 3}
@@ -10181,7 +10181,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ca1944116e6c34d7298c2558d161fdf5, type: 2}
+      objectReference: {fileID: 2100000, guid: 816d878bb253c497982fa46a032c5c90, type: 2}
     - target: {fileID: 7523628563119053753, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}
       propertyPath: m_Mass
@@ -10196,6 +10196,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
+        type: 3}
+      propertyPath: health
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8380518543795453862, guid: fd080a7ed53354d6e9f8cf647d3db943,
         type: 3}

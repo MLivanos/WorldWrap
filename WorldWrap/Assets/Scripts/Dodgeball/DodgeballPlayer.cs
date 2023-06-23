@@ -81,7 +81,6 @@ public class DodgeballPlayer : DodgeballActor
             if (hit.rigidbody != null && hit.rigidbody.tag == "Dodgeball")
             {
                 Dodgeball dodgeballScript = hit.rigidbody.gameObject.GetComponent<Dodgeball>();
-                dodgeballScript.SetActive(true);
                 hit.rigidbody.gameObject.transform.parent = gameObject.transform;
                 hit.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
                 hit.rigidbody.gameObject.transform.localPosition = heldObjectPosition;

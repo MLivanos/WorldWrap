@@ -13,13 +13,19 @@ public class Dodgeball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Do not harm weilder
+        if (collision.gameObject.transform == transform.parent)
+        {
+            return;
+        }
         DodgeballActor actorScript = collision.gameObject.GetComponent<DodgeballActor>();
         if (isActive && actorScript != null)
         {
             actorScript.decrementHealth();
+            Debug.Log(collision.gameObject.name + " is hit, current health: " + actorScript.GetHealth());
             if (actorScript.isDead())
             {
-                Debug.Log(" Has died");
+                Debug.Log(collision.gameObject.name + " Has died");
             }
         }
         SetActive(false);

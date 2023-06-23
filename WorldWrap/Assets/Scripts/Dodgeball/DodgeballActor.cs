@@ -19,12 +19,19 @@ public class DodgeballActor : MonoBehaviour
         return health <= 0;
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     protected void ThrowObject()
     {
         heldObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         heldObject.transform.parent = null;
         Rigidbody objectRigidBody = heldObject.GetComponent<Rigidbody>();
         objectRigidBody.AddForce(throwStrength * transform.TransformDirection(Vector3.forward), ForceMode.Impulse);
+        Dodgeball dodgeballScript = heldObject.GetComponent<Dodgeball>();
+        dodgeballScript.SetActive(true);
         isHoldingObject = false;
     }
 }

@@ -114,7 +114,6 @@ public class DodgeballEnemy : DodgeballActor
 
     private Vector3 getRandomPointOnNavMesh(float? threatX = null, float? threatZ = null)
     {
-        return new Vector3(0.0f,0.0f,-21.0f);
         Vector2 xBounds = bounds.getXBounds();
         Vector2 zBounds = bounds.getZBounds();
         if (threatX != null && threatZ != null)
