@@ -162,13 +162,29 @@ public class WrapManager : MonoBehaviour
             return;
         }
         // Initiate wrap
-        if (!GameObject.ReferenceEquals(currentTrigger, initialTrigger))
+        if (ShouldWrap())
         {
-            GameObject[,] newMatrix = GetTranslations();
-            TranslateBlocks(GetBlockPositions(), newMatrix);
-            blockMatrix = newMatrix;
-            initialTrigger = null;
+            WrapWorld();
         }
+        initialTrigger = null;
+        currentTrigger = null;
+    }
+
+    /* Some colliders contain multiple contact points, causing wraps to happen twice.
+    All these checks ensure only one wrap happens and only when it is supposed to */
+    private bool ShouldWrap()
+    {
+        bool shouldWrap = !GameObject.ReferenceEquals(currentTrigger, initialTrigger) &&
+        !GameObject.ReferenceEquals(currentBlock, previousBlock) && currentTrigger!= null &&
+        initialTrigger != null;
+        return shouldWrap;
+    }
+
+    private void WrapWorld()
+    {
+        GameObject[,] newMatrix = GetTranslations();
+        TranslateBlocks(GetBlockPositions(), newMatrix);
+        blockMatrix = newMatrix;
         initialTrigger = null;
     }
 
@@ -199,6 +215,10 @@ public class WrapManager : MonoBehaviour
     {
         GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
         Vector3 translationVector = currentBlock.transform.position - previousBlock.transform.position;
+        if (translationVector.magnitude == 0.0f)
+        {
+            return blockMatrix;
+        }
         if (translationVector.x > 0)
         {
             TranslateUp(newMatrix);
