@@ -267,6 +267,6 @@ public class DodgeballEnemy : DodgeballActor
         pickupRadius = 3;
         searchForBallTime = 7.0f;
         minThrowRadius = 8;
-        minThrowRadius = 20;
+        maxThrowRadius = 20;
     }
 }

@@ -169,6 +169,7 @@ public class WrapManager : MonoBehaviour
             blockMatrix = newMatrix;
             initialTrigger = null;
         }
+        initialTrigger = null;
     }
 
     public void LogBlockEntry(GameObject enterBlock)
@@ -235,14 +236,31 @@ public class WrapManager : MonoBehaviour
     private void TranslateObjects(GameObject block, Vector3 movementVector, HashSet<int> objectAlreadyMoved)
     {
         BlockTrigger triggerScript = block.GetComponentInChildren<BlockTrigger>();
-        foreach(GameObject resident in triggerScript.getResidents())
+        List<GameObject> residentsOfBlock = triggerScript.getResidents();
+        GameObject[] oldResidents = new GameObject[residentsOfBlock.Count];
+        int oldResidentCounter = 0;
+        foreach(GameObject resident in residentsOfBlock)
         {
+            if (resident == null)
+            {
+                oldResidents[oldResidentCounter] = resident;
+                oldResidentCounter ++;
+                continue;
+            }
             int key = resident.GetInstanceID();
             if (resident.transform.parent == null && !objectAlreadyMoved.Contains(key))
             {
                 objectAlreadyMoved.Add(key);
                 MoveObject(resident, movementVector);
             }
+        }
+        foreach(GameObject oldResident in oldResidents)
+        {
+            if (oldResident == null)
+            {
+                break;
+            }
+            triggerScript.removeResident(oldResident);
         }
     }
 
