@@ -17,6 +17,7 @@ public class DodgeballEnemy : DodgeballActor
     private float minThrowRadius;
     private float maxThrowRadius;
     private float maximumAngle;
+    private float minDistanceToPlayer;
     private GameObject lureObject;
     private GameObject ballOfInterest;
     private Transform playerTransform;
@@ -76,6 +77,7 @@ public class DodgeballEnemy : DodgeballActor
         }
         if (playerTransform.childCount > 1 && Vector3.Distance(playerTransform.position, transform.position) < seekRadius)
         {
+            navMeshAgent.stoppingDistance = 0.0f;
             currentState = EnemyBehaviorState.Fleeing;
         }
     }
@@ -217,16 +219,18 @@ public class DodgeballEnemy : DodgeballActor
     private void HuntForPlayer()
     {
         navMeshAgent.destination = playerTransform.position;
+        navMeshAgent.stoppingDistance = minDistanceToPlayer;
         if (IsInRangeOfPlayer())
         {
-            ThrowObject();
+            ThrowObject(spread);
             currentState = EnemyBehaviorState.SearchingForBall;
+            navMeshAgent.stoppingDistance = 0.0f;
         }
     }
 
     private bool IsInRangeOfPlayer()
     {
-        return Vector3.Distance(transform.position, playerTransform.position) < distanceToThrow && Vector3.Angle(transform.position, playerTransform.position) < maximumAngle;
+        return Vector3.Distance(transform.position, playerTransform.position) <= distanceToThrow && Vector3.Angle(transform.position, playerTransform.position) < maximumAngle;
     }
 
     private void SetupNavMesh()
@@ -274,6 +278,7 @@ public class DodgeballEnemy : DodgeballActor
         searchForBallTime = 7.0f;
         minThrowRadius = 8;
         maxThrowRadius = 20;
-        maximumAngle = 15.0f;
+        maximumAngle = 10.0f;
+        minDistanceToPlayer = 2.0f;
     }
 }
