@@ -230,7 +230,7 @@ public class DodgeballEnemy : DodgeballActor
 
     private bool IsInRangeOfPlayer()
     {
-        return Vector3.Distance(transform.position, playerTransform.position) <= distanceToThrow && Vector3.Angle(transform.position, playerTransform.position) < maximumAngle;
+        return Vector3.Distance(transform.position, playerTransform.position) <= distanceToThrow && Vector3.Angle(transform.position, playerTransform.position) <= maximumAngle;
     }
 
     private void SetupNavMesh()
@@ -280,5 +280,6 @@ public class DodgeballEnemy : DodgeballActor
         maxThrowRadius = 20;
         maximumAngle = 10.0f;
         minDistanceToPlayer = 2.0f;
+        heldObjectPosition = new Vector3(0.0f, 0.15f, 0.75f);
     }
 }
