@@ -9749,7 +9749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 0
-  numberOfEnemies: 3
+  numberOfEnemies: 1
   dodgeballSpawnFrequency: 1
   enemyThrowStrengthByDifficulty:
   - 8
