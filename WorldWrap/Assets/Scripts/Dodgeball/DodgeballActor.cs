@@ -39,14 +39,16 @@ public class DodgeballActor : MonoBehaviour
         ballRidigBody.constraints = RigidbodyConstraints.FreezePosition;
     }
 
-    protected void ThrowObject()
+    protected void ThrowObject(float spread = 0.0f)
     {
         heldObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         heldObject.transform.parent = null;
         Rigidbody objectRigidBody = heldObject.GetComponent<Rigidbody>();
-        objectRigidBody.AddForce(throwStrength * transform.TransformDirection(Vector3.forward), ForceMode.Impulse);
+        Vector3 throwDirection = Quaternion.Euler(0, Random.Range(-spread, spread), 0) * transform.TransformDirection(Vector3.forward);
+        objectRigidBody.AddForce(throwStrength * throwDirection, ForceMode.Impulse);
         Dodgeball dodgeballScript = heldObject.GetComponent<Dodgeball>();
         dodgeballScript.SetActive(true);
         isHoldingObject = false;
     }
+
 }
