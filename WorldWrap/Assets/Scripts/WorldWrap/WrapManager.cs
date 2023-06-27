@@ -3,12 +3,15 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject lureObject;
     [SerializeField] private int wrapLayer;
+    [SerializeField] private bool isUsingNavmesh;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -28,6 +31,10 @@ public class WrapManager : MonoBehaviour
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
+        if (isUsingNavmesh)
+        {
+            CreateNavMeshLure();
+        }
     }
 
     // Given the unorganized array of blocks, organize them into a matrix
@@ -85,6 +92,83 @@ public class WrapManager : MonoBehaviour
         }
     }
 
+    private void CreateNavMeshLure()
+    {
+        Dictionary<float, GameObject> xToLure = new Dictionary<float, GameObject>();
+        Dictionary<float, GameObject> zToLure = new Dictionary<float, GameObject>();
+        foreach(Transform lurePlane in lureObject.transform)
+        {
+            if (xToLure.ContainsKey(lurePlane.position.x))
+            {
+                AddNavMeshLinks(lurePlane.gameObject, xToLure[lurePlane.position.x]);
+            }
+            else if (zToLure.ContainsKey(lurePlane.position.z))
+            {
+                AddNavMeshLinks(lurePlane.gameObject, zToLure[lurePlane.position.z]);
+            }
+            else
+            {
+                xToLure[lurePlane.position.x] = lurePlane.gameObject;
+                zToLure[lurePlane.position.z] = lurePlane.gameObject;
+            }
+        }
+    }
+
+    private void CreateNavMeshPlanes()
+    {
+        float planeXOffset = blockMatrix[0,1].transform.position.z - blockMatrix[0,0].transform.position.z;
+        float planeZOffset = blockMatrix[1,0].transform.position.x - blockMatrix[0,0].transform.position.x;
+        // TODO: Check this on non-square maps
+        float planeXScale = planeXOffset * blockMatrix.GetLength(0) / 10.0f;
+        float planeZScale = planeZOffset * blockMatrix.GetLength(1) / 10.0f;
+        float planePosition = blockMatrix[0,0].transform.position.z - planeZOffset / 2.0f - 1.5f;
+        GameObject navMeshlure = new GameObject("NavMeshLure");
+        GameObject plane1 = CreateNavMeshPlane(planeXScale, 0.0f, planePosition, navMeshlure);
+        GameObject plane2 = CreateNavMeshPlane(planeXScale, 180.0f, planePosition, navMeshlure);
+        planePosition = blockMatrix[0,0].transform.position.x - planeXOffset / 2.0f - 1.5f;
+        GameObject plane3 = CreateNavMeshPlane(planeZScale, 90.0f, planePosition, navMeshlure);
+        GameObject plane4 = CreateNavMeshPlane(planeZScale, 270.0f, planePosition, navMeshlure);
+        navMeshlure.transform.position = transform.position;
+    }
+
+    private GameObject CreateNavMeshPlane(float scale, float rotation, float offset, GameObject navMeshlure)
+    {
+        GameObject plane  = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        plane.transform.localScale = new Vector3(scale, 1.0f, 0.3f);
+        plane.transform.Rotate(0.0f, rotation, 0.0f, Space.World);
+        // Create a plane that is at the origin on two axes, offset on the other to be touching the edge of the world
+        plane.transform.Translate(plane.transform.TransformVector(Vector3.forward).normalized * offset, Space.World);
+        plane.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
+        plane.transform.parent = navMeshlure.transform;
+        return plane;
+    }
+
+    private void AddNavMeshLinks(GameObject plane1, GameObject plane2, int numberOfLinks = 20)
+    {
+        Vector3 plane1ToPlane2 = plane2.transform.position - plane1.transform.position;
+        Vector3 newLinkPosition;
+        // TODO: Replace with more precise figure than *10
+        float planeLength = Mathf.Max(plane1.transform.lossyScale.x, plane1.transform.lossyScale.z) * 10;
+        float linkIncrement = planeLength / numberOfLinks;
+        int longDirection = 0;
+        if (plane1.transform.position.z > plane1.transform.position.x)
+        {
+            longDirection = 2;
+        }
+        for (int linkNumber = 0; linkNumber < numberOfLinks; linkNumber++)
+        {
+            newLinkPosition = plane1.transform.position;
+            newLinkPosition[longDirection] += -planeLength / 2 + linkNumber * linkIncrement;
+            NavMeshLinkData newLink = new NavMeshLinkData();
+            newLink.area = 0;
+            newLink.bidirectional = true;
+            newLink.costModifier = 0.02f;
+            newLink.startPosition = newLinkPosition;
+            newLink.endPosition = newLinkPosition + plane1ToPlane2;
+            NavMesh.AddLink(newLink);
+        }
+    }
+
     public void LogTriggerEntry(GameObject entryBlock)
     {
         if(initialTrigger == null)
@@ -107,13 +191,30 @@ public class WrapManager : MonoBehaviour
             return;
         }
         // Initiate wrap
-        if (!GameObject.ReferenceEquals(currentTrigger, initialTrigger))
+        if (ShouldWrap())
         {
-            GameObject[,] newMatrix = GetTranslations();
-            TranslateBlocks(GetBlockPositions(), newMatrix);
-            blockMatrix = newMatrix;
-            initialTrigger = null;
+            WrapWorld();
         }
+        initialTrigger = null;
+        currentTrigger = null;
+    }
+
+    /* Some colliders contain multiple contact points, causing wraps to happen twice.
+    All these checks ensure only one wrap happens and only when it is supposed to */
+    private bool ShouldWrap()
+    {
+        bool shouldWrap = !GameObject.ReferenceEquals(currentTrigger, initialTrigger) &&
+        !GameObject.ReferenceEquals(currentBlock, previousBlock) && currentTrigger!= null &&
+        initialTrigger != null;
+        return shouldWrap;
+    }
+
+    private void WrapWorld()
+    {
+        GameObject[,] newMatrix = GetTranslations();
+        TranslateBlocks(GetBlockPositions(), newMatrix);
+        blockMatrix = newMatrix;
+        initialTrigger = null;
     }
 
     public void LogBlockEntry(GameObject enterBlock)
@@ -124,6 +225,11 @@ public class WrapManager : MonoBehaviour
     public void LogBlockExit(GameObject exitBlock)
     {
         previousBlock = exitBlock;
+    }
+
+    public void HandleObjectBlockEnter(GameObject resident)
+    {
+
     }
 
     private void PrintMatrix(GameObject[,] mat)
@@ -138,6 +244,10 @@ public class WrapManager : MonoBehaviour
     {
         GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
         Vector3 translationVector = currentBlock.transform.position - previousBlock.transform.position;
+        if (translationVector.magnitude == 0.0f)
+        {
+            return blockMatrix;
+        }
         if (translationVector.x > 0)
         {
             TranslateUp(newMatrix);
@@ -160,26 +270,46 @@ public class WrapManager : MonoBehaviour
     private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
     {
         Vector3 movementVector;
+        HashSet<int> objectAlreadyMoved = new HashSet<int>();
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
             {
                 movementVector = oldPositions[row,column] - newMatrix[row,column].transform.position;
-                TranslateObjects(newMatrix[row,column], movementVector);
+                TranslateObjects(newMatrix[row,column], movementVector, objectAlreadyMoved);
                 newMatrix[row,column].transform.position = oldPositions[row,column];
             }
         }
     }
 
-    private void TranslateObjects(GameObject block, Vector3 movementVector)
+    private void TranslateObjects(GameObject block, Vector3 movementVector, HashSet<int> objectAlreadyMoved)
     {
         BlockTrigger triggerScript = block.GetComponentInChildren<BlockTrigger>();
-        foreach(GameObject resident in triggerScript.getResidents())
+        List<GameObject> residentsOfBlock = triggerScript.getResidents();
+        GameObject[] oldResidents = new GameObject[residentsOfBlock.Count];
+        int oldResidentCounter = 0;
+        foreach(GameObject resident in residentsOfBlock)
         {
-            if (resident.transform.parent == null)
+            if (resident == null)
             {
-                resident.transform.Translate(movementVector, Space.World);
+                oldResidents[oldResidentCounter] = resident;
+                oldResidentCounter ++;
+                continue;
             }
+            int key = resident.GetInstanceID();
+            if (resident.transform.parent == null && !objectAlreadyMoved.Contains(key))
+            {
+                objectAlreadyMoved.Add(key);
+                MoveObject(resident, movementVector);
+            }
+        }
+        foreach(GameObject oldResident in oldResidents)
+        {
+            if (oldResident == null)
+            {
+                break;
+            }
+            triggerScript.removeResident(oldResident);
         }
     }
 
@@ -258,6 +388,17 @@ public class WrapManager : MonoBehaviour
                 newMatrix[row + 1, column] = blockMatrix[row, column];
             }
         }
+    }
+
+    private void MoveObject(GameObject objectToMove, Vector3 movementVector)
+    {
+        NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.Warp(objectToMove.transform.position + movementVector);
+            return;
+        }
+        objectToMove.transform.Translate(movementVector, Space.World);
     }
 
     public int GetWrapLayer()

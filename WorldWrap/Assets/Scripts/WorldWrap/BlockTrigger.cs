@@ -32,4 +32,9 @@ public class BlockTrigger : TriggerBehavior
     {
         return residents;
     }
+
+    public void removeResident(GameObject oldResident)
+    {
+        residents.Remove(oldResident);
+    }
 }
