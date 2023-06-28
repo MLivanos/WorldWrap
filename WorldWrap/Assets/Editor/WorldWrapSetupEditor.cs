@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
@@ -31,7 +33,7 @@ public class WorldWrapSetupEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUIUtility.labelWidth = 175;
         isUsingNavmesh = EditorGUILayout.Toggle("Using NavMesh: ", isUsingNavmesh);
-        isExisting = EditorGUILayout.Toggle("Setting Up An Existing Scene: ", isExisting, GUILayout.ExpandWidth(true));
+        //isExisting = EditorGUILayout.Toggle("Setting Up An Existing Scene: ", isExisting, GUILayout.ExpandWidth(true));
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Setup WorldWrap"))
         {
@@ -110,7 +112,7 @@ public class WorldWrapSetupEditor : EditorWindow
         }
     }
 
-    private void SetupBlock(float xPosition, float zPosition, int blockNumber)
+    private GameObject SetupBlock(float xPosition, float zPosition, int blockNumber)
     {
         float rowInterval = worldSize.x / numberOfRows;
         float columnInterval = worldSize.z / numberOfColumns;
@@ -143,7 +145,7 @@ public class WorldWrapSetupEditor : EditorWindow
         CreateTrigger(scale, position);
         position = new Vector3(xPosition - rowInterval / 2.0f + scale.x / 2.0f, 0.0f, zPosition);
         CreateTrigger(scale, position);
-
+        return block;
     }
 
     private void CreateTrigger(Vector3 scale, Vector3 position)
@@ -278,4 +280,83 @@ public class WorldWrapSetupEditor : EditorWindow
         return plane;
     }
 
+    private void SetupExistingScene()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        Dictionary<float, int> numberOfObjectsByX = new Dictionary<float, int>();
+        Dictionary<float, int> numberOfObjectsByZ = new Dictionary<float, int>();
+        float objectXValue;
+        float objectZValue;
+        foreach (GameObject objectInScene in gameObjectsInScene) 
+        {
+            objectXValue = objectInScene.transform.position.x;
+            objectZValue = objectInScene.transform.position.x;
+            if (!numberOfObjectsByX.ContainsKey(objectXValue))
+            {
+                numberOfObjectsByX[objectXValue] = 0;
+            }
+            if (!numberOfObjectsByZ.ContainsKey(objectZValue))
+            {
+                numberOfObjectsByZ[objectZValue] = 0;
+            }
+            numberOfObjectsByX[objectXValue]++;
+            numberOfObjectsByZ[objectZValue]++;
+        }
+        List<float> xRowPosition = CountAxis(numberOfRows, numberOfObjectsByZ, "row");
+        List<float> zColumnPosition = CountAxis(numberOfColumns, numberOfObjectsByX, "column");
+        for(int row = 0; row < numberOfRows; row++)
+        {
+            for(int column = 0; column < numberOfColumns; column++)
+            {
+                GameObject terrain = GetObjectAtPoint(xRowPosition[row], zColumnPosition[column]);
+                GameObject block = SetupBlock(xRowPosition[row], zColumnPosition[column], row * numberOfColumns + column);
+                terrain.transform.parent = block.transform.parent;
+            }
+        }
+    }
+
+    private List<float> CountAxis(int numberOfElementsInAxis, Dictionary<float, int> countByPosition, string axisName)
+    {
+        int numberOfElementsLeft = numberOfElementsInAxis;
+        List<float> positions = new List<float>();
+        foreach(KeyValuePair<float,int> positionValue in countByPosition)
+        {
+            Debug.Log(positionValue.Key);
+            Debug.Log(positionValue.Value);
+            if (positionValue.Value == numberOfElementsInAxis)
+            {
+                positions.Add(positionValue.Key);
+                numberOfElementsLeft--;
+            }
+        }
+        CheckNumberOfElements(numberOfElementsLeft, numberOfElementsInAxis, axisName);
+        positions.Sort();
+        return positions;
+    }
+
+    private void CheckNumberOfElements(int numberOfElementsLeft, int numberOfElementsInAxis, string axisName)
+    {
+        if (numberOfElementsLeft != 0)
+        {
+            string tooManyOrFew = "many";
+            if (numberOfElementsLeft > 0)
+            {
+                tooManyOrFew = "few";
+            }
+            Debug.LogError(string.Format("Too {0} {1}s found. {2} {1}s were found, but {3} {1}s were specified. Check that {1}s are aligned and the number of {1}s matches the number of objects in that {1}.", tooManyOrFew, axisName, numberOfElementsInAxis - numberOfElementsLeft, numberOfElementsInAxis));
+        }
+    }
+
+    private GameObject GetObjectAtPoint(float x, float z)
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if (objectInScene.transform.position.x == x && objectInScene.transform.position.z == z)
+            {
+                return objectInScene;
+            }
+        }
+        return null;
+    }
 }
