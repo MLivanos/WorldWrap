@@ -69,6 +69,7 @@ public class WorldWrapSetupEditor : EditorWindow
         SetupWrapManager();
         SetupGlobalBounds();
         SetupBlocks();
+        ParentWrapManagers();
     }
 
     private void SetupWrapManager()
@@ -126,12 +127,12 @@ public class WorldWrapSetupEditor : EditorWindow
         float triggerScaleFactor = 5.0f;
         float inverseScaleFactor = (triggerScaleFactor-1)/triggerScaleFactor;
 
-        scale = new Vector3(rowInterval * inverseScaleFactor, 1.0f, columnInterval / triggerScaleFactor / 2);
+        scale = new Vector3(rowInterval * inverseScaleFactor, 1.0f, columnInterval / triggerScaleFactor * 0.5f);
         position = new Vector3(xPosition, 0.0f, zPosition + columnInterval / 2.0f - scale.z / 2.0f);
         CreateTrigger(scale, position);
         position = new Vector3(xPosition, 0.0f, zPosition - columnInterval / 2.0f + scale.z / 2.0f);
         CreateTrigger(scale, position);
-        scale = new Vector3(rowInterval / triggerScaleFactor, 1.0f, columnInterval * inverseScaleFactor);
+        scale = new Vector3(rowInterval / triggerScaleFactor * 0.5f, 1.0f, columnInterval);
         position = new Vector3(xPosition + rowInterval / 2.0f - scale.x / 2.0f, 0.0f, zPosition);
         CreateTrigger(scale, position);
         position = new Vector3(xPosition - rowInterval / 2.0f + scale.x / 2.0f, 0.0f, zPosition);
@@ -140,10 +141,12 @@ public class WorldWrapSetupEditor : EditorWindow
 
     private void CreateTrigger(Vector3 scale, Vector3 position)
     {
+        Material clearMaterial = (Material)Resources.Load("Translucent3", typeof(Material));
         GameObject wrapTrigger = GameObject.CreatePrimitive(PrimitiveType.Cube);
         wrapTrigger.name = "WrapTrigger";
         wrapTrigger.transform.localScale = scale;
         wrapTrigger.transform.position = position;
+        wrapTrigger.GetComponent<Renderer>().material = clearMaterial;
     }
 
     private void findPlayer()
@@ -224,6 +227,19 @@ public class WorldWrapSetupEditor : EditorWindow
             return true;
         }
         return false;
+    }
+
+    private void ParentWrapManagers()
+    {
+        GameObject wrapTriggerParent = new GameObject("WrapTriggers");
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene) 
+        {
+            if (objectInScene.name == "WrapTrigger")
+            {
+                objectInScene.transform.parent = wrapTriggerParent.transform;
+            }
+        }
     }
 
 }
