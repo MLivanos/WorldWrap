@@ -70,12 +70,19 @@ public class WorldWrapSetupEditor : EditorWindow
         SetupGlobalBounds();
         SetupBlocks();
         ParentWrapManagers();
+        if (isUsingNavmesh)
+        {
+            wrapManagerScript.SetIsUsingNavMesh(true);
+            CreateNavMeshPlanes();
+        }
     }
 
     private void SetupWrapManager()
     {
         wrapManagerObject = new GameObject("WrapManager");
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
+        wrapManagerScript.SetBlocksLength(numberOfRows * numberOfColumns);
+        wrapManagerScript.SetWrapLayer(LayerMask.NameToLayer("WorldWrapObjects"));
         findPlayer();
     }
 
@@ -120,13 +127,12 @@ public class WorldWrapSetupEditor : EditorWindow
         blockBounds.transform.localScale = new Vector3(rowInterval, Mathf.Max(rowInterval, columnInterval), columnInterval);
         blockBounds.AddComponent(typeof(BlockTrigger));
         block.transform.parent = bounds.transform;
-
+        wrapManagerScript.AddBlock(block);
+        // AddWrapTriggers
         Vector3 scale;
         Vector3 position;
-
         float triggerScaleFactor = 5.0f;
         float inverseScaleFactor = (triggerScaleFactor-1)/triggerScaleFactor;
-
         scale = new Vector3(rowInterval * inverseScaleFactor, 1.0f, columnInterval / triggerScaleFactor * 0.5f);
         position = new Vector3(xPosition, 0.0f, zPosition + columnInterval / 2.0f - scale.z / 2.0f);
         CreateTrigger(scale, position);
@@ -137,6 +143,7 @@ public class WorldWrapSetupEditor : EditorWindow
         CreateTrigger(scale, position);
         position = new Vector3(xPosition - rowInterval / 2.0f + scale.x / 2.0f, 0.0f, zPosition);
         CreateTrigger(scale, position);
+
     }
 
     private void CreateTrigger(Vector3 scale, Vector3 position)
@@ -240,6 +247,35 @@ public class WorldWrapSetupEditor : EditorWindow
                 objectInScene.transform.parent = wrapTriggerParent.transform;
             }
         }
+    }
+
+    private void CreateNavMeshPlanes()
+    {
+        float planeZOffset = worldSize.z / numberOfColumns;
+        float planeXOffset = worldSize.x / numberOfRows;
+        float planeZScale = worldSize.z / 10.0f;
+        float planeXScale = worldSize.x / 10.0f;
+        float planePosition = -1 * bounds.transform.lossyScale.z / 2.0f - 1.5f;
+        GameObject navMeshLure = new GameObject("NavMeshLure");
+        GameObject plane1 = CreateNavMeshPlane(planeXScale, 0.0f, planePosition, navMeshLure);
+        GameObject plane2 = CreateNavMeshPlane(planeXScale, 180.0f, planePosition, navMeshLure);
+        planePosition = -1 * bounds.transform.lossyScale.x / 2.0f - 1.5f;
+        GameObject plane3 = CreateNavMeshPlane(planeZScale, 90.0f, planePosition, navMeshLure);
+        GameObject plane4 = CreateNavMeshPlane(planeZScale, 270.0f, planePosition, navMeshLure);
+        navMeshLure.transform.position = wrapManagerObject.transform.position;
+        wrapManagerScript.SetLureObject(navMeshLure);
+    }
+
+    private GameObject CreateNavMeshPlane(float scale, float rotation, float offset, GameObject navMeshLure)
+    {
+        GameObject plane  = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        plane.transform.localScale = new Vector3(scale, 1.0f, 0.3f);
+        plane.transform.Rotate(0.0f, rotation, 0.0f, Space.World);
+        // Create a plane that is at the origin on two axes, offset on the other to be touching the edge of the world
+        plane.transform.Translate(plane.transform.TransformVector(Vector3.forward).normalized * offset, Space.World);
+        plane.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
+        plane.transform.parent = navMeshLure.transform;
+        return plane;
     }
 
 }

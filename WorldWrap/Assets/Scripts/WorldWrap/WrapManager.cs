@@ -114,35 +114,6 @@ public class WrapManager : MonoBehaviour
         }
     }
 
-    private void CreateNavMeshPlanes()
-    {
-        float planeXOffset = blockMatrix[0,1].transform.position.z - blockMatrix[0,0].transform.position.z;
-        float planeZOffset = blockMatrix[1,0].transform.position.x - blockMatrix[0,0].transform.position.x;
-        // TODO: Check this on non-square maps
-        float planeXScale = planeXOffset * blockMatrix.GetLength(0) / 10.0f;
-        float planeZScale = planeZOffset * blockMatrix.GetLength(1) / 10.0f;
-        float planePosition = blockMatrix[0,0].transform.position.z - planeZOffset / 2.0f - 1.5f;
-        GameObject navMeshlure = new GameObject("NavMeshLure");
-        GameObject plane1 = CreateNavMeshPlane(planeXScale, 0.0f, planePosition, navMeshlure);
-        GameObject plane2 = CreateNavMeshPlane(planeXScale, 180.0f, planePosition, navMeshlure);
-        planePosition = blockMatrix[0,0].transform.position.x - planeXOffset / 2.0f - 1.5f;
-        GameObject plane3 = CreateNavMeshPlane(planeZScale, 90.0f, planePosition, navMeshlure);
-        GameObject plane4 = CreateNavMeshPlane(planeZScale, 270.0f, planePosition, navMeshlure);
-        navMeshlure.transform.position = transform.position;
-    }
-
-    private GameObject CreateNavMeshPlane(float scale, float rotation, float offset, GameObject navMeshlure)
-    {
-        GameObject plane  = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        plane.transform.localScale = new Vector3(scale, 1.0f, 0.3f);
-        plane.transform.Rotate(0.0f, rotation, 0.0f, Space.World);
-        // Create a plane that is at the origin on two axes, offset on the other to be touching the edge of the world
-        plane.transform.Translate(plane.transform.TransformVector(Vector3.forward).normalized * offset, Space.World);
-        plane.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
-        plane.transform.parent = navMeshlure.transform;
-        return plane;
-    }
-
     private void AddNavMeshLinks(GameObject plane1, GameObject plane2, int numberOfLinks = 20)
     {
         Vector3 plane1ToPlane2 = plane2.transform.position - plane1.transform.position;
@@ -406,8 +377,42 @@ public class WrapManager : MonoBehaviour
         player = newPlayer;
     }
 
+    public void SetLureObject(GameObject navMeshLure)
+    {
+        lureObject = navMeshLure;
+    }
+
+    public void SetBlocksLength(int length)
+    {
+        blocks = new GameObject[length];
+    }
+
+    public void AddBlock(GameObject block)
+    {
+        int nextBlockIndex = -1;
+        for(int index = 0; index < blocks.Length; index++)
+        {
+            if(!blocks[index])
+            {
+                nextBlockIndex = index;
+                break;
+            }
+        }
+        blocks[nextBlockIndex] = block;
+    }
+
+    public void SetIsUsingNavMesh(bool isUsing)
+    {
+        isUsingNavmesh = isUsing;
+    }
+
     public int GetWrapLayer()
     {
         return wrapLayer;
+    }
+
+    public void SetWrapLayer(int wrapLayerNumber)
+    {
+        wrapLayer = wrapLayerNumber;
     }
 }
