@@ -7,6 +7,7 @@ public class WorldWrapSetupEditor : EditorWindow
     GUIStyle checkboxStyle = new GUIStyle();
     private WrapManager wrapManagerScript;
     private GameObject wrapManagerObject;
+    private GameObject bounds;
     private Vector3 worldSize;
     private int numberOfRows;
     private int numberOfColumns;
@@ -58,12 +59,91 @@ public class WorldWrapSetupEditor : EditorWindow
     {
         if (WorldWrapAlreadyExists())
         {
-            Debug.LogWarning("WrapManager already exists! Aborting Setup.", wrapManagerObject);
+            Debug.LogError("WrapManager already exists! Aborting Setup.", wrapManagerObject);
             return;
         }
+        if (HasInvalidDimensions())
+        {
+            return;
+        }
+        SetupWrapManager();
+        SetupGlobalBounds();
+        SetupBlocks();
+    }
+
+    private void SetupWrapManager()
+    {
         wrapManagerObject = new GameObject("WrapManager");
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
         findPlayer();
+    }
+
+    private void SetupGlobalBounds()
+    {
+        bounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        bounds.name = "GlobalBounds";
+        bounds.transform.localScale = worldSize;
+        bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
+        bounds.AddComponent(typeof(BoundsTrigger));
+    }
+
+    private void SetupBlocks()
+    {
+        float rowInterval = worldSize.x / numberOfRows;
+        float columnInterval = worldSize.z / numberOfColumns;
+        float initialX = (-1 * worldSize.x + rowInterval) / 2.0f;
+        float initialZ = (-1 * worldSize.z + columnInterval) / 2.0f;
+        for(int row = 0; row < numberOfRows; row++)
+        {
+            for(int column = 0; column < numberOfColumns; column++)
+            {
+                SetupBlock(initialX + rowInterval * row, initialZ + columnInterval * column, row * numberOfColumns + column);
+            }
+        }
+    }
+
+    private void SetupBlock(float xPosition, float zPosition, int blockNumber)
+    {
+        float rowInterval = worldSize.x / numberOfRows;
+        float columnInterval = worldSize.z / numberOfColumns;
+        Material clearMaterial = (Material)Resources.Load("Translucent2", typeof(Material));
+        GameObject block = new GameObject(string.Format("Block{0}", blockNumber));
+        block.transform.position = new Vector3(xPosition, 0.0f, zPosition);
+        GameObject blockBounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        blockBounds.name = "BlockBounds";
+        BoxCollider blockCollider = blockBounds.GetComponent<BoxCollider>();
+        blockBounds.transform.parent = block.transform;
+        blockBounds.transform.localPosition = Vector3.zero;
+        blockBounds.GetComponent<Renderer>().material = clearMaterial;
+        blockCollider.isTrigger = true;
+        blockBounds.transform.localScale = new Vector3(rowInterval, Mathf.Max(rowInterval, columnInterval), columnInterval);
+        blockBounds.AddComponent(typeof(BlockTrigger));
+        block.transform.parent = bounds.transform;
+
+        Vector3 scale;
+        Vector3 position;
+
+        float triggerScaleFactor = 5.0f;
+        float inverseScaleFactor = (triggerScaleFactor-1)/triggerScaleFactor;
+
+        scale = new Vector3(rowInterval * inverseScaleFactor, 1.0f, columnInterval / triggerScaleFactor / 2);
+        position = new Vector3(xPosition, 0.0f, zPosition + columnInterval / 2.0f - scale.z / 2.0f);
+        CreateTrigger(scale, position);
+        position = new Vector3(xPosition, 0.0f, zPosition - columnInterval / 2.0f + scale.z / 2.0f);
+        CreateTrigger(scale, position);
+        scale = new Vector3(rowInterval / triggerScaleFactor, 1.0f, columnInterval * inverseScaleFactor);
+        position = new Vector3(xPosition + rowInterval / 2.0f - scale.x / 2.0f, 0.0f, zPosition);
+        CreateTrigger(scale, position);
+        position = new Vector3(xPosition - rowInterval / 2.0f + scale.x / 2.0f, 0.0f, zPosition);
+        CreateTrigger(scale, position);
+    }
+
+    private void CreateTrigger(Vector3 scale, Vector3 position)
+    {
+        GameObject wrapTrigger = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        wrapTrigger.name = "WrapTrigger";
+        wrapTrigger.transform.localScale = scale;
+        wrapTrigger.transform.position = position;
     }
 
     private void findPlayer()
@@ -117,6 +197,31 @@ public class WorldWrapSetupEditor : EditorWindow
                 wrapManagerObject = objectInScene;
                 return true;
             }
+        }
+        return false;
+    }
+
+    private bool HasInvalidDimensions()
+    {
+        if (worldSize.x <= 0 || worldSize.y <= 0 || worldSize.z <= 0)
+        {
+            Debug.LogError("World size must be positive non-zero for all dimensions x,y, and z.");
+            return true;
+        }
+        if (numberOfRows <= 0)
+        {
+            Debug.LogError("Number of rows must be positve non-zero");
+            return true;
+        }
+        if (numberOfColumns <= 0)
+        {
+            Debug.LogError("Number of columns must be positve non-zero");
+            return true;
+        }
+        if (numberOfColumns == 1 && numberOfRows == 1)
+        {
+            Debug.LogError("At least one dimension (row or column) must be greater than 1");
+            return true;
         }
         return false;
     }
