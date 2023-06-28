@@ -401,6 +401,11 @@ public class WrapManager : MonoBehaviour
         objectToMove.transform.Translate(movementVector, Space.World);
     }
 
+    public void SetPlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
+    }
+
     public int GetWrapLayer()
     {
         return wrapLayer;
