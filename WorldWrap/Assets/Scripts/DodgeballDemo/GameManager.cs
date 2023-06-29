@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,8 +22,15 @@ public class GameManager : MonoBehaviour
     {
         enemies = new GameObject[numberOfEnemies];
         isGameOn = false;
-        startingNewGame = true;
-        player = GameObject.Find("Player").GetComponent<DodgeballPlayer>();
+        startingNewGame = false;
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if (objectInScene.name == "Player")
+            {
+                player = objectInScene.GetComponent<DodgeballPlayer>();
+            }
+        }
     }
 
     private void Update()
@@ -97,5 +105,15 @@ public class GameManager : MonoBehaviour
         enemyScript.SetThrowStrength(throwStrength);
         enemyScript.SetSpread(spread);
         enemyScript.SetSpeed(speed);
+    }
+
+    public void SetDifficulty(int level)
+    {
+        difficulty = level;
+    }
+
+    public void Play()
+    {
+        startingNewGame = true;
     }
 }
