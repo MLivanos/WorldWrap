@@ -322,8 +322,6 @@ public class WorldWrapSetupEditor : EditorWindow
         List<float> positions = new List<float>();
         foreach(KeyValuePair<float,int> positionValue in countByPosition)
         {
-            Debug.Log(positionValue.Key);
-            Debug.Log(positionValue.Value);
             if (positionValue.Value == numberOfElementsInAxis)
             {
                 positions.Add(positionValue.Key);

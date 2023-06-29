@@ -83,20 +83,7 @@ public class WrapManager : MonoBehaviour
 
     // Add blocks to their position according to where they exist in the world.
     private void FillMatrix(Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn)
-    {
-        /*Debug.Log("X");
-        foreach(var pair in xToRow)
-        {
-            Debug.Log("Key: " + pair.Key);
-            Debug.Log("Value: " + pair.Value);
-        }
-        Debug.Log("Z");
-        foreach(var pair in zToColumn)
-        {
-            Debug.Log("Key: " + pair.Key);
-            Debug.Log("Value: " + pair.Value);
-        }*/
-        
+    {        
         foreach(GameObject block in blocks)
         {
             int row = xToRow[block.transform.position.x];
@@ -178,6 +165,7 @@ public class WrapManager : MonoBehaviour
         if (ShouldWrap())
         {
             WrapWorld();
+            previousBlock = currentBlock;
         }
         initialTrigger = null;
         currentTrigger = null;
@@ -203,12 +191,16 @@ public class WrapManager : MonoBehaviour
 
     public void LogBlockEntry(GameObject enterBlock)
     {
+        if (previousBlock == null)
+        {
+            previousBlock = enterBlock;
+        }
         currentBlock = enterBlock;
     }
 
     public void LogBlockExit(GameObject exitBlock)
     {
-        previousBlock = exitBlock;
+        
     }
 
     public void HandleObjectBlockEnter(GameObject resident)
@@ -216,17 +208,11 @@ public class WrapManager : MonoBehaviour
 
     }
 
-    private void PrintMatrix(GameObject[,] mat)
-    {
-        for(int row = 0; row < mat.GetLength(0); row++)
-        {
-            Debug.Log(string.Format("{0}, {1}, {2}", mat[row,0],mat[row,1],mat[row,2]));
-        }
-    }
-
     private GameObject[,] GetTranslations()
     {
         GameObject[,] newMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
+        GameObject[,] oldMatrix = new GameObject[blockMatrix.GetLength(0), blockMatrix.GetLength(1)];
+        oldMatrix = DeepCopyMatrix(blockMatrix);
         Vector3 translationVector = currentBlock.transform.position - previousBlock.transform.position;
         if (translationVector.magnitude == 0.0f)
         {
@@ -234,19 +220,21 @@ public class WrapManager : MonoBehaviour
         }
         if (translationVector.x > 0)
         {
-            TranslateUp(newMatrix);
+            TranslateUp(newMatrix, oldMatrix);
+            oldMatrix = DeepCopyMatrix(newMatrix);
         }
         else if (translationVector.x < 0)
         {
-            TranslateDown(newMatrix);
+            TranslateDown(newMatrix, oldMatrix);
+            oldMatrix = DeepCopyMatrix(newMatrix);
         }
         if (translationVector.z > 0)
         {
-            TranslateLeft(newMatrix);
+            TranslateLeft(newMatrix, oldMatrix);
         }
         else if (translationVector.z < 0)
         {
-            TranslateRight(newMatrix);
+            TranslateRight(newMatrix, oldMatrix);
         }
         return newMatrix;
     }
@@ -255,10 +243,6 @@ public class WrapManager : MonoBehaviour
     {
         Vector3 movementVector;
         HashSet<int> objectAlreadyMoved = new HashSet<int>();
-        Debug.Log(oldPositions.GetLength(0));
-        Debug.Log(oldPositions.GetLength(1));
-        Debug.Log(newMatrix.GetLength(0));
-        Debug.Log(newMatrix.GetLength(1));
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
@@ -314,66 +298,66 @@ public class WrapManager : MonoBehaviour
         return blockPositions;
     }
 
-    private void TranslateLeft(GameObject[,] newMatrix)
+    private void TranslateLeft(GameObject[,] newMatrix, GameObject[,] oldMatrix)
     {
         // Wrap rightmost column around
-        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        for(int row=0; row < oldMatrix.GetLength(0); row++)
         {
-            newMatrix[row, blockMatrix.GetLength(1)-1] = blockMatrix[row,0];
+            newMatrix[row, oldMatrix.GetLength(1)-1] = oldMatrix[row,0];
         }
-        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        for(int row=0; row < oldMatrix.GetLength(0); row++)
         {
-            for(int column=0; column < blockMatrix.GetLength(0) - 1; column++)
+            for(int column=0; column < oldMatrix.GetLength(1) - 1; column++)
             {
-                newMatrix[row, column] = blockMatrix[row, column+1];
+                newMatrix[row, column] = oldMatrix[row, column+1];
             }
         }
     }
 
-    private void TranslateRight(GameObject[,] newMatrix)
+    private void TranslateRight(GameObject[,] newMatrix, GameObject[,] oldMatrix)
     {
         // Wrap leftmost column around
-        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        for(int row=0; row < oldMatrix.GetLength(0); row++)
         {
-            newMatrix[row, 0] = blockMatrix[row, blockMatrix.GetLength(1)-1];
+            newMatrix[row, 0] = oldMatrix[row, oldMatrix.GetLength(1)-1];
         }
-        for(int row=0; row < blockMatrix.GetLength(0); row++)
+        for(int row=0; row < oldMatrix.GetLength(0); row++)
         {
-            for(int column=1; column < blockMatrix.GetLength(1); column++)
+            for(int column=1; column < oldMatrix.GetLength(1); column++)
             {
-                newMatrix[row, column] = blockMatrix[row, column - 1];
+                newMatrix[row, column] = oldMatrix[row, column - 1];
             }
         }
     }
 
-    private void TranslateUp(GameObject[,] newMatrix)
+    private void TranslateUp(GameObject[,] newMatrix, GameObject[,] oldMatrix)
     {
-        // Wrap lowest row around
-        for(int column=0; column < blockMatrix.GetLength(1); column++)
+        // Wrap highest row around
+        for(int column=0; column < oldMatrix.GetLength(1); column++)
         {
-            newMatrix[blockMatrix.GetLength(0)-1, column] = blockMatrix[0, column];
+            newMatrix[oldMatrix.GetLength(0)-1, column] = oldMatrix[0, column];
         }
-        for(int row=1; row < blockMatrix.GetLength(0); row++)
+        for(int row=1; row < oldMatrix.GetLength(0); row++)
         {
-            for(int column=0; column < blockMatrix.GetLength(0); column++)
+            for(int column=0; column < oldMatrix.GetLength(1); column++)
             {
-                newMatrix[row - 1, column] = blockMatrix[row, column];
+                newMatrix[row - 1, column] = oldMatrix[row, column];
             }
         }
     }
 
-    private void TranslateDown(GameObject[,] newMatrix)
+    private void TranslateDown(GameObject[,] newMatrix, GameObject[,] oldMatrix)
     {
         // Wrap lowest row around
-        for(int column=0; column < blockMatrix.GetLength(1); column++)
+        for(int column=0; column < oldMatrix.GetLength(1); column++)
         {
-            newMatrix[0, column] = blockMatrix[blockMatrix.GetLength(0)-1, column];
+            newMatrix[0, column] = oldMatrix[oldMatrix.GetLength(0)-1, column];
         }
-        for(int row=0; row < blockMatrix.GetLength(0) - 1; row++)
+        for(int row=0; row < oldMatrix.GetLength(0) - 1; row++)
         {
-            for(int column=0; column < blockMatrix.GetLength(1); column++)
+            for(int column=0; column < oldMatrix.GetLength(1); column++)
             {
-                newMatrix[row + 1, column] = blockMatrix[row, column];
+                newMatrix[row + 1, column] = oldMatrix[row, column];
             }
         }
     }
@@ -387,6 +371,19 @@ public class WrapManager : MonoBehaviour
             return;
         }
         objectToMove.transform.Translate(movementVector, Space.World);
+    }
+
+    private GameObject[,] DeepCopyMatrix(GameObject[,] matrix)
+    {
+        GameObject[,] newMatrix = new GameObject[matrix.GetLength(0), matrix.GetLength(1)];
+        for(int row = 0; row < matrix.GetLength(0); row++)
+        {
+            for(int column = 0; column < matrix.GetLength(1); column++)
+            {
+                newMatrix[row,column] = matrix[row,column];
+            }
+        }
+        return newMatrix;
     }
 
     public void SetPlayer(GameObject newPlayer)
