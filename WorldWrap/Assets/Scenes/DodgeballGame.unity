@@ -1523,6 +1523,10 @@ MonoBehaviour:
   mediumButton: {fileID: 2122401615}
   hardButton: {fileID: 1213796537}
   playButton: {fileID: 1617905885}
+  menuCameraPosition: {x: 0, y: 7, z: -40}
+  rotationSpeed: 1
+  maxAngle: 30
+  minAngle: -30
 --- !u!1 &183356045 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
