@@ -19,6 +19,7 @@ public class TriggerBehavior : MonoBehaviour
             Exception missingManagerException = new Exception("To use TriggerBehavior, WrapManager object must exist and be called WrapManager");
             Debug.LogException(missingManagerException);
         }
+        gameObject.GetComponent<BoxCollider>().isTrigger = true;
         wrapLayer = wrapManager.GetWrapLayer();
     }
 
