@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int[] enemyHealthByDifficulty;
     private GameObject[] enemies;
     private DodgeballPlayer player;
+    private bool gameWon;
     private bool isGameOn;
     private bool startingNewGame;
     
@@ -21,22 +23,29 @@ public class GameManager : MonoBehaviour
     {
         enemies = new GameObject[numberOfEnemies];
         isGameOn = false;
-        startingNewGame = true;
-        player = GameObject.Find("Player").GetComponent<DodgeballPlayer>();
+        startingNewGame = false;
+        gameWon = false;
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if (objectInScene.name == "Player")
+            {
+                player = objectInScene.GetComponent<DodgeballPlayer>();
+            }
+        }
     }
 
     private void Update()
     {
-        if (isGameOn)
-        {
-            CheckForWin();
-            CheckForLoss();
-        }
         if (startingNewGame)
         {
             CreateEnemies();
             startingNewGame = false;
-            isGameOn = true;
+        }
+        if (isGameOn)
+        {
+            CheckForWin();
+            CheckForLoss();
         }
     }
 
@@ -49,16 +58,16 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
+        gameWon = true;
         isGameOn = false;
-        Debug.Log("The Game Is Over: You Win!");
     }
 
     private void CheckForLoss()
     {
         if (player.IsDead())
         {
-            Debug.Log("The Game Is Over: You Lose!");
             isGameOn = false;
+            gameWon = false;
         }
     }
 
@@ -97,5 +106,26 @@ public class GameManager : MonoBehaviour
         enemyScript.SetThrowStrength(throwStrength);
         enemyScript.SetSpread(spread);
         enemyScript.SetSpeed(speed);
+    }
+
+    public void SetDifficulty(int level)
+    {
+        difficulty = level;
+    }
+
+    public void Play()
+    {
+        startingNewGame = true;
+        isGameOn = true;
+    }
+
+    public bool HasWon()
+    {
+        return !isGameOn && gameWon;
+    }
+
+    public bool HasLost()
+    {
+        return !isGameOn && !gameWon;
     }
 }
