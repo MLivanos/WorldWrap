@@ -51,4 +51,9 @@ public class DodgeballActor : MonoBehaviour
         isHoldingObject = false;
     }
 
+    public bool IsHoldingObject()
+    {
+        return isHoldingObject;
+    }
+
 }
