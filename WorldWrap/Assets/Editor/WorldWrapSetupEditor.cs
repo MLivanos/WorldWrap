@@ -156,6 +156,7 @@ public class WorldWrapSetupEditor : EditorWindow
         wrapTrigger.transform.localScale = scale;
         wrapTrigger.transform.position = position;
         wrapTrigger.GetComponent<Renderer>().material = clearMaterial;
+        wrapTrigger.AddComponent(typeof(WrapTrigger));
     }
 
     private void findPlayer()

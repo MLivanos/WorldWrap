@@ -17,10 +17,6 @@ public class BoundsTrigger : TriggerBehavior
         upperXBound = wrapManager.transform.position.x + gameObject.transform.lossyScale.x / 2;
         lowerZBound = wrapManager.transform.position.z - gameObject.transform.lossyScale.z / 2;
         upperZBound = wrapManager.transform.position.z + gameObject.transform.lossyScale.z / 2;
-        Debug.Log(lowerXBound);
-        Debug.Log(upperXBound);
-        Debug.Log(lowerZBound);
-        Debug.Log(upperZBound);
     }
 
     private void OnTriggerExit(Collider other)

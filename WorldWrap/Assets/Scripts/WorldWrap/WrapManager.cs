@@ -60,7 +60,7 @@ public class WrapManager : MonoBehaviour
         float previousX = coordinatesByX[0].x;
         float previousZ = coordinatesByZ[0].y;
         xToRow[previousX] = 0;
-        zToColumn[previousX] = 0;
+        zToColumn[previousZ] = 0;
         for(int blockIndex = 0; blockIndex < blocks.Length; blockIndex += 1)
         {
             float x = coordinatesByX[blockIndex].x;
@@ -73,7 +73,7 @@ public class WrapManager : MonoBehaviour
             }
             if(z != previousZ)
             {
-                xToRow[z] = numberOfColumns;
+                zToColumn[z] = numberOfColumns;
                 numberOfColumns += 1;
                 previousZ = z;
             }
@@ -84,10 +84,23 @@ public class WrapManager : MonoBehaviour
     // Add blocks to their position according to where they exist in the world.
     private void FillMatrix(Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn)
     {
+        /*Debug.Log("X");
+        foreach(var pair in xToRow)
+        {
+            Debug.Log("Key: " + pair.Key);
+            Debug.Log("Value: " + pair.Value);
+        }
+        Debug.Log("Z");
+        foreach(var pair in zToColumn)
+        {
+            Debug.Log("Key: " + pair.Key);
+            Debug.Log("Value: " + pair.Value);
+        }*/
+        
         foreach(GameObject block in blocks)
         {
             int row = xToRow[block.transform.position.x];
-            int column = xToRow[block.transform.position.z];
+            int column = zToColumn[block.transform.position.z];
             blockMatrix[row, column] = block;
         }
     }
@@ -242,6 +255,10 @@ public class WrapManager : MonoBehaviour
     {
         Vector3 movementVector;
         HashSet<int> objectAlreadyMoved = new HashSet<int>();
+        Debug.Log(oldPositions.GetLength(0));
+        Debug.Log(oldPositions.GetLength(1));
+        Debug.Log(newMatrix.GetLength(0));
+        Debug.Log(newMatrix.GetLength(1));
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
@@ -286,7 +303,7 @@ public class WrapManager : MonoBehaviour
 
     private Vector3[,] GetBlockPositions()
     {
-        Vector3[,] blockPositions = new Vector3[blockMatrix.GetLength(0),blockMatrix.GetLength(0)];
+        Vector3[,] blockPositions = new Vector3[blockMatrix.GetLength(0),blockMatrix.GetLength(1)];
         for(int row = 0; row < blockMatrix.GetLength(0); row++)
         {
             for(int column = 0; column < blockMatrix.GetLength(1); column++)
@@ -354,7 +371,7 @@ public class WrapManager : MonoBehaviour
         }
         for(int row=0; row < blockMatrix.GetLength(0) - 1; row++)
         {
-            for(int column=0; column < blockMatrix.GetLength(0); column++)
+            for(int column=0; column < blockMatrix.GetLength(1); column++)
             {
                 newMatrix[row + 1, column] = blockMatrix[row, column];
             }
