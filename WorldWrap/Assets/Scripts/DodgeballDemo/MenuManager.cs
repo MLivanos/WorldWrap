@@ -1,10 +1,13 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
+    [SerializeField] private TMP_Text topText;
     [SerializeField] private Button easyButton;
+    [SerializeField] private Button replayButton;
     [SerializeField] private Button mediumButton;
     [SerializeField] private Button hardButton;
     [SerializeField] private Button playButton;
@@ -18,20 +21,27 @@ public class MenuManager : MonoBehaviour
     private GameManager gameManager;
     private float rotationDirection;
     private int gameMode;
+    private bool hasStarted;
 
     private void Start()
     {
         gameMode = -1;
         rotationDirection = 1;
+        hasStarted = false;
         SetupObjects();
         ConnectButtons();
         SetupCamera();
+        replayButton.gameObject.SetActive(false);
         player.SetActive(false);
     }
 
     private void Update()
     {
         RotateCamera();
+        if (hasStarted)
+        {
+            CheckForGameOver();
+        }
     }
 
     private void RotateCamera()
@@ -49,6 +59,7 @@ public class MenuManager : MonoBehaviour
         {
             return;
         }
+        hasStarted = true;
         gameManager.SetDifficulty(gameMode);
         gameManager.Play();
         closeText();
@@ -77,7 +88,7 @@ public class MenuManager : MonoBehaviour
     {
         foreach(Transform child in transform)
         {
-            child.gameObject.SetActive(!child.gameObject.activeSelf);
+            child.gameObject.SetActive(false);
         }
     }
 
@@ -87,6 +98,7 @@ public class MenuManager : MonoBehaviour
         mediumButton.onClick.AddListener(SetMedium);
         hardButton.onClick.AddListener(SetHard);
         playButton.onClick.AddListener(playGame);
+        replayButton.onClick.AddListener(Replay);
     }
 
     private void SetupCamera()
@@ -110,6 +122,43 @@ public class MenuManager : MonoBehaviour
                 player = objectInScene;
                 mainCamera = player.transform.GetChild(0).gameObject;
             }
+        }
+    }
+
+    private void DisplayWinScreen()
+    {
+        DisplayGameOverWidgets();
+        topText.text = "Congratulations,\nYou Win!\nPlay Again?";
+    }
+
+    private void DisplayLossScreen()
+    {
+        DisplayGameOverWidgets();
+        topText.text = "Sorry,\nYou Lose.\nTry Again?";
+    }
+
+    private void DisplayGameOverWidgets()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        topText.gameObject.SetActive(true);
+        replayButton.gameObject.SetActive(true);
+    }
+
+    private void Replay()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void CheckForGameOver()
+    {
+        if (gameManager.HasWon())
+        {
+            DisplayWinScreen();
+        }
+        if (gameManager.HasLost())
+        {
+            DisplayLossScreen();
         }
     }
 }

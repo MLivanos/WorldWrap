@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int[] enemyHealthByDifficulty;
     private GameObject[] enemies;
     private DodgeballPlayer player;
+    private bool gameWon;
     private bool isGameOn;
     private bool startingNewGame;
     
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
         enemies = new GameObject[numberOfEnemies];
         isGameOn = false;
         startingNewGame = false;
+        gameWon = false;
         GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject objectInScene in gameObjectsInScene)
         {
@@ -35,16 +37,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (isGameOn)
-        {
-            CheckForWin();
-            CheckForLoss();
-        }
         if (startingNewGame)
         {
             CreateEnemies();
             startingNewGame = false;
-            isGameOn = true;
+        }
+        if (isGameOn)
+        {
+            CheckForWin();
+            CheckForLoss();
         }
     }
 
@@ -57,16 +58,16 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
+        gameWon = true;
         isGameOn = false;
-        Debug.Log("The Game Is Over: You Win!");
     }
 
     private void CheckForLoss()
     {
         if (player.IsDead())
         {
-            Debug.Log("The Game Is Over: You Lose!");
             isGameOn = false;
+            gameWon = false;
         }
     }
 
@@ -115,5 +116,16 @@ public class GameManager : MonoBehaviour
     public void Play()
     {
         startingNewGame = true;
+        isGameOn = true;
+    }
+
+    public bool HasWon()
+    {
+        return !isGameOn && gameWon;
+    }
+
+    public bool HasLost()
+    {
+        return !isGameOn && !gameWon;
     }
 }

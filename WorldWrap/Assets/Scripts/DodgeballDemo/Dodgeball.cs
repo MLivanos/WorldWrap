@@ -31,11 +31,6 @@ public class Dodgeball : MonoBehaviour
         if (isActive && actorScript != null)
         {
             actorScript.decrementHealth();
-            Debug.Log(collision.gameObject.name + " is hit, current health: " + actorScript.GetHealth());
-            if (actorScript.IsDead())
-            {
-                Debug.Log(collision.gameObject.name + " Has died");
-            }
             gameObject.SetActive(false);
         }
         weilder = null;
