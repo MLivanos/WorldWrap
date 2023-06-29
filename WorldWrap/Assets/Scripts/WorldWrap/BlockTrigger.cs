@@ -21,10 +21,6 @@ public class BlockTrigger : TriggerBehavior
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            wrapManager.LogBlockExit(gameObject);
-        }
         residents.Remove(other.gameObject);
     }
 
