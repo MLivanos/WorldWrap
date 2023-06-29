@@ -6903,7 +6903,9 @@ MonoBehaviour:
   - {fileID: 1224477082}
   - {fileID: 1769589972}
   player: {fileID: 691913570}
+  lureObject: {fileID: 0}
   wrapLayer: 6
+  isUsingNavmesh: 0
 --- !u!4 &1244485131
 Transform:
   m_ObjectHideFlags: 0
