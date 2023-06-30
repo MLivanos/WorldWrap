@@ -31,7 +31,7 @@ public class Dodgeball : MonoBehaviour
         if (isActive && actorScript != null)
         {
             actorScript.decrementHealth();
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
         weilder = null;
         SetActive(false);
