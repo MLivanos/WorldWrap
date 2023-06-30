@@ -85,7 +85,7 @@ There are three fields for you to fill under the WrapManager component. The Setu
 
 The WrapManager filled with fields.
 
-You are now all set up! Please thoroughly test your scene to make sure all triggers are placed appropriately so that your game functions as desired. Note that objects in the WrapLayer (other than the blocks and their children) will not move. If your game is not wrapping as desired, see the Troubleshooting section.
+You are now all set up! Please thoroughly test your scene to make sure all triggers are placed appropriately so that your game functions as desired. Note that objects with the WrapLayer tag (other than the blocks and their children) will not move. If your game is not wrapping as desired, see the Troubleshooting section.
 
 ## Troubleshooting
 
