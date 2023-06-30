@@ -16,7 +16,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private bool isUsingNavmesh;
     private bool isExisting;
 
-    [MenuItem("Window/World Wrap")]
+    [MenuItem("Window/WorldWrap")]
 
     public static void ShowWidnow()
     {
@@ -54,7 +54,7 @@ public class WorldWrapSetupEditor : EditorWindow
         windowTitleStyle.fontStyle = FontStyle.Bold;
         windowTitleStyle.wordWrap = true;
         windowTitleStyle.normal.textColor = new Color(1,1,1);
-        EditorGUILayout.LabelField("Welcome To The WorldWrap Setup Window", windowTitleStyle);
+        EditorGUILayout.LabelField("Welcome To The WorldWrap Setup Assistant", windowTitleStyle);
     }
 
     private void CreatWorldWrapObjects()
