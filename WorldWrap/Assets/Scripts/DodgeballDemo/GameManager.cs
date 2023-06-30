@@ -129,7 +129,9 @@ public class GameManager : MonoBehaviour
         Vector2 xBounds = bounds.getXBounds();
         Vector2 zBounds = bounds.getZBounds();
         Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(xBounds[0], xBounds[1]), 1.0f, UnityEngine.Random.Range(zBounds[0], zBounds[1]));
-        InstantiateDodgeball(randomPosition);
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomPosition, out hit, 10.5f, 1);
+        InstantiateDodgeball(hit.position);
         yield return new WaitForSeconds(5.0f / dodgeballSpawnFrequency);
         isSpawning = false;
     }
