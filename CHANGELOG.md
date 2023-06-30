@@ -22,9 +22,7 @@
 * No longer requires a WorldWrapObjects layer and instead uses a “WorldWrapObject” tag
 
 ### Removed:
-==========================
-##v0.1.0
+
+## v0.1.0
 
 * Introducing WorldWrap: A Lightweight Framework For Creating Seamless Wrapping Worlds In The Unity Game Engine. See the documentation for the full feature list
-
-==========================
