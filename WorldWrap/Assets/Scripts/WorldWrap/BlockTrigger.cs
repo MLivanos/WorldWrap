@@ -13,7 +13,7 @@ public class BlockTrigger : TriggerBehavior
         {
             wrapManager.LogBlockEntry(gameObject);
         }
-        if (other.gameObject.layer != wrapManager.GetWrapLayer())
+        if (other.tag != "WorldWrapObject" && other.gameObject.layer != wrapManager.GetWrapLayer())
         {
             residents.Add(other.gameObject);
         }

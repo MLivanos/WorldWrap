@@ -84,7 +84,6 @@ public class WorldWrapSetupEditor : EditorWindow
         wrapManagerObject = new GameObject("WrapManager");
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
         wrapManagerScript.SetBlocksLength(numberOfRows * numberOfColumns);
-        wrapManagerScript.SetWrapLayer(LayerMask.NameToLayer("WorldWrapObjects"));
         findPlayer();
     }
 

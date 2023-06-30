@@ -10,13 +10,13 @@ public class WrapManager : MonoBehaviour
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject lureObject;
-    [SerializeField] private int wrapLayer;
     [SerializeField] private bool isUsingNavmesh;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
     private GameObject previousBlock;
     private GameObject currentBlock;
+    private int wrapLayer;
     private bool isTransitioning;
 
     private void Start()
@@ -35,6 +35,7 @@ public class WrapManager : MonoBehaviour
         {
             CreateNavMeshLure();
         }
+        wrapLayer = LayerMask.NameToLayer("WorldWrapObjects");
     }
 
     // Given the unorganized array of blocks, organize them into a matrix
