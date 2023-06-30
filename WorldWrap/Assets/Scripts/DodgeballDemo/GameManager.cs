@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float[] enemySpeedByDifficulty;
     [SerializeField] private int[] enemyHealthByDifficulty;
     [SerializeField] GameObject dodgeBallPrefab;
+    [SerializeField] GameObject enemyPrefab;
     private GameObject[] enemies;
     private List<GameObject> aliveDodgeballs;
     private BoundsTrigger bounds;
@@ -101,13 +102,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject AddNewEnemy(int enemyID)
     {
-        GameObject enemy = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        NavMeshAgent agent = enemy.AddComponent(typeof(NavMeshAgent)) as NavMeshAgent;
-        DodgeballEnemy enemyScript = enemy.AddComponent(typeof(DodgeballEnemy)) as DodgeballEnemy;
-        Rigidbody enemyRigidBody = enemy.AddComponent(typeof(Rigidbody)) as Rigidbody;
-        enemyRigidBody.mass = 10.0f;
-        enemyRigidBody.isKinematic = true;
-        agent.baseOffset = 0.95f;
+        GameObject enemy = Instantiate(enemyPrefab);
+        DodgeballEnemy enemyScript = enemy.GetComponent<DodgeballEnemy>();
         enemyScript.PlaceRandomly();
         SetEnemyStats(enemy);
         enemies[enemyID] = enemy;

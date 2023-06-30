@@ -11913,6 +11913,8 @@ MonoBehaviour:
   enemyHealthByDifficulty: 010000000300000005000000
   dodgeBallPrefab: {fileID: 2863848475787073640, guid: 7633c8dec971c4d8eb47b05d4efecec8,
     type: 3}
+  enemyPrefab: {fileID: 9131835840657053792, guid: fd080a7ed53354d6e9f8cf647d3db943,
+    type: 3}
 --- !u!4 &2009386968
 Transform:
   m_ObjectHideFlags: 0
