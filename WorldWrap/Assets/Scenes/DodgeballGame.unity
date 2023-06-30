@@ -202,6 +202,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -444,7 +449,7 @@ GameObject:
   - component: {fileID: 38465958}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -562,7 +567,7 @@ GameObject:
   - component: {fileID: 64921085}
   m_Layer: 6
   m_Name: WrapBlock (3)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -599,7 +604,7 @@ GameObject:
   - component: {fileID: 71671170}
   m_Layer: 0
   m_Name: GlobalBounds
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -718,7 +723,7 @@ GameObject:
   - component: {fileID: 91103852}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -828,7 +833,7 @@ GameObject:
   - component: {fileID: 94897359}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -999,6 +1004,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -1232,7 +1242,7 @@ GameObject:
   - component: {fileID: 118404504}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1686,7 +1696,7 @@ GameObject:
   - component: {fileID: 209312214}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1796,7 +1806,7 @@ GameObject:
   - component: {fileID: 212001943}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1902,7 +1912,7 @@ GameObject:
   - component: {fileID: 236558027}
   m_Layer: 6
   m_Name: WrapBlock (2)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2209,7 +2219,7 @@ GameObject:
   - component: {fileID: 290594915}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2319,7 +2329,7 @@ GameObject:
   - component: {fileID: 297434118}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2566,7 +2576,7 @@ GameObject:
   - component: {fileID: 302715635}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2790,7 +2800,7 @@ GameObject:
   - component: {fileID: 340960628}
   m_Layer: 6
   m_Name: WrapBlock (11)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3071,7 +3081,7 @@ GameObject:
   - component: {fileID: 369934228}
   m_Layer: 6
   m_Name: WrapBlock (19)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3108,7 +3118,7 @@ GameObject:
   - component: {fileID: 384653558}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3333,7 +3343,7 @@ GameObject:
   - component: {fileID: 415450175}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3439,7 +3449,7 @@ GameObject:
   - component: {fileID: 433647521}
   m_Layer: 6
   m_Name: WrapBlock (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3476,7 +3486,7 @@ GameObject:
   - component: {fileID: 451348199}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3582,7 +3592,7 @@ GameObject:
   - component: {fileID: 460132692}
   m_Layer: 6
   m_Name: WrapBlock (14)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3619,7 +3629,7 @@ GameObject:
   - component: {fileID: 467097334}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3729,7 +3739,7 @@ GameObject:
   - component: {fileID: 479018153}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3900,6 +3910,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -4129,7 +4144,7 @@ GameObject:
   - component: {fileID: 524996674}
   m_Layer: 6
   m_Name: WrapBlock (18)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4513,6 +4528,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -4743,7 +4763,7 @@ GameObject:
   - component: {fileID: 654252472}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5394,7 +5414,7 @@ GameObject:
   - component: {fileID: 729178439}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5504,7 +5524,7 @@ GameObject:
   - component: {fileID: 735345960}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5614,7 +5634,7 @@ GameObject:
   - component: {fileID: 765034756}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5758,6 +5778,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -5898,7 +5923,7 @@ GameObject:
   - component: {fileID: 820851465}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6118,6 +6143,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -6452,7 +6482,7 @@ GameObject:
   - component: {fileID: 937172305}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6623,6 +6653,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -6856,7 +6891,7 @@ GameObject:
   - component: {fileID: 970519670}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6966,7 +7001,7 @@ GameObject:
   - component: {fileID: 981543907}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7072,7 +7107,7 @@ GameObject:
   - component: {fileID: 985651815}
   m_Layer: 6
   m_Name: WrapBlock (20)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7105,7 +7140,7 @@ GameObject:
   - component: {fileID: 998956810}
   m_Layer: 6
   m_Name: WrapBlock (16)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7138,7 +7173,7 @@ GameObject:
   - component: {fileID: 1017071410}
   m_Layer: 6
   m_Name: WrapBlocks
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7193,7 +7228,7 @@ GameObject:
   - component: {fileID: 1030520144}
   m_Layer: 6
   m_Name: WrapBlock
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7230,7 +7265,7 @@ GameObject:
   - component: {fileID: 1041967995}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7336,7 +7371,7 @@ GameObject:
   - component: {fileID: 1057809962}
   m_Layer: 6
   m_Name: WrapBlock (8)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7369,7 +7404,7 @@ GameObject:
   - component: {fileID: 1087276451}
   m_Layer: 6
   m_Name: WrapBlock (4)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7406,7 +7441,7 @@ GameObject:
   - component: {fileID: 1104024989}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7516,7 +7551,7 @@ GameObject:
   - component: {fileID: 1111586585}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7626,7 +7661,7 @@ GameObject:
   - component: {fileID: 1186163615}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7736,7 +7771,7 @@ GameObject:
   - component: {fileID: 1192313902}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7943,7 +7978,7 @@ GameObject:
   - component: {fileID: 1197213168}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8175,7 +8210,7 @@ GameObject:
   - component: {fileID: 1217603281}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8294,7 +8329,7 @@ GameObject:
   - component: {fileID: 1244485130}
   m_Layer: 0
   m_Name: WrapManager
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8323,7 +8358,6 @@ MonoBehaviour:
   - {fileID: 1769589972}
   player: {fileID: 691913570}
   lureObject: {fileID: 0}
-  wrapLayer: 6
   isUsingNavmesh: 0
 --- !u!4 &1244485131
 Transform:
@@ -8355,7 +8389,7 @@ GameObject:
   - component: {fileID: 1245591341}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8465,7 +8499,7 @@ GameObject:
   - component: {fileID: 1267225822}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8710,7 +8744,7 @@ GameObject:
   - component: {fileID: 1300238311}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8816,7 +8850,7 @@ GameObject:
   - component: {fileID: 1301697094}
   m_Layer: 0
   m_Name: NavMeshLure
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -8985,7 +9019,7 @@ GameObject:
   - component: {fileID: 1312486234}
   m_Layer: 6
   m_Name: WrapBlock (5)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9083,6 +9117,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -9312,7 +9351,7 @@ GameObject:
   - component: {fileID: 1351721546}
   m_Layer: 6
   m_Name: WrapBlock (15)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9345,7 +9384,7 @@ GameObject:
   - component: {fileID: 1424712083}
   m_Layer: 6
   m_Name: WrapBlock (23)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9480,7 +9519,7 @@ GameObject:
   - component: {fileID: 1455868762}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9586,7 +9625,7 @@ GameObject:
   - component: {fileID: 1482822804}
   m_Layer: 6
   m_Name: WrapBlock (12)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9725,7 +9764,7 @@ GameObject:
   - component: {fileID: 1538079354}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9843,7 +9882,7 @@ GameObject:
   - component: {fileID: 1561045581}
   m_Layer: 6
   m_Name: WrapBlock (7)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9880,7 +9919,7 @@ GameObject:
   - component: {fileID: 1587326856}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9990,7 +10029,7 @@ GameObject:
   - component: {fileID: 1597626484}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10096,7 +10135,7 @@ GameObject:
   - component: {fileID: 1600446501}
   m_Layer: 6
   m_Name: WrapBlock (9)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10255,7 +10294,7 @@ GameObject:
   - component: {fileID: 1635940223}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10500,7 +10539,7 @@ GameObject:
   - component: {fileID: 1683494125}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10610,7 +10649,7 @@ GameObject:
   - component: {fileID: 1697869756}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10814,7 +10853,7 @@ GameObject:
   - component: {fileID: 1709895810}
   m_Layer: 6
   m_Name: WrapBlock (6)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10851,7 +10890,7 @@ GameObject:
   - component: {fileID: 1751677659}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11071,7 +11110,7 @@ GameObject:
   - component: {fileID: 1825113118}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11177,7 +11216,7 @@ GameObject:
   - component: {fileID: 1860861124}
   m_Layer: 6
   m_Name: WrapBlock (22)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11222,7 +11261,7 @@ GameObject:
   - component: {fileID: 1881942269}
   m_Layer: 6
   m_Name: WrapBlock (10)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11356,7 +11395,7 @@ GameObject:
   - component: {fileID: 1897060124}
   m_Layer: 6
   m_Name: WrapBlock (17)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11393,7 +11432,7 @@ GameObject:
   - component: {fileID: 1913379043}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11503,7 +11542,7 @@ GameObject:
   - component: {fileID: 1922173892}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11613,7 +11652,7 @@ GameObject:
   - component: {fileID: 1967457175}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11731,7 +11770,7 @@ GameObject:
   - component: {fileID: 1981120421}
   m_Layer: 6
   m_Name: WrapBlock (13)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11768,7 +11807,7 @@ GameObject:
   - component: {fileID: 1992558647}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11945,7 +11984,7 @@ GameObject:
   - component: {fileID: 2044709770}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12055,7 +12094,7 @@ GameObject:
   - component: {fileID: 2053999787}
   m_Layer: 6
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12165,7 +12204,7 @@ GameObject:
   - component: {fileID: 2093626329}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12271,7 +12310,7 @@ GameObject:
   - component: {fileID: 2104520023}
   m_Layer: 6
   m_Name: WrapBlock (21)
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12626,6 +12665,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}

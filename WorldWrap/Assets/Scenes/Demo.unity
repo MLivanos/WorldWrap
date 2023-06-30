@@ -175,6 +175,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -519,7 +524,7 @@ GameObject:
   - component: {fileID: 71671170}
   m_Layer: 0
   m_Name: GlobalBounds
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -894,6 +899,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -2973,6 +2983,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3330,6 +3345,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -4283,6 +4303,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -4655,6 +4680,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -5117,6 +5147,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
+      objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5576,7 +5611,7 @@ GameObject:
   - component: {fileID: 1017071410}
   m_Layer: 6
   m_Name: WrapBlocks
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6875,7 +6910,7 @@ GameObject:
   - component: {fileID: 1244485130}
   m_Layer: 0
   m_Name: WrapManager
-  m_TagString: Untagged
+  m_TagString: WorldWrapObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6904,7 +6939,6 @@ MonoBehaviour:
   - {fileID: 1769589972}
   player: {fileID: 691913570}
   lureObject: {fileID: 0}
-  wrapLayer: 6
   isUsingNavmesh: 0
 --- !u!4 &1244485131
 Transform:
@@ -7469,6 +7503,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
@@ -10519,6 +10558,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577308036908700981, guid: 8825810ddf0f5419aac6ea7be02043f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldWrapObject
       objectReference: {fileID: 0}
     - target: {fileID: 2746300833372258064, guid: 8825810ddf0f5419aac6ea7be02043f4,
         type: 3}
