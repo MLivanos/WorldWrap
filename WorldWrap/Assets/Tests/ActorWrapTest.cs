@@ -6,21 +6,17 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 
-public class ActorWrapTest
+public class ActorWrapTest : WorldWrapTest
 {
-    [SerializeField] private GameObject player;
-    [SerializeField] private UnitTestActor actor;
-    [SerializeField] private GameObject[] balls;
-    [SerializeField] private GameObject[] ducks;
-    [SerializeField] private GameObject redBlock;
-    [SerializeField] private GameObject purpleBlock;
-    [SerializeField] private GameObject blueBlock;
-    [SerializeField] private GameObject greenBlock;
-    [SerializeField] private GameObject whiteBlock;
-    [SerializeField] private GameObject grayBlock;
-    [SerializeField] private GameObject orangeBlock;
-    [SerializeField] private GameObject yellowBlock;
-    [SerializeField] private GameObject cyanBlock;
+    private GameObject redBlock;
+    private GameObject purpleBlock;
+    private GameObject blueBlock;
+    private GameObject greenBlock;
+    private GameObject whiteBlock;
+    private GameObject grayBlock;
+    private GameObject orangeBlock;
+    private GameObject yellowBlock;
+    private GameObject cyanBlock;
 
     private void SetupVariables()
     {
@@ -38,62 +34,10 @@ public class ActorWrapTest
         cyanBlock = FindChildByName(bounds, "CyanBlock");
     }
 
-    private GameObject FindGameObjectByName(string objectName)
-    {
-        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
-        foreach (GameObject objectInScene in gameObjectsInScene)
-        {
-            if (objectInScene.name == objectName)
-            {
-                return objectInScene;
-            }
-        }
-        return null;
-    }
-
-    private GameObject FindChildByName(GameObject parent, string childName)
-    {
-        foreach(Transform childTransform in parent.transform)
-        {
-            if (childTransform.gameObject.name == childName)
-            {
-                return childTransform.gameObject;
-            }
-        }
-        return null;
-    }
-
-    private Vector2 GetXZPosition(GameObject objectInQuestion)
-    {
-        return new Vector2(objectInQuestion.transform.localPosition.x, objectInQuestion.transform.localPosition.z);
-    }
-
     private bool PlayerInBounds()
     {
         Vector3 playerPosition = player.transform.position;
         return Math.Abs(playerPosition.x) < 24.0f && Math.Abs(playerPosition.y) < 24.0f;
-    }
-
-    private Vector3[] MoveUpIntoNextBlock()
-    {
-        float displacement = 13.0f;
-        Vector3[] actions = new Vector3[4];
-        actions[0] = new Vector3(displacement, 0, 0);
-        actions[1] = new Vector3(0, 0, 2*displacement);
-        actions[2] = new Vector3(-displacement, 0, 0);
-        actions[3] = new Vector3(0, 0, 2*displacement);
-        return actions;
-    }
-
-    private void LoadScene()
-    {
-        SceneManager.LoadScene("UnitTestScene", LoadSceneMode.Single);
-    }
-
-    private WaitForSeconds MoveActor(Vector3 velocity, float timeToWalk=1.0f)
-    {
-        actor.MoveInDirection(velocity);
-        return new WaitForSeconds(timeToWalk);
     }
 
     [UnityTest, Order(1)]
@@ -102,7 +46,7 @@ public class ActorWrapTest
         LoadScene();
         yield return new WaitForSeconds(3.0f);
         SetupVariables();
-        yield return MoveActor(new Vector3(0, 0, 10));
+        yield return MoveActor(new Vector3(0, 0, 8));
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
         Assert.IsTrue(PlayerInBounds());
@@ -111,7 +55,7 @@ public class ActorWrapTest
     [UnityTest, Order(2)]
     public IEnumerator MovingOutOfAWrapTriggerDoesNotWrapWorld()
     {
-        yield return MoveActor(new Vector3(0, 0, 10));
+        yield return MoveActor(new Vector3(0, 0, 8));
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
         Assert.IsTrue(PlayerInBounds());
@@ -129,7 +73,7 @@ public class ActorWrapTest
     [UnityTest, Order(4)]
     public IEnumerator MovingToAWrapTriggerFromAnotherDoesNotWrapWorld()
     {
-        yield return MoveActor(new Vector3(-15, 0, 0));
+        yield return MoveActor(new Vector3(-9, 0, 0));
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
         Assert.IsTrue(PlayerInBounds());
@@ -138,7 +82,7 @@ public class ActorWrapTest
     [UnityTest, Order(5)]
     public IEnumerator MovingOutOfTheSecondWrapTriggerWrapsWorldLeft()
     {
-        yield return MoveActor(new Vector3(0, 0, -10));
+        yield return MoveActor(new Vector3(0, 0, -8));
         Assert.AreEqual(GetXZPosition(greenBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(redBlock).normalized, Vector2.right);
         Assert.IsTrue(PlayerInBounds());
@@ -147,9 +91,9 @@ public class ActorWrapTest
     [UnityTest, Order(6)]
     public IEnumerator MovingBackToRedBlockFromGreenWrapsWorldRight()
     {
-        yield return MoveActor(new Vector3(0, 0, 10));
-        yield return MoveActor(new Vector3(15, 0, 0));
-        yield return MoveActor(new Vector3(0, 0, 10));
+        yield return MoveActor(new Vector3(0, 0, 8));
+        yield return MoveActor(new Vector3(10, 0, 0));
+        yield return MoveActor(new Vector3(0, 0, 8));
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
         Assert.IsTrue(PlayerInBounds());
@@ -190,6 +134,45 @@ public class ActorWrapTest
             yield return MoveActor(direction);
         }
         Assert.AreEqual(GetXZPosition(blueBlock).normalized, Vector2.down);
+        Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
+        Assert.IsTrue(PlayerInBounds());
+    }
+
+    [UnityTest, Order(10)]
+    public IEnumerator MovingToGreenBlockFromRedWrapsWorldRight()
+    {
+        Vector3[] directions = MoveLeftIntoNextBlock();
+        foreach(Vector3 direction in directions)
+        {
+            yield return MoveActor(direction);
+        }
+        Assert.AreEqual(GetXZPosition(redBlock).normalized, Vector2.right);
+        Assert.AreEqual(GetXZPosition(greenBlock), Vector2.zero);
+        Assert.IsTrue(PlayerInBounds());
+    }
+
+    [UnityTest, Order(11)]
+    public IEnumerator MovingToCyanBlockFromGreenWrapsWorldRight()
+    {
+        Vector3[] directions = MoveLeftIntoNextBlock();
+        foreach(Vector3 direction in directions)
+        {
+            yield return MoveActor(direction);
+        }
+        Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.right);
+        Assert.AreEqual(GetXZPosition(cyanBlock), Vector2.zero);
+        Assert.IsTrue(PlayerInBounds());
+    }
+
+    [UnityTest, Order(12)]
+    public IEnumerator MovingToCyanBlockFromRedWrapsWorldRight()
+    {
+        Vector3[] directions = MoveLeftIntoNextBlock();
+        foreach(Vector3 direction in directions)
+        {
+            yield return MoveActor(direction);
+        }
+        Assert.AreEqual(GetXZPosition(cyanBlock).normalized, Vector2.right);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
     }
