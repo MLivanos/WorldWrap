@@ -44,6 +44,10 @@ public class DodgeballEnemy : DodgeballActor
             Destroy(gameObject);
             return;
         }
+    }
+
+    private void FixedUpdate()
+    {
         CheckIfHunted();
         switch (currentState)
         {

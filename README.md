@@ -1,12 +1,12 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.2.0-Alpha1)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.2.0-Alpha2)
 
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0-Alpha1)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020-alpha1)
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0-Alpha2)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020-alpha2)
   - [Introduction](#introduction)
     - [0.2.0 Release Notes](#020-release-notes)
   - [How WorldWrap Works](#how-worldwrap-works)
@@ -85,7 +85,7 @@ There are three fields for you to fill under the WrapManager component. The Setu
 
 The WrapManager filled with fields.
 
-You are now all set up! Please thoroughly test your scene to make sure all triggers are placed appropriately so that your game functions as desired. Note that objects in the WrapLayer (other than the blocks and their children) will not move. If your game is not wrapping as desired, see the Troubleshooting section.
+You are now all set up! Please thoroughly test your scene to make sure all triggers are placed appropriately so that your game functions as desired. Note that objects with the WrapLayer tag (other than the blocks and their children) will not move. If your game is not wrapping as desired, see the Troubleshooting section.
 
 ## Troubleshooting
 

@@ -15,6 +15,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private int numberOfColumns;
     private bool isUsingNavmesh;
     private bool isExisting;
+    private string worldWrapTag;
 
     [MenuItem("Window/WorldWrap")]
 
@@ -37,11 +38,12 @@ public class WorldWrapSetupEditor : EditorWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Setup WorldWrap"))
         {
+            worldWrapTag = "WorldWrapObject";
             CreatWorldWrapObjects();
         }
         if (GUILayout.Button("Clear WorldWrap"))
         {
-            Debug.Log("Pressed");
+            ClearWorldWrapObjects();
         }
         EditorGUILayout.EndHorizontal();
     }
@@ -82,9 +84,12 @@ public class WorldWrapSetupEditor : EditorWindow
     private void SetupWrapManager()
     {
         wrapManagerObject = new GameObject("WrapManager");
+        Debug.Log(worldWrapTag);
+        Debug.Log(wrapManagerObject.tag);
+        wrapManagerObject.tag = worldWrapTag;
+        Debug.Log(wrapManagerObject.tag);
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
         wrapManagerScript.SetBlocksLength(numberOfRows * numberOfColumns);
-        wrapManagerScript.SetWrapLayer(LayerMask.NameToLayer("WorldWrapObjects"));
         findPlayer();
     }
 
@@ -92,6 +97,7 @@ public class WorldWrapSetupEditor : EditorWindow
     {
         bounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
         bounds.name = "GlobalBounds";
+        bounds.tag = worldWrapTag;
         bounds.transform.localScale = worldSize;
         bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
         bounds.AddComponent(typeof(BoundsTrigger));
@@ -119,6 +125,7 @@ public class WorldWrapSetupEditor : EditorWindow
         Material clearMaterial = (Material)Resources.Load("Translucent2", typeof(Material));
         GameObject block = new GameObject(string.Format("Block{0}", blockNumber));
         block.transform.position = new Vector3(xPosition, 0.0f, zPosition);
+        block.tag = worldWrapTag;
         GameObject blockBounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
         blockBounds.name = "BlockBounds";
         BoxCollider blockCollider = blockBounds.GetComponent<BoxCollider>();
@@ -153,6 +160,7 @@ public class WorldWrapSetupEditor : EditorWindow
         Material clearMaterial = (Material)Resources.Load("Translucent3", typeof(Material));
         GameObject wrapTrigger = GameObject.CreatePrimitive(PrimitiveType.Cube);
         wrapTrigger.name = "WrapTrigger";
+        wrapTrigger.tag = worldWrapTag;
         wrapTrigger.transform.localScale = scale;
         wrapTrigger.transform.position = position;
         wrapTrigger.GetComponent<Renderer>().material = clearMaterial;
@@ -242,6 +250,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private void ParentWrapManagers()
     {
         GameObject wrapTriggerParent = new GameObject("WrapTriggers");
+        wrapTriggerParent.tag = worldWrapTag;
         GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject objectInScene in gameObjectsInScene) 
         {
@@ -260,6 +269,7 @@ public class WorldWrapSetupEditor : EditorWindow
         float planeXScale = worldSize.x / 10.0f;
         float planePosition = -1 * bounds.transform.lossyScale.z / 2.0f - 1.5f;
         GameObject navMeshLure = new GameObject("NavMeshLure");
+        navMeshLure.tag = worldWrapTag;
         GameObject plane1 = CreateNavMeshPlane(planeXScale, 0.0f, planePosition, navMeshLure);
         GameObject plane2 = CreateNavMeshPlane(planeXScale, 180.0f, planePosition, navMeshLure);
         planePosition = -1 * bounds.transform.lossyScale.x / 2.0f - 1.5f;
@@ -357,5 +367,24 @@ public class WorldWrapSetupEditor : EditorWindow
             }
         }
         return null;
+    }
+
+    private void ClearWorldWrapObjects()
+    {
+        if(!EditorUtility.DisplayDialog("Delete all WorldWrap Objects?",
+                "Are you sure you want to delete all WorldWrap Objects? This will delete all object with either the "
+                + worldWrapTag  + " along with all of their children. Please deparent all objects you intend to keep. This action cannot be undone.",
+                "Yes, delete the objects", "No, cancel"))
+        {
+            return;
+        }
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if (objectInScene.tag == worldWrapTag)
+            {
+                DestroyImmediate(objectInScene);
+            }
+        }
     }
 }
