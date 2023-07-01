@@ -23,14 +23,17 @@ public class UnitTestActor : MonoBehaviour
 
     public void PickUp(GameObject objectToPickup)
     {
+
         objectToPickup.transform.parent = transform;
         heldObject = objectToPickup;
+        objectToPickup.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;;
         objectToPickup.transform.localPosition = heldObjectPosition;
     }
 
     public void PlaceDown()
     {
         heldObject.transform.parent = null;
+        heldObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;;
         heldObject = null;
     }
 }

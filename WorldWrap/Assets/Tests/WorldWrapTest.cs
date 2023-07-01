@@ -8,6 +8,12 @@ public abstract class WorldWrapTest
     protected GameObject player;
     protected UnitTestActor actor;
 
+    protected virtual void SetupVariables()
+    {
+        player = FindGameObjectByName("Player");
+        actor = player.GetComponent<UnitTestActor>();
+    }
+
     protected GameObject FindGameObjectByName(string objectName)
     {
         GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
@@ -67,10 +73,10 @@ public abstract class WorldWrapTest
     {
         float displacement = 8.5f;
         Vector3[] actions = new Vector3[4];
-        actions[0] = new Vector3(0, 0, -displacement);
-        actions[1] = new Vector3(-2.0f * displacement, 0, 0);
-        actions[2] = new Vector3(0, 0, displacement);
-        actions[3] = new Vector3(-2.0f * displacement, 0, 0);
+        actions[0] = new Vector3(-2.0f * displacement, 0, 0);
+        actions[1] = new Vector3(0, 0, displacement);
+        actions[2] = new Vector3(-2.0f * displacement, 0, 0);
+        actions[3] = new Vector3(0, 0, -displacement);
         return actions;
     }
 

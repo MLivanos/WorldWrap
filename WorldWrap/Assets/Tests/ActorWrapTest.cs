@@ -18,8 +18,9 @@ public class ActorWrapTest : WorldWrapTest
     private GameObject yellowBlock;
     private GameObject cyanBlock;
 
-    private void SetupVariables()
+    protected override void SetupVariables()
     {
+        base.SetupVariables();
         player = FindGameObjectByName("Player");
         actor = player.GetComponent<UnitTestActor>();
         GameObject bounds = FindGameObjectByName("GlobalBounds");
@@ -141,6 +142,7 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(10)]
     public IEnumerator MovingToGreenBlockFromRedWrapsWorldRight()
     {
+        actor.TeleportTo(new Vector3(-10.0f, 0.0f, 0.0f));
         Vector3[] directions = MoveLeftIntoNextBlock();
         foreach(Vector3 direction in directions)
         {

@@ -11,12 +11,38 @@ public class DuckTest : WorldWrapTest
     private GameObject verticalDuck;
     private GameObject diagonalDuck;
     private GameObject horizontalDuck;
+    private GameObject redBlock;
+    private GameObject whiteBlock;
+    private GameObject yellowBlock;
 
-    private void SetupVariables()
+    protected override void SetupVariables()
     {
+        base.SetupVariables();
         verticalDuck = FindGameObjectByName("Duck");
         diagonalDuck = FindGameObjectByName("Duck1");
         horizontalDuck = FindGameObjectByName("Duck2");
+        GameObject bounds = FindGameObjectByName("GlobalBounds");
+        redBlock = FindChildByName(bounds, "RedBlock");
+        whiteBlock = FindChildByName(bounds, "WhiteBlock");
+        yellowBlock = FindChildByName(bounds, "YellowBlock");
+    }
+
+    private bool DuckIsOnDiagonal(GameObject duck)
+    {
+        return IsResident(duck, redBlock) || IsResident(duck, whiteBlock) || IsResident(duck, yellowBlock);
+    }
+
+    private bool IsResident(GameObject duck, GameObject block)
+    {
+        BlockTrigger blockTrigger = block.GetComponentInChildren<BlockTrigger>();
+        foreach(GameObject resident in blockTrigger.getResidents())
+        {
+            if(resident == duck)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     [UnityTest, Order(1)]
@@ -41,11 +67,6 @@ public class DuckTest : WorldWrapTest
     [Test, Order(3)]
     public void DiagonalDuckStaysOnDiagonalAxisOverTime()
     {
-        bool isEqual = Math.Abs(diagonalDuck.transform.position.x - diagonalDuck.transform.position.z) < 0.01f;
-        if (!isEqual)
-        {
-            Debug.Log("x: " + diagonalDuck.transform.position.x + ", z: " + diagonalDuck.transform.position.z);
-        }
-        Assert.IsTrue(isEqual);
+        Assert.IsTrue(DuckIsOnDiagonal(diagonalDuck));
     }
 }
