@@ -33,6 +33,8 @@ public class MenuManager : MonoBehaviour
         SetupCamera();
         replayButton.gameObject.SetActive(false);
         player.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void Update()
@@ -67,6 +69,8 @@ public class MenuManager : MonoBehaviour
         mainCamera.transform.eulerAngles = Vector3.zero;
         mainCamera.transform.parent = player.transform;
         mainCamera.transform.localPosition = playerCameraPosition;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = true;
     }
 
     private void SetEasy()

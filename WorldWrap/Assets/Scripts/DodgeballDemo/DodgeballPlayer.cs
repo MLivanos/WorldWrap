@@ -31,10 +31,6 @@ public class DodgeballPlayer : DodgeballActor
         {
             Interact();
         }
-    }
-
-    private void FixedUpdate()
-    {
         UpdatePosition();
     }
 
