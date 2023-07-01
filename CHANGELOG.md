@@ -7,6 +7,7 @@
 * World Wrap Setup Wizard: Create a new WorldWrap project or implement WorldWrap in your existing world in seconds!
 * Works with Unity’s NavMesh & NavMeshAgent
 * Addition of an example Dodgeball game that uses NavMesh and NavMeshAgent
+* Adds suite of unit tests to ensure changes to do affect core functionality
 
 ### Bug Fixes:
 
