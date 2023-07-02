@@ -4614,10 +4614,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 2863848475787073640, guid: ceba5eb1d50934849bcaafc8bdb93daa,
     type: 3}
-  treePrefab: {fileID: 0}
+  treePrefab: {fileID: 8394829497632366028, guid: 306afc522704d450190588bbf742f881,
+    type: 3}
   globalBounds: {fileID: 71671165}
   ballQuantity: 100
-  treeQuantity: 0
+  treeQuantity: 11
 --- !u!4 &878187655
 Transform:
   m_ObjectHideFlags: 0
