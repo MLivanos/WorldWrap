@@ -16,12 +16,12 @@ public class ChangeText : MonoBehaviour
 
     private void Update()
     {
-        if (isDisplayingPickupMessage && player.IsHoldingObject())
+        if (PlayerJustPickedUpBall())
         {
             isDisplayingPickupMessage = false;
             ChangeToThrowMessage();
         }
-        if (!isDisplayingPickupMessage && !player.IsHoldingObject())
+        if (PlayerJustThrewBall())
         {
             isDisplayingPickupMessage = true;
             ChangeToPickupMessage();
@@ -49,5 +49,15 @@ public class ChangeText : MonoBehaviour
     private void ChangeToThrowMessage()
     {
         text.text = "Click Again To Throw!";
+    }
+
+    private bool PlayerJustPickedUpBall()
+    {
+        return isDisplayingPickupMessage && player.gameObject.activeSelf && player.IsHoldingObject();
+    }
+
+    private bool PlayerJustThrewBall()
+    {
+        return !isDisplayingPickupMessage && player.gameObject.activeSelf && !player.IsHoldingObject();
     }
 }

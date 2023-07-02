@@ -31,10 +31,6 @@ public class DodgeballPlayer : DodgeballActor
         {
             Interact();
         }
-    }
-
-    private void FixedUpdate()
-    {
         UpdatePosition();
     }
 
@@ -64,19 +60,35 @@ public class DodgeballPlayer : DodgeballActor
 
     private void Interact()
     {
-        RaycastHit hit;
-        Transform outlook = mainCamera.transform;
+        RaycastHit hit = new RaycastHit();
         if (isHoldingObject)
         {
             ThrowObject();
         }
-        // If object in view
-        else if (Physics.Raycast(outlook.position, outlook.TransformDirection(Vector3.forward), out hit, grabbingRange))
+        else if (BallIsInSight(hit))
         {
+            
+        }
+    }
+
+    private bool BallIsInSight(RaycastHit hit)
+    {
+        Transform outlook = mainCamera.transform;
+        Collider[] ballColliders = BallsInGrabbingRange();
+        foreach(Collider ball in ballColliders)
+        {
+            Physics.Raycast(outlook.position, ball.transform.position - outlook.position, out hit, grabbingRange);
             if (hit.rigidbody != null && hit.rigidbody.tag == "Dodgeball")
             {
                 PickupObject(hit.rigidbody.gameObject);
+                return true;
             }
         }
+        return false;
+    }
+
+    private Collider[] BallsInGrabbingRange()
+    {
+        return Physics.OverlapSphere(gameObject.transform.position, grabbingRange / 2.0f, ~LayerMask.NameToLayer("Dodgeballs"));
     }
 }
