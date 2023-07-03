@@ -1,12 +1,12 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.2.0-Alpha3)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.2.0)
 
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0-Alpha3)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020-alpha3)
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020)
   - [Introduction](#introduction)
     - [0.2.0 Release Notes](#020-release-notes)
   - [How WorldWrap Works](#how-worldwrap-works)
