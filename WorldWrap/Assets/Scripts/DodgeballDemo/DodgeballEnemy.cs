@@ -29,6 +29,7 @@ public class DodgeballEnemy : DodgeballActor
     private float searchTimer;
     private float spread;
     private float distanceToThrow;
+    private float rotationSpeed;
 
     private void Awake()
     {
@@ -226,15 +227,32 @@ public class DodgeballEnemy : DodgeballActor
         navMeshAgent.stoppingDistance = minDistanceToPlayer;
         if (IsInRangeOfPlayer())
         {
-            ThrowObject(spread);
-            currentState = EnemyBehaviorState.SearchingForBall;
-            navMeshAgent.stoppingDistance = 0.0f;
+            if (IsFacingPlayer())
+            {
+                ThrowObject(spread);
+                currentState = EnemyBehaviorState.SearchingForBall;
+                navMeshAgent.stoppingDistance = 0.0f;
+            }
+            else
+            {
+                RotateToPlayer();
+            }
         }
     }
 
     private bool IsInRangeOfPlayer()
     {
-        return Vector3.Distance(transform.position, playerTransform.position) <= distanceToThrow && Vector3.Angle(transform.position, playerTransform.position) <= maximumAngle;
+        return Vector3.Distance(transform.position, playerTransform.position) <= distanceToThrow;
+    }
+
+    private bool IsFacingPlayer()
+    {
+        return Vector3.Angle(transform.TransformDirection(Vector3.forward), playerTransform.position - transform.position) <= maximumAngle;
+    }
+
+    private void RotateToPlayer()
+    {
+        transform.Rotate(0.0f, rotationSpeed * Time.deltaTime, 0.0f, Space.World);
     }
 
     private void SetupNavMesh()
@@ -283,7 +301,8 @@ public class DodgeballEnemy : DodgeballActor
         minThrowRadius = 8;
         maxThrowRadius = 20;
         maximumAngle = 10.0f;
-        minDistanceToPlayer = 2.0f;
+        minDistanceToPlayer = 5.0f;
+        rotationSpeed = 200.0f;
         heldObjectPosition = new Vector3(0.0f, 0.15f, 0.75f);
     }
 }

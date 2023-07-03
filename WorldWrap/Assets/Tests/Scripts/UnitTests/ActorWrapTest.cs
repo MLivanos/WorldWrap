@@ -93,8 +93,7 @@ public class ActorWrapTest : WorldWrapTest
     public IEnumerator MovingBackToRedBlockFromGreenWrapsWorldRight()
     {
         yield return MoveActor(new Vector3(0, 0, 8));
-        yield return MoveActor(new Vector3(10, 0, 0));
-        yield return MoveActor(new Vector3(0, 0, 8));
+        yield return MoveActor(new Vector3(20, 0, 0));
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
         Assert.IsTrue(PlayerInBounds());
@@ -103,11 +102,7 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(7)]
     public IEnumerator MovingToPurpleBlockFromRedWrapsWorldDown()
     {
-        Vector3[] directions = MoveUpIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        yield return MoveActor(new Vector3(0, 0, 35));
         Assert.AreEqual(GetXZPosition(redBlock).normalized, Vector2.down);
         Assert.AreEqual(GetXZPosition(purpleBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -116,11 +111,7 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(8)]
     public IEnumerator MovingToBlueBlockFromPurpleWrapsWorldDown()
     {
-        Vector3[] directions = MoveUpIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        yield return MoveActor(new Vector3(0, 0, 35));
         Assert.AreEqual(GetXZPosition(purpleBlock).normalized, Vector2.down);
         Assert.AreEqual(GetXZPosition(blueBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -129,11 +120,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(9)]
     public IEnumerator MovingToRedBlockFromBlueWrapsWorldDown()
     {
-        Vector3[] directions = MoveUpIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        yield return MoveActor(new Vector3(0, 0, 35));
+        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         Assert.AreEqual(GetXZPosition(blueBlock).normalized, Vector2.down);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -142,12 +130,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(10)]
     public IEnumerator MovingToGreenBlockFromRedWrapsWorldRight()
     {
-        actor.TeleportTo(new Vector3(-10.0f, 0.0f, 0.0f));
-        Vector3[] directions = MoveLeftIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(-35, 0, 0));
         Assert.AreEqual(GetXZPosition(redBlock).normalized, Vector2.right);
         Assert.AreEqual(GetXZPosition(greenBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -156,11 +140,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(11)]
     public IEnumerator MovingToCyanBlockFromGreenWrapsWorldRight()
     {
-        Vector3[] directions = MoveLeftIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(-35, 0, 0));
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.right);
         Assert.AreEqual(GetXZPosition(cyanBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -169,11 +150,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(12)]
     public IEnumerator MovingToRedBlockFromCyanWrapsWorldRight()
     {
-        Vector3[] directions = MoveLeftIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(-35, 0, 0));
         Assert.AreEqual(GetXZPosition(cyanBlock).normalized, Vector2.right);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -182,12 +160,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(13)]
     public IEnumerator MovingToBlueBlockFromRedWrapsWorldUp()
     {
-        actor.TeleportTo(new Vector3(-10.0f, 0.0f, 0.0f));
-        Vector3[] directions = MoveDownIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(0, 0, -35));
         Assert.AreEqual(GetXZPosition(redBlock).normalized, Vector2.up);
         Assert.AreEqual(GetXZPosition(blueBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -196,11 +170,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(14)]
     public IEnumerator MovingToPurpleBlockFromBlueWrapsWorldUp()
     {
-        Vector3[] directions = MoveDownIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(0, 0, -35));
         Assert.AreEqual(GetXZPosition(blueBlock).normalized, Vector2.up);
         Assert.AreEqual(GetXZPosition(purpleBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -209,11 +180,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(15)]
     public IEnumerator MovingToRedBlockFromPurpleWrapsWorldUp()
     {
-        Vector3[] directions = MoveDownIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(0, 0, -35));
         Assert.AreEqual(GetXZPosition(purpleBlock).normalized, Vector2.up);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -222,12 +190,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(16)]
     public IEnumerator MovingToCyanBlockFromRedWrapsWorldLeft()
     {
-        actor.TeleportTo(new Vector3(10.0f, 0.0f, 0.0f));
-        Vector3[] directions = MoveRightIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(35, 0, 0));
         Assert.AreEqual(GetXZPosition(redBlock).normalized, Vector2.left);
         Assert.AreEqual(GetXZPosition(cyanBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -236,11 +200,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(17)]
     public IEnumerator MovingToGreenBlockFromCyanWrapsWorldLeft()
     {
-        Vector3[] directions = MoveRightIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(35, 0, 0));
         Assert.AreEqual(GetXZPosition(cyanBlock).normalized, Vector2.left);
         Assert.AreEqual(GetXZPosition(greenBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
@@ -249,11 +210,8 @@ public class ActorWrapTest : WorldWrapTest
     [UnityTest, Order(18)]
     public IEnumerator MovingToRedBlockFromGreenWrapsWorldLeft()
     {
-        Vector3[] directions = MoveRightIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(35, 0, 0));
         Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());
