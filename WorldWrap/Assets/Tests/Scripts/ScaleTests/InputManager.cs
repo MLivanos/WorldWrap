@@ -7,8 +7,10 @@ public class InputManager : MonoBehaviour
     [SerializeField] private GameObject ballPrefab;
     [SerializeField] private GameObject treePrefab;
     [SerializeField] private GameObject globalBounds;
-    [SerializeField] private float ballQuantity;
-    [SerializeField] private float treeQuantity;
+    [SerializeField] private GameObject frameRateCounterObject;
+    [SerializeField] private int ballQuantity;
+    [SerializeField] private int treeQuantity;
+    private FrameRateCounter frameRateCounter;
     private float globalXMin;
     private float globalXMax;
     private float globalZMin;
@@ -17,6 +19,7 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
+        frameRateCounter = frameRateCounterObject.GetComponent<FrameRateCounter>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         BoundsTrigger boundsTrigger = globalBounds.GetComponent<BoundsTrigger>();
@@ -36,7 +39,7 @@ public class InputManager : MonoBehaviour
         }
         if (Input.GetKeyDown("t"))
         {
-            AddTree();
+            AddTrees();
         }
     }
 
@@ -46,9 +49,10 @@ public class InputManager : MonoBehaviour
         {
             InstantiateNewBall();
         }
+        frameRateCounter.AddBalls(ballQuantity);
     }
 
-    private void AddTree()
+    private void AddTrees()
     {
         foreach(Transform blockTransform in globalBounds.transform)
         {
@@ -57,6 +61,7 @@ public class InputManager : MonoBehaviour
                 GameObject centerCube = blockTransform.Find("Cube").gameObject;
                 ParentNewTree(centerCube);
             }
+            frameRateCounter.AddTrees(treeQuantity);
         }
     }
 
