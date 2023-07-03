@@ -62,7 +62,6 @@ public abstract class WorldWrapTest
     {
         float displacement = 8.5f;
         Vector3[] actions = new Vector3[4];
-        actions[0] = new Vector3(displacement, 0, 0);
         actions[1] = new Vector3(0, 0, 2.0f * displacement);
         actions[2] = new Vector3(-displacement, 0, 0);
         actions[3] = new Vector3(0, 0, 2.0f * displacement);

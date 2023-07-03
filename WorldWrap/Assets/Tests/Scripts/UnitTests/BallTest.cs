@@ -34,13 +34,9 @@ public class BallTest : WorldWrapTest
     public IEnumerator BallRemainsInSameRelativePositionWhileHolding()
     {
         SetupVariables();
-        actor.TeleportTo(new Vector3(-10.0f, 0.0f, 0.0f));
+        actor.TeleportTo(Vector3.zero);
         actor.PickUp(balls[0]);
-        Vector3[] directions = MoveLeftIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        yield return MoveActor(new Vector3(30, 0, 0));
         Assert.IsTrue(Vector3sAreEqual(balls[0].transform.localPosition, actor.heldObjectPosition));
     }
 
@@ -64,11 +60,8 @@ public class BallTest : WorldWrapTest
         actor.PlaceDown();
         balls[0].transform.position = balls[0].transform.position + Vector3.forward * 10.0f;
         originalPositions[0] = balls[0].transform.position;
-        Vector3[] directions = MoveLeftIntoNextBlock();
-        foreach(Vector3 direction in directions)
-        {
-            yield return MoveActor(direction);
-        }
+        actor.TeleportTo(Vector3.zero);
+        yield return MoveActor(new Vector3(30, 0, 0));
         actor.MoveInDirection(Vector3.zero);
         Assert.AreEqual(GetXZPosition(balls[0]), new Vector2(originalPositions[0].x, originalPositions[0].z));
     }
