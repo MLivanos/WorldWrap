@@ -1,5 +1,7 @@
 # BlockTrigger : TriggerBehavior (Class)
 
+Trigger that informs the WrapManager about where the player is and object relative positions.
+
 ## **Properties**
 
 ## Private

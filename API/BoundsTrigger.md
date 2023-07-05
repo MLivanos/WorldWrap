@@ -1,6 +1,8 @@
 
 # BoundsTrigger : TriggerBehavior (Class)
 
+Trigger wraps helps NPCs and objects around the world when they reach the end.
+
 ## **Properties**
 
 ## Private

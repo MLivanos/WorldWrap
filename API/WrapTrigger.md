@@ -1,5 +1,7 @@
 # WrapTrigger : TriggerBehavior (Class)
 
+Trigger that informs the WrapManager of when the player is leaving and entering a block.
+
 ## **Properties**
 
 ## **Methods**
