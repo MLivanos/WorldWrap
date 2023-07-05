@@ -18,4 +18,4 @@ The WrapManager for this scene. Found automatically in start method.
 
 Finds the WrapManager for the scene. Base method to be called by all triggers.
 
-[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/DOCS-APIDocumentation/ProgrammingAPI.md)
+[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/main/ProgrammingAPI.md)

@@ -32,4 +32,4 @@ Public accessor method for the residents list.
 
 Remvoes a resident that has since left the block.
 
-[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/DOCS-APIDocumentation/ProgrammingAPI.md)
+[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/main/ProgrammingAPI.md)

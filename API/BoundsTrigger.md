@@ -45,4 +45,4 @@ Gets X bounds as a Vector2 of lowerXBound, upperXBound
 
 Gets Z bounds as a Vector2 of lowerZBound, upperZBound
 
-[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/DOCS-APIDocumentation/ProgrammingAPI.md)
+[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/main/ProgrammingAPI.md)

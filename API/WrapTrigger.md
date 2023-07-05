@@ -16,4 +16,4 @@ If they player enter the wrap trigger, inform WrapManager via LogTriggerEnter
 
 If they player exits the wrap trigger, inform WrapManager via LogTriggerExit
 
-[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/DOCS-APIDocumentation/ProgrammingAPI.md)
+[Back to API Main Page](https://github.com/MLivanos/WorldWrap/blob/main/ProgrammingAPI.md)
