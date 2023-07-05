@@ -1,5 +1,7 @@
 # BlockTrigger : TriggerBehavior (Class)
 
+[Go To File](https://github.com/MLivanos/WorldWrap/blob/main/WorldWrap/Assets/Scripts/WorldWrap/BlockTrigger.cs)
+
 Trigger that informs the WrapManager about where the player is and object relative positions.
 
 ## **Properties**
