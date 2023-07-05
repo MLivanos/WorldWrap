@@ -1,5 +1,7 @@
 # WrapTrigger : TriggerBehavior (Class)
 
+[Go To File](https://github.com/MLivanos/WorldWrap/blob/main/WorldWrap/Assets/Scripts/WorldWrap/WrapTrigger.cs)
+
 Trigger that informs the WrapManager of when the player is leaving and entering a block.
 
 ## **Properties**

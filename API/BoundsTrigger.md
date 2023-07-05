@@ -1,6 +1,8 @@
 
 # BoundsTrigger : TriggerBehavior (Class)
 
+[Go To File](https://github.com/MLivanos/WorldWrap/blob/main/WorldWrap/Assets/Scripts/WorldWrap/BoundsTrigger.cs)
+
 Trigger wraps helps NPCs and objects around the world when they reach the end.
 
 ## **Properties**
