@@ -1,5 +1,7 @@
 # TriggerBehavior : MonoBehavior (Abstract Class)
 
+[Go To File](https://github.com/MLivanos/WorldWrap/blob/main/WorldWrap/Assets/Scripts/WorldWrap/TriggerBehavior.cs)
+
 Abstract class from which WrapTriggers, BoundsTrigger, and BlockTriggers inherit from. Finds the WrapManager in the hierachy.
 
 ## **Properties**

@@ -1,5 +1,7 @@
 # WrapManager : MonoBehavior (Class)
 
+[Go To File](https://github.com/MLivanos/WorldWrap/blob/main/WorldWrap/Assets/Scripts/WorldWrap/WrapManager.cs)
+
 The WrapManager handles information from various trigger behaviors and is responsible for determining when a wrap is required, rearranging blocks after wraps, and performaning the wraps. There should be exactly 1 (one) wrap manager per scene which requires wraps.
 
 ## **Properties**
