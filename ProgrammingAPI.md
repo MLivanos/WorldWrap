@@ -184,7 +184,7 @@ ___
 
 ## Private
 
-### **lowerXBound : floatv
+### **lowerXBound : float**
 
 Lower X bound for the world.
 
@@ -192,11 +192,11 @@ Lower X bound for the world.
 
 Lower Z bound for the world.
 
-### upperXBound : float
+### **upperXBound : float**
 
 Upper X bound for the world.
 
-### upperZBound : float
+### **upperZBound : float**
 
 Upper Z bound for the world.
 
@@ -204,21 +204,21 @@ Upper Z bound for the world.
 
 ## Private
 
-### Start() -> void
+### **Start() -> void**
 
 Sets bounds based on world size.
 
-### OnTriggerExit(Collider other) -> void
+### **OnTriggerExit(Collider other) -> void**
 
 When an object exits the bounds of the world, it will wrap around to the other side.
 
 ## Public
 
-### GetXBounds -> Vector2
+### **GetXBounds -> Vector2**
 
 Gets X bounds as a Vector2 of lowerXBound, upperXBound
 
-### GetZBounds -> Vector2
+### **GetZBounds -> Vector2**
 
 Gets Z bounds as a Vector2 of lowerZBound, upperZBound
 
@@ -230,7 +230,7 @@ ___
 
 ## Private
 
-### residents : List<GameObject>
+### **residents : List<GameObject>**
 
 List of Rigidbody root game objects in the block.
 
@@ -238,21 +238,21 @@ List of Rigidbody root game objects in the block.
 
 ## Private
 
-### OnTriggerEnter(Collider other) -> void
+### **OnTriggerEnter(Collider other) -> void**
 
 If the player enters the trigger, log the entry via WrapManager's LogBlockEntry. If another object enters, add it to residents list.
 
-### OnTriggerExit(Collider other) -> void
+### **OnTriggerExit(Collider other) -> void**
 
 If the player exits the trigger, log the entry via WrapManager's LogBlockExit. If another object exits, remove it from residents list.
 
 ## Public
 
-### getResidents() List<GameObject> 
+### **getResidents() List<GameObject>**
 
 Public accessor method for the residents list. 
 
-### removeResident(GameObject oldResident) -> void
+### **removeResident(GameObject oldResident) -> void**
 
 Remvoes a resident that has since left the block.
 
@@ -266,10 +266,10 @@ ___
 
 ## Private
 
-### OnTriggerEnter(Collider other) -> void
+### **OnTriggerEnter(Collider other) -> void**
 
 If they player enter the wrap trigger, inform WrapManager via LogTriggerEnter
 
-### OnTriggerExit(Collider other) -> void
+### **OnTriggerExit(Collider other) -> void**
 
 If they player exits the wrap trigger, inform WrapManager via LogTriggerExit
