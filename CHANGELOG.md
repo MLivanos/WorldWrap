@@ -8,6 +8,7 @@
 * Works with Unity’s NavMesh & NavMeshAgent
 * Addition of an example Dodgeball game that uses NavMesh and NavMeshAgent
 * Adds suite of unit tests to ensure changes to do affect core functionality
+* Adds scale tests that display the framerate cost of our method and allow the user to add more objects to the scene.
 
 ### Bug Fixes:
 
