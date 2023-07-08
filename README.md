@@ -39,11 +39,17 @@ The figure above demonstrates this idea. The figure initially is in the red squa
 Some other reasons to consider WorldWrap for your next game:
 
 💸 Always free - You can use, copy, modify, publish, and sell any project using WorldWrap, 100% free of charge.
+
 🚀 Performance - WorldWrap has minimal impact on performance and maintains high framerates even in complex worlds with thousands of game objects.
+
 🎮 Cross-Platform - WorldWrap can be used on all platforms from mobile games to consoles.
+
 🚧 No More Invisible Walls - How many times have you run into an immersion-breaking invisible wall in a game? Add a unique twist to your game by removing them entirely.
+
 🤖 Pathfinding AI - NPCs can navigate WorldWrap perfectly without extra effort on your part.
+
 🌐 Open-Source - All code is available for free on my GitHub.
+
 🛠 Developer Friendly - From the Setup Assistant that will help you make your world ready to wrap in minutes to developer tools such as unit tests, WorldWrap is made with the developer's interests in mind.
 
 ### 0.2.0 Release Notes
