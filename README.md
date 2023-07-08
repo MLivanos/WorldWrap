@@ -1,14 +1,14 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping Worlds<br />In The Unity Game Engine<br />(v0.2.0)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.2.0)
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
 
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020)
+- [WorldWrap: A Lightweight Framework for creating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020)
   - [Introduction](#introduction)
     - [0.2.0 Release Notes](#020-release-notes)
   - [How WorldWrap Works](#how-worldwrap-works)
@@ -25,22 +25,26 @@
 ## Introduction
 
 
-The goal of WorldWrap is to create a game world that appears flat and ongoing, however, behavior across large distances suggests that the true shape of the world is curved.
+Imagine you are standing in the middle of a field. The world appears like a flat plane stretching into this distance. Now, you plant a flag at your starting point and begin walking due East. The whole time, the world appears flat, but eventually, you find yourself at the flag you planted at the beginning of your trip. This is, of course, because you were never walking in a straight line on a flat plane, you were traveling on an arc stretching across a sphere.
 
-For example, imagine you are standing in the middle of a field on a large planet (like Earth). The world appears like a flat plane stretching into this distance. If you threw a ball, you could perform calculations assuming you are on a flat plane and predict its trajectory with a high degree of precision. Now, you plant a flag at your starting point and begin walking due East. The whole time, the world appears flat (ignoring any mountains, valleys, or hills along the way), but eventually, you find yourself at the flag you planted at the beginning of your trip. This is, of course, because you were never walking in a straight line, you were traveling on an arc stretching across a sphere.
-
-
-This is the effect we would like to impart to the player, however, given that gameworlds are typically much smaller than actual planets, the curvature necessary to create such a world would be readily apparent. Here, we pose a lightweight solution to this problem through our WorldWrap system. We say that we are creating a locally-Euclidean, globally-non-Euclidean world. It is locally Euclidean because, at any point, the player is experiencing the world on a flat plane, but when considering traveling across large distances, the world appears to be a different shape (e.g. a sphere, donut, etc).
-
-We accomplish this by tiling the world into discrete chunks, and when the player moves past a specified point, the chunks rearrange themselves to conform to the desired world shape. WorldWrap can be used with Unity's NavMesh pathfinding AI and can be set up in seconds with the Setup Assistant.
+How can we impart this feeling to the users of our games? We could create a curved world or make our game world on a sphere, but unless we make that world truly massive, the world will appear curved the whole time. We could teleport the user to the other end of the map when they walk around, but this would be jarring. Instead, WorldWrap accomplishes this effect by keeping the world as a series of tiles called blocks. When the user exits one block and enters another, the blocks rearrange themselves, any objects inside of them, and any Rigidbody objects moving between them to simulate the world wrapping around.
 
 <img width="866" alt="Screenshot 2023-06-13 at 2 32 49 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/0e09957e-c3fd-4c1d-a7e0-4e04d45881a5">
-
 
 The figure above demonstrates this idea. The figure initially is in the red square in the center (leftmost image). They move to the left and enter the blue square, continue left to the purple, and continue left to return to the initial red square.*
 
 
 *This figure was created with accessibility toward people with color vision deficiency (CVD, also referred to as color blindness) in mind. Through my tools, the color coding of each square should be distinct to people with the three major forms of CVD: protanopia, deuteranopia, and tritanopia. I do not have CVD myself, and therefore cannot confirm this. If you have any of the above forms of CVD, I'd love to hear from you to know if my attempt at accessible color coding is successful, or if there is room for improvement.
+
+Some other reasons to consider WorldWrap for your next game:
+
+💸 Always free - You can use, copy, modify, publish, and sell any project using WorldWrap, 100% free of charge.
+🚀 Performance - WorldWrap has minimal impact on performance and maintains high framerates even in complex worlds with thousands of game objects.
+🎮 Cross-Platform - WorldWrap can be used on all platforms from mobile games to consoles.
+🚧 No More Invisible Walls - How many times have you run into an immersion-breaking invisible wall in a game? Add a unique twist to your game by removing them entirely.
+🤖 Pathfinding AI - NPCs can navigate WorldWrap perfectly without extra effort on your part.
+🌐 Open-Source - All code is available for free on my GitHub.
+🛠 Developer Friendly - From the Setup Assistant that will help you make your world ready to wrap in minutes to developer tools such as unit tests, WorldWrap is made with the developer's interests in mind.
 
 ### 0.2.0 Release Notes
 
@@ -73,15 +77,15 @@ There are other ways to wrap worlds that can accomplish different shapes, such a
 ## How To Use WorldWrap
 
 
-For a full-worked example of WorldWrap, download the project and open up "Demo" in Unity. FOr a full-worked example of WorldWrap using NavMesh, open "DodgeballGame".
+For a full-worked example of WorldWrap, download the project and open up "Demo" in Unity. For a full-worked example of WorldWrap using NavMesh, open "DodgeballGame".
 
-We reccomend using the WorldWrap Setup Assistant to automatically set up your world. Open the Assistant via Window->WorldWrap. Because the world is wrapping, global bounds must be created. Enter in the x,y,z size of your world in the top field, followed by number of rows (x axis) and columns (z axis). If you plan on using Unity's built-in pathfinding AI (NavMesh), please check the "Using NavMesh" box and click "Setup WorldWrap". This will create a WrapManager (handles the wrapping effect for the player), GlobalBounds (handles wrapping effect for NPCs and moving objects), Blocks as empty GameObjects (the units which will move to accomplish the wrap) and BlockTriggers (keeps track of the position of RigidBody objects), and WrapTriggers (registers player's motion and communicates with the WrapManager to initiate wraps where appropriate). If you selected "Using NavMesh", a NavMeshLure object with four planes will be created. At runtime, the WrapManager will use this to tell the pathfinding AI that the world wraps around. You do not need to interact with the NavMeshLure.
+We recommend using the WorldWrap Setup Assistant to automatically set up your world. Open the Assistant via Window->WorldWrap. Because the world is wrapping, global bounds must be created. Enter the x,y, and z size of your world in the top field, followed by the number of rows (x-axis) and columns (z-axis). If you plan on using Unity's built-in pathfinding AI (NavMesh), please check the "Using NavMesh" box and click "Setup WorldWrap". This will create a WrapManager (handles the wrapping effect for the player), GlobalBounds (handles the wrapping effect for NPCs and moving objects), Blocks as empty GameObjects (the units which will move to accomplish the wrap), and BlockTriggers (keeps track of the position of RigidBody objects), and WrapTriggers (registers player's motion and communicates with the WrapManager to initiate wraps where appropriate). If you selected "Using NavMesh", a NavMeshLure object with four planes will be created. At runtime, the WrapManager will use this to tell the pathfinding AI that the world wraps around. You do not need to interact with the NavMeshLure.
 
-After these objects are set up, add your terrain to the scene, being sure to split the terrain up into tiles that span the volume of each BlockTrigger. Be sure to add terrain and other static objects (eg buildings, vegitation, terrain) under their corresponding block. Anything that will move across the scene (eg players, NPCs, projectiles) should have both collider and RigidBody components.
+After these objects are set up, add your terrain to the scene, being sure to split the terrain up into tiles that span the volume of each BlockTrigger. Be sure to add terrain and other static objects (eg buildings, vegetation, terrain) under their corresponding block. Anything that will move across the scene (eg players, NPCs, projectiles) should have both collider and RigidBody components.
 
-You may also want to resize, reconfigure, and remove some WrapTriggers. Particularly, the end of a WrapTrigger should represent when the player is firmly "inside" the next block. Wraps occur when the player enters one WrapTrigger, moves into another WrapTrigger, and exits into another block. Therefore, the smaller WrapTrigger the more wraps will occur. Since wraps can be expensive, it is generally advisable to make WrapTriggers larger, but this is dependent on your specfic world. See the demo sceens for examples of WrapTriggers being sized to a world.
+You may also want to resize, reconfigure, and remove some WrapTriggers. Particularly, the end of a WrapTrigger should represent when the player is firmly "inside" the next block. Wraps occur when the player enters one WrapTrigger, moves into another WrapTrigger, and exits into another block. Therefore, the smaller WrapTrigger the more wraps will occur. Since wraps can be expensive, it is generally advisable to make WrapTriggers larger, but this is dependent on your specific world. See the demo scenes for examples of WrapTriggers being sized to a world.
 
-There are three fields for you to fill under the WrapManager component. The Setup Assistant will do its best to fill these in for you. The "Blocks" field should be set up with all of the blocks in the scene, however they do not need to be in any particular order. The WrapManager will automatically detect the structure of your world. The Setup Assistant will also try to find your player character by finding the GameObject in the scene with the smallest [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) to the word "Player" (not case sensitive, null characters added when strings are of different size). Please ensure this field has your player's GameObject, as the Assistant can make a mistake. Please examine any warnings or errors the Setup Assistant shows. 
+There are three fields for you to fill under the WrapManager component. The Setup Assistant will do its best to fill these in for you. The "Blocks" field should be set up with all of the blocks in the scene, however, they do not need to be in any particular order. The WrapManager will automatically detect the structure of your world. The Setup Assistant will also try to find your player character by finding the GameObject in the scene with the smallest [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) to the word "Player" (not case sensitive, null characters added when strings are of different size). Please ensure this field has your player's GameObject, as the Assistant can make a mistake. Please examine any warnings or errors the Setup Assistant shows. 
 
 <img width="1680" alt="Screen Shot 2023-06-19 at 10 53 15 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/ab34d4b9-a80f-473d-a672-ba3a85c4b3e2">
 
@@ -148,7 +152,7 @@ To be clear, WorldWrap is perfectly capable of handling single-player games with
 WorldWrap is still under development, and I'm hoping to make it much more powerful in the future. Here is a list of future improvements, but feel free to suggest more:
 
 
-* Multiplayer support: Rendering wrap based on each player's prospective on the applicaton layer while maintaining the global shape at the server level.
+* Multiplayer support: Rendering wrap based on each player's perspective on the application layer while maintaining the global shape at the server level.
 
 
 ## Support
