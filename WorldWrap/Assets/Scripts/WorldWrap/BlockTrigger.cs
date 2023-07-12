@@ -9,7 +9,7 @@ public class BlockTrigger : TriggerBehavior
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (IsCollidingWithPlayer(other.gameObject))
         {
             wrapManager.LogBlockEntry(gameObject);
         }

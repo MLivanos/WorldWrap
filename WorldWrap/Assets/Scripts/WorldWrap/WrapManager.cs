@@ -11,6 +11,7 @@ public class WrapManager : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject lureObject;
     [SerializeField] private bool isUsingNavmesh;
+    [SerializeField] private bool isMultiplayer;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -429,5 +430,15 @@ public class WrapManager : MonoBehaviour
     public void SetWrapLayer(int wrapLayerNumber)
     {
         wrapLayer = wrapLayerNumber;
+    }
+
+    public bool IsMultiplayer()
+    {
+        return isMultiplayer;
+    }
+
+    public void SetIsMultiplayer(bool multiplayer)
+    {
+        isMultiplayer = multiplayer;
     }
 }
