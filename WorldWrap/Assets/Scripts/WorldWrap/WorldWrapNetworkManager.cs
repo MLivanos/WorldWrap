@@ -21,7 +21,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         puppets = new GameObject[maxNumberOfPlayers];
         puppetTransformRelays = new TransformRelay[maxNumberOfPlayers];
-        numberOfPuppetsFound = 0;
+        numberOfPuppetsFound = -1;
     }
 
     private void FixedUpdate()
@@ -30,12 +30,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             return;
         }
-        for(int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
+        for(int puppetIndex = 0; puppetIndex < numberOfPuppetsFound; puppetIndex++)
         {
-            if (!puppets[puppetIndex])
-            {
-                break;
-            }
             UpdatePuppetPosition(puppetIndex);
         }
         SendPositionUpdate();
@@ -43,14 +39,14 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private bool hasPrefabName(string objectName)
     {
-        return objectName.StartsWith(puppetName) && char.IsDigit(objectName[^1]);
+        return objectName.StartsWith(puppetName) && char.IsDigit(objectName[^1]) && objectName != clientPlayerRelay.gameObject.name;
     }
 
     private void AddToPuppets(GameObject newPuppetRelay, int puppetIndex)
     {
-        if (puppetIndex >= maxNumberOfPlayers - 1)
+        if (puppetIndex >= maxNumberOfPlayers)
         {
-            Debug.LogError("Error: Number of players detected (" + puppetIndex +
+            Debug.LogError("Error: Number of players detected (" + (puppetIndex + 1) +
             ") exceeds maximum number of players (" + maxNumberOfPlayers + ")");
             return;
         }
@@ -63,8 +59,16 @@ public class WorldWrapNetworkManager : MonoBehaviour
         instantiated = true;
     }
 
-    public void AddToPuppets(GameObject newPuppetRelay)
+    public void AddToPuppets(string senderName, GameObject newPuppetRelay)
     {
+        Debug.Log("Sender name: " + senderName);
+        Debug.Log("Receiver name: " + clientPlayerRelay.gameObject.name);
+        if (senderName == clientPlayerRelay.gameObject.name)
+        {
+            Debug.Log("Skipping");
+            return;
+        }
+        Debug.Log("Making prefab");
         for (int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
         {
             if (!puppets[puppetIndex])
@@ -113,10 +117,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
                 numberOfPuppetsFound ++;
             }
         }
+        numberOfPuppetsFound ++;
     }
 
     public int GetNumberOfPuppets()
     {
-        return numberOfPuppetsFound;
+        return numberOfPuppetsFound + 1;
     }
 }

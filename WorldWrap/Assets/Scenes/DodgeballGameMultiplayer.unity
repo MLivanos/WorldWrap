@@ -9900,7 +9900,7 @@ MonoBehaviour:
     type: 3}
   puppetPrefab: {fileID: 2610209613368273506, guid: 220fcfb8d9bd743a9be8b7ae635c7f64,
     type: 3}
-  puppetName: Puppet
+  puppetName: PuppetObject
 --- !u!4 &1895850651
 Transform:
   m_ObjectHideFlags: 0

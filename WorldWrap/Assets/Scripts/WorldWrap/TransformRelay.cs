@@ -19,10 +19,7 @@ public class TransformRelay : NetworkBehaviour
         if (IsOwner)
         {
             worldWrapNetworkManager.CreatePlayerObject(this);
-        }
-        else
-        {
-            AddToPuppetsClientRpc();
+            AddToPuppetsServerRpc();
         }
     }
 
@@ -67,9 +64,14 @@ public class TransformRelay : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void AddToPuppetsClientRpc()
+    private void AddToPuppetsClientRpc(string senderName)
     {
-        FindWorldWrapNetworkManager();
-        worldWrapNetworkManager.AddToPuppets(gameObject);
+        worldWrapNetworkManager.AddToPuppets(senderName, gameObject);
+    }
+
+    [ServerRpc]
+    private void AddToPuppetsServerRpc()
+    {
+        AddToPuppetsClientRpc(gameObject.name);
     }
 }
