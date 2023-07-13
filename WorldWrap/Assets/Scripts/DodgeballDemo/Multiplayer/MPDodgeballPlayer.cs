@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class MPDodgeballPlayer : MPDodgeballActor
@@ -40,9 +41,9 @@ public class MPDodgeballPlayer : MPDodgeballActor
 
     private void SetupCamera()
     {
-        mainCamera = gameObject.GetComponentInChildren<Camera>();
+        /*mainCamera = gameObject.GetComponentInChildren<Camera>();
         mainCameraGameObject = mainCamera.gameObject;
-        mainCameraFPPosition = mainCameraGameObject.transform.localPosition;
+        mainCameraFPPosition = mainCameraGameObject.transform.localPosition;*/
     }
 
     private void SetupScreenMovement()
@@ -53,11 +54,11 @@ public class MPDodgeballPlayer : MPDodgeballActor
 
     private void UpdatePosition()
     {
-        yRotation += Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSensitivity;
+        /*yRotation += Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSensitivity;
         xRotation -= Input.GetAxisRaw("Mouse Y") * Time.deltaTime * rotationSensitivity;
         xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
         mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        transform.rotation = Quaternion.Euler(0, yRotation, 0);*/
         playerRigidbody.velocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
         playerRigidbody.velocity += transform.TransformDirection(Vector3.right) * speed * Input.GetAxisRaw("Horizontal");
     }
@@ -77,7 +78,8 @@ public class MPDodgeballPlayer : MPDodgeballActor
 
     private bool BallIsInSight(RaycastHit hit)
     {
-        Transform outlook = mainCamera.transform;
+        return true;
+        /*Transform outlook = mainCamera.transform;
         Collider[] ballColliders = BallsInGrabbingRange();
         foreach(Collider ball in ballColliders)
         {
@@ -88,7 +90,7 @@ public class MPDodgeballPlayer : MPDodgeballActor
                 return true;
             }
         }
-        return false;
+        return false;*/
     }
 
     private Collider[] BallsInGrabbingRange()

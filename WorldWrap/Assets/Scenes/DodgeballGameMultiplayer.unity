@@ -1531,7 +1531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RunInBackground: 1
-  LogLevel: 0
+  LogLevel: 1
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 154706811}
@@ -7141,6 +7141,7 @@ MonoBehaviour:
   player: {fileID: 0}
   lureObject: {fileID: 1301697093}
   isUsingNavmesh: 1
+  isMultiplayer: 1
 --- !u!4 &1244485131
 Transform:
   m_ObjectHideFlags: 0
