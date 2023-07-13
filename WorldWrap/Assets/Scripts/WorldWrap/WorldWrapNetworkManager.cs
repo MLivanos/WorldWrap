@@ -9,13 +9,15 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private GameObject puppetPrefab;
     [SerializeField] private string puppetName;
     private GameObject[] puppets;
+    private TransformRelay[] puppetTransformRelays;
     private GameObject clientPlayerObject;
+    private TransformRelay clientPlayerRelay;
     private Vector3 lastPosition;
-    public Vector3[] movementVectors;
 
     private void Start()
     {
         puppets = new GameObject[maxNumberOfPlayers];
+        puppetTransformRelays = new TransformRelay[maxNumberOfPlayers];
         int numberOfPuppetsFound = 0;
         GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject objectInScene in gameObjectsInScene)
@@ -27,14 +29,19 @@ public class WorldWrapNetworkManager : MonoBehaviour
             }
         }
         clientPlayerObject = Instantiate(puppetPrefab);
+        clientPlayerRelay = clientPlayerObject.GetComponent<TransformRelay>();
         lastPosition = clientPlayerObject.transform.position;
     }
 
     private void Update()
     {
-        foreach(GameObject puppet in puppets)
+        for(int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
         {
-            UpdatePuppetPosition(puppet);
+            if (!puppets[puppetIndex])
+            {
+                break;
+            }
+            UpdatePuppetPosition(puppetIndex);
         }
         SendPositionUpdate();
     }
@@ -52,18 +59,35 @@ public class WorldWrapNetworkManager : MonoBehaviour
             ") exceeds maximum number of players (" + maxNumberOfPlayers + ")");
             return;
         }
+        TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
         puppets[puppetIndex] = newPuppetRelay;
         GameObject newPuppet = Instantiate(puppetPrefab);
-        // Put in position
+        newPuppet.transform.position = puppetTransformRelay.GetPosition();
+        newPuppet.transform.rotation = puppetTransformRelay.GetRotation();
     }
 
-    private void UpdatePuppetPosition(GameObject puppet)
+    public void AddToPuppets(GameObject newPuppetRelay)
     {
+        for (int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
+        {
+            if (puppets[puppetIndex])
+            {
+                AddToPuppets(newPuppetRelay, puppetIndex);
+                break;
+            }
+        }
+    }
 
+    private void UpdatePuppetPosition(int puppetIndex)
+    {
+        puppets[puppetIndex].transform.position = puppetTransformRelays[puppetIndex].GetPosition();
+        puppets[puppetIndex].transform.rotation = puppetTransformRelays[puppetIndex].GetRotation();
     }
 
     private void SendPositionUpdate()
     {
-
+        clientPlayerRelay.Move(clientPlayerObject.transform.position - lastPosition);
+        clientPlayerRelay.SetRotation(clientPlayerObject.transform.rotation);
+        clientPlayerRelay.RelayToServer();
     }
 }
