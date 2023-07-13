@@ -1,56 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class TransformRelay : NetworkBehaviour
 {
-    private Vector3 puppetTransform;
-    private Quaternion puppetRotation;
+    private NetworkVariable<Vector3> puppetPosition = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<Vector3> puppetRotation = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private WorldWrapNetworkManager worldWrapNetworkManager;
+    private string puppetName;
 
     private void Start()
     {
-        if (!IsOwner)
+        FindWorldWrapNetworkManager();
+        NameSelf();
+        if (IsOwner)
         {
-            RelayInstantiation();
+            worldWrapNetworkManager.CreatePlayerObject(this);
+        }
+        else
+        {
+            AddToPuppetsClientRpc();
         }
     }
 
     public Vector3 GetPosition()
     {
-        return puppetTransform;
+        return puppetPosition.Value;
     }
 
-    public Quaternion GetRotation()
+    public Vector3 GetRotation()
     {
-        return puppetRotation;
+        return puppetRotation.Value;
     }
 
     public void Move(Vector3 movementVector)
     {
-        puppetTransform += movementVector;
+        puppetPosition.Value += movementVector;
     }
 
-    public void SetRotation(Quaternion rotationQuaternion)
+    public void SetRotation(Vector3 rotationVector)
     {
-        puppetRotation = rotationQuaternion;
+        puppetRotation.Value = rotationVector;
     }
 
-    public void RelayToServer()
-    {
-        // Send serverRPC
-    }
-
-    private void RelayInstantiation()
+    private void FindWorldWrapNetworkManager()
     {
         GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject objectInScene in gameObjectsInScene)
         {
-            if(objectInScene.name == "WorldwrapNetworkManager")
+            if(objectInScene.name == "WorldWrapNetworkManager")
             {
-                objectInScene.GetComponent<WorldWrapNetworkManager>().AddToPuppets(gameObject);
+                worldWrapNetworkManager = objectInScene.GetComponent<WorldWrapNetworkManager>();
+                break;
             }
         }
+        worldWrapNetworkManager.FindPuppets();
+        puppetName = worldWrapNetworkManager.GetPuppetName();
+    }
+
+    private void NameSelf()
+    {
+        gameObject.name = puppetName + worldWrapNetworkManager.GetNumberOfPuppets();
+    }
+
+    [ClientRpc]
+    private void AddToPuppetsClientRpc()
+    {
+        FindWorldWrapNetworkManager();
+        worldWrapNetworkManager.AddToPuppets(gameObject);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class WorldWrapNetworkManager : MonoBehaviour
 {
     [SerializeField] private int maxNumberOfPlayers;
+    [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject puppetPrefab;
     [SerializeField] private string puppetName;
     private GameObject[] puppets;
@@ -13,28 +14,22 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private GameObject clientPlayerObject;
     private TransformRelay clientPlayerRelay;
     private Vector3 lastPosition;
+    private int numberOfPuppetsFound;
+    private bool instantiated;
 
     private void Start()
     {
         puppets = new GameObject[maxNumberOfPlayers];
         puppetTransformRelays = new TransformRelay[maxNumberOfPlayers];
-        int numberOfPuppetsFound = 0;
-        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
-        foreach (GameObject objectInScene in gameObjectsInScene)
-        {
-            if(hasPrefabName(objectInScene.name))
-            {
-                AddToPuppets(objectInScene, numberOfPuppetsFound);
-                numberOfPuppetsFound ++;
-            }
-        }
-        clientPlayerObject = Instantiate(puppetPrefab);
-        clientPlayerRelay = clientPlayerObject.GetComponent<TransformRelay>();
-        lastPosition = clientPlayerObject.transform.position;
+        numberOfPuppetsFound = 0;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if (!instantiated)
+        {
+            return;
+        }
         for(int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
         {
             if (!puppets[puppetIndex])
@@ -60,17 +55,19 @@ public class WorldWrapNetworkManager : MonoBehaviour
             return;
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
-        puppets[puppetIndex] = newPuppetRelay;
+        puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         GameObject newPuppet = Instantiate(puppetPrefab);
+        puppets[puppetIndex] = newPuppet;
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
-        newPuppet.transform.rotation = puppetTransformRelay.GetRotation();
+        newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
+        instantiated = true;
     }
 
     public void AddToPuppets(GameObject newPuppetRelay)
     {
         for (int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
         {
-            if (puppets[puppetIndex])
+            if (!puppets[puppetIndex])
             {
                 AddToPuppets(newPuppetRelay, puppetIndex);
                 break;
@@ -81,13 +78,45 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private void UpdatePuppetPosition(int puppetIndex)
     {
         puppets[puppetIndex].transform.position = puppetTransformRelays[puppetIndex].GetPosition();
-        puppets[puppetIndex].transform.rotation = puppetTransformRelays[puppetIndex].GetRotation();
+        puppets[puppetIndex].transform.eulerAngles = puppetTransformRelays[puppetIndex].GetRotation();
     }
 
     private void SendPositionUpdate()
     {
         clientPlayerRelay.Move(clientPlayerObject.transform.position - lastPosition);
-        clientPlayerRelay.SetRotation(clientPlayerObject.transform.rotation);
-        clientPlayerRelay.RelayToServer();
+        clientPlayerRelay.SetRotation(clientPlayerObject.transform.eulerAngles);
+        lastPosition = clientPlayerObject.transform.position;
+    }
+
+    public void CreatePlayerObject(TransformRelay relay)
+    {
+        clientPlayerObject = Instantiate(playerPrefab);
+        clientPlayerRelay = relay;
+        relay.Move(clientPlayerObject.transform.position);
+        relay.SetRotation(clientPlayerObject.transform.eulerAngles);
+        lastPosition = clientPlayerObject.transform.position;
+    }
+
+    public string GetPuppetName()
+    {
+        return puppetName;
+    }
+
+    public void FindPuppets()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if(hasPrefabName(objectInScene.name))
+            {
+                AddToPuppets(objectInScene, numberOfPuppetsFound);
+                numberOfPuppetsFound ++;
+            }
+        }
+    }
+
+    public int GetNumberOfPuppets()
+    {
+        return numberOfPuppetsFound;
     }
 }

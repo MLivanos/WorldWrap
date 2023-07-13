@@ -36,7 +36,8 @@ public class TriggerBehavior : MonoBehaviour
 
     protected bool IsCollidingWithPlayer(GameObject playerObject)
     {
-        return playerObject.tag == "Player" && IsHandlingClientPlayer(playerObject);
+        //return playerObject.tag == "Player" && IsHandlingClientPlayer(playerObject);
+        return playerObject.tag == "Player";
     }
 
 }
