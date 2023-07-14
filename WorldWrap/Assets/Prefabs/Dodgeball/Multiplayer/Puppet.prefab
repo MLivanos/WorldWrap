@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2610209613368273512}
   m_Layer: 0
   m_Name: Puppet
-  m_TagString: Untagged
+  m_TagString: WorldWrapPuppet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca1944116e6c34d7298c2558d161fdf5, type: 2}
+  - {fileID: 2100000, guid: 816d878bb253c497982fa46a032c5c90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -7140,6 +7140,7 @@ MonoBehaviour:
   - {fileID: 1769589972}
   player: {fileID: 0}
   lureObject: {fileID: 1301697093}
+  worldWrapNetworkManagerObject: {fileID: 1895850649}
   isUsingNavmesh: 1
   isMultiplayer: 1
 --- !u!4 &1244485131

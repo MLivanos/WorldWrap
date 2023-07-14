@@ -9,6 +9,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject puppetPrefab;
     [SerializeField] private string puppetName;
+    Dictionary<int, TransformRelay> relayLookup;
     private GameObject[] puppets;
     private TransformRelay[] puppetTransformRelays;
     private GameObject clientPlayerObject;
@@ -19,9 +20,10 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void Start()
     {
+        relayLookup = new Dictionary<int, TransformRelay>();
         puppets = new GameObject[maxNumberOfPlayers];
         puppetTransformRelays = new TransformRelay[maxNumberOfPlayers];
-        numberOfPuppetsFound = -1;
+        numberOfPuppetsFound = 0;
     }
 
     private void FixedUpdate()
@@ -37,9 +39,9 @@ public class WorldWrapNetworkManager : MonoBehaviour
         SendPositionUpdate();
     }
 
-    private bool hasPrefabName(string objectName)
+    private bool HasPrefabName(string objectName)
     {
-        return objectName.StartsWith(puppetName) && char.IsDigit(objectName[^1]) && objectName != clientPlayerRelay.gameObject.name;
+        return objectName.StartsWith(puppetName) && char.IsDigit(objectName[^1]);
     }
 
     private void AddToPuppets(GameObject newPuppetRelay, int puppetIndex)
@@ -51,24 +53,22 @@ public class WorldWrapNetworkManager : MonoBehaviour
             return;
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
-        puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         GameObject newPuppet = Instantiate(puppetPrefab);
+        newPuppet.tag = "WorldWrapPuppet";
+        relayLookup[newPuppet.GetInstanceID()] = puppetTransformRelay;
+        puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         puppets[puppetIndex] = newPuppet;
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
-        instantiated = true;
+        numberOfPuppetsFound++;
     }
 
     public void AddToPuppets(string senderName, GameObject newPuppetRelay)
     {
-        Debug.Log("Sender name: " + senderName);
-        Debug.Log("Receiver name: " + clientPlayerRelay.gameObject.name);
         if (senderName == clientPlayerRelay.gameObject.name)
         {
-            Debug.Log("Skipping");
             return;
         }
-        Debug.Log("Making prefab");
         for (int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
         {
             if (!puppets[puppetIndex])
@@ -81,7 +81,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void UpdatePuppetPosition(int puppetIndex)
     {
-        puppets[puppetIndex].transform.position = puppetTransformRelays[puppetIndex].GetPosition();
+        puppets[puppetIndex].transform.Translate(puppetTransformRelays[puppetIndex].GetMovement());
         puppets[puppetIndex].transform.eulerAngles = puppetTransformRelays[puppetIndex].GetRotation();
     }
 
@@ -99,6 +99,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         relay.Move(clientPlayerObject.transform.position);
         relay.SetRotation(clientPlayerObject.transform.eulerAngles);
         lastPosition = clientPlayerObject.transform.position;
+        instantiated = true;
     }
 
     public string GetPuppetName()
@@ -111,17 +112,20 @@ public class WorldWrapNetworkManager : MonoBehaviour
         GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject objectInScene in gameObjectsInScene)
         {
-            if(hasPrefabName(objectInScene.name))
+            if(HasPrefabName(objectInScene.name))
             {
                 AddToPuppets(objectInScene, numberOfPuppetsFound);
-                numberOfPuppetsFound ++;
             }
         }
-        numberOfPuppetsFound ++;
     }
 
     public int GetNumberOfPuppets()
     {
-        return numberOfPuppetsFound + 1;
+        return numberOfPuppetsFound;
+    }
+
+    public void OffsetTransform(Vector3 movementVector)
+    {
+        clientPlayerRelay.Warp(movementVector);
     }
 }

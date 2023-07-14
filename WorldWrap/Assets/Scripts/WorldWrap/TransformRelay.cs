@@ -10,6 +10,7 @@ public class TransformRelay : NetworkBehaviour
     private NetworkVariable<Vector3> puppetPosition = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<Vector3> puppetRotation = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private WorldWrapNetworkManager worldWrapNetworkManager;
+    private Vector3 lastPosition;
     private string puppetName;
 
     private void Start()
@@ -21,11 +22,19 @@ public class TransformRelay : NetworkBehaviour
             worldWrapNetworkManager.CreatePlayerObject(this);
             AddToPuppetsServerRpc();
         }
+        
     }
 
     public Vector3 GetPosition()
     {
         return puppetPosition.Value;
+    }
+
+    public Vector3 GetMovement()
+    {
+        Vector3 movement = puppetPosition.Value - lastPosition;
+        lastPosition = puppetPosition.Value;
+        return movement;
     }
 
     public Vector3 GetRotation()
@@ -54,13 +63,18 @@ public class TransformRelay : NetworkBehaviour
                 break;
             }
         }
-        worldWrapNetworkManager.FindPuppets();
         puppetName = worldWrapNetworkManager.GetPuppetName();
+        worldWrapNetworkManager.FindPuppets();
     }
 
     private void NameSelf()
     {
         gameObject.name = puppetName + worldWrapNetworkManager.GetNumberOfPuppets();
+    }
+
+    public void Warp(Vector3 movementVector)
+    {
+        puppetPosition.Value -= movementVector;
     }
 
     [ClientRpc]
@@ -74,4 +88,5 @@ public class TransformRelay : NetworkBehaviour
     {
         AddToPuppetsClientRpc(gameObject.name);
     }
+
 }

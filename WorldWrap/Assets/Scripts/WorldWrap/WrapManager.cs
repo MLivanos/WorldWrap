@@ -10,8 +10,10 @@ public class WrapManager : MonoBehaviour
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject lureObject;
+    [SerializeField] private GameObject worldWrapNetworkManagerObject;
     [SerializeField] private bool isUsingNavmesh;
     [SerializeField] private bool isMultiplayer;
+    private WorldWrapNetworkManager worldWrapNetworkManager;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -32,9 +34,14 @@ public class WrapManager : MonoBehaviour
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
+        // TODO: Abstract
         if (isUsingNavmesh)
         {
             CreateNavMeshLure();
+        }
+        if (isMultiplayer)
+        {
+            worldWrapNetworkManager = worldWrapNetworkManagerObject.GetComponent<WorldWrapNetworkManager>();
         }
         wrapLayer = LayerMask.NameToLayer("WorldWrapObjects");
     }
@@ -366,11 +373,16 @@ public class WrapManager : MonoBehaviour
 
     private void MoveObject(GameObject objectToMove, Vector3 movementVector)
     {
+        Debug.Log(objectToMove);
         NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
             agent.Warp(objectToMove.transform.position + movementVector);
             return;
+        }
+        if (isMultiplayer && objectToMove.tag == "Player")
+        {
+            worldWrapNetworkManager.OffsetTransform(movementVector);
         }
         objectToMove.transform.Translate(movementVector, Space.World);
     }
