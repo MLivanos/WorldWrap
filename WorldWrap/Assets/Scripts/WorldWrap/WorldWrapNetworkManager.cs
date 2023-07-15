@@ -9,7 +9,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject puppetPrefab;
     [SerializeField] private string puppetName;
-    Dictionary<int, TransformRelay> relayLookup;
     private GameObject[] puppets;
     private TransformRelay[] puppetTransformRelays;
     private GameObject clientPlayerObject;
@@ -20,7 +19,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void Start()
     {
-        relayLookup = new Dictionary<int, TransformRelay>();
         puppets = new GameObject[maxNumberOfPlayers];
         puppetTransformRelays = new TransformRelay[maxNumberOfPlayers];
         numberOfPuppetsFound = 0;
@@ -60,7 +58,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
         GameObject newPuppet = Instantiate(puppetPrefab);
         newPuppet.tag = "WorldWrapPuppet";
-        relayLookup[newPuppet.GetInstanceID()] = puppetTransformRelay;
         puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         puppets[puppetIndex] = newPuppet;
         puppetTransformRelay.SetLastPosition(puppetTransformRelay.GetPosition());
