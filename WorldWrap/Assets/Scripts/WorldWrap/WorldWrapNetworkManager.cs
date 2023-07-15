@@ -63,7 +63,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         relayLookup[newPuppet.GetInstanceID()] = puppetTransformRelay;
         puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         puppets[puppetIndex] = newPuppet;
-        puppetTransformRelay.SetLastPosition(newPuppet.transform.position);
+        puppetTransformRelay.SetLastPosition(puppetTransformRelay.GetPosition());
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
         numberOfPuppetsFound++;
