@@ -85,7 +85,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private void UpdatePuppetPosition(int puppetIndex)
     {
         Vector3 movement = puppetTransformRelays[puppetIndex].GetMovement();
-        puppets[puppetIndex].transform.Translate(movement);
+        puppets[puppetIndex].transform.Translate(movement, Space.World);
         puppets[puppetIndex].transform.eulerAngles = puppetTransformRelays[puppetIndex].GetRotation();
     }
 
