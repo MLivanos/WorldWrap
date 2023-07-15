@@ -46,6 +46,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void AddToPuppets(GameObject newPuppetRelay, int puppetIndex)
     {
+        // TODO: Abstract
+        if (newPuppetRelay.GetComponent<TransformRelay>() == clientPlayerRelay)
+        {
+            return;
+        }
         if (puppetIndex >= maxNumberOfPlayers)
         {
             Debug.LogError("Error: Number of players detected (" + (puppetIndex + 1) +
@@ -128,7 +133,16 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public int GetNumberOfPuppets()
     {
-        return numberOfPuppetsFound;
+        int numberOfPuppets = 0;
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if(HasPrefabName(objectInScene.name))
+            {
+                numberOfPuppets++;
+            }
+        }
+        return numberOfPuppets;
     }
 
     public void OffsetTransform(Vector3 movementVector)
