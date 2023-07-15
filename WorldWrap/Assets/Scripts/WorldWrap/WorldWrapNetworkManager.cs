@@ -58,6 +58,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         relayLookup[newPuppet.GetInstanceID()] = puppetTransformRelay;
         puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         puppets[puppetIndex] = newPuppet;
+        puppetTransformRelay.SetLastPosition(newPuppet.transform.position);
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
         numberOfPuppetsFound++;
@@ -81,7 +82,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void UpdatePuppetPosition(int puppetIndex)
     {
-        puppets[puppetIndex].transform.Translate(puppetTransformRelays[puppetIndex].GetMovement());
+        Vector3 movement = puppetTransformRelays[puppetIndex].GetMovement();
+        puppets[puppetIndex].transform.Translate(movement);
         puppets[puppetIndex].transform.eulerAngles = puppetTransformRelays[puppetIndex].GetRotation();
     }
 
@@ -105,6 +107,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public string GetPuppetName()
     {
         return puppetName;
+    }
+
+    public Vector3 GetInitialPosition()
+    {
+        return clientPlayerObject.transform.position;
     }
 
     public void FindPuppets()

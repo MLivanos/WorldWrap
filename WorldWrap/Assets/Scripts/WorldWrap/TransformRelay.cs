@@ -19,10 +19,10 @@ public class TransformRelay : NetworkBehaviour
         NameSelf();
         if (IsOwner)
         {
+            worldWrapNetworkManager.FindPuppets();
             worldWrapNetworkManager.CreatePlayerObject(this);
             AddToPuppetsServerRpc();
         }
-        
     }
 
     public Vector3 GetPosition()
@@ -64,7 +64,6 @@ public class TransformRelay : NetworkBehaviour
             }
         }
         puppetName = worldWrapNetworkManager.GetPuppetName();
-        worldWrapNetworkManager.FindPuppets();
     }
 
     private void NameSelf()
@@ -77,10 +76,18 @@ public class TransformRelay : NetworkBehaviour
         puppetPosition.Value -= movementVector;
     }
 
+    public void SetLastPosition(Vector3 movementVector)
+    {
+        lastPosition = movementVector;
+    }
+
     [ClientRpc]
     private void AddToPuppetsClientRpc(string senderName)
     {
-        worldWrapNetworkManager.AddToPuppets(senderName, gameObject);
+        if (!IsOwner)
+        {
+            worldWrapNetworkManager.AddToPuppets(senderName, gameObject);
+        }
     }
 
     [ServerRpc]
