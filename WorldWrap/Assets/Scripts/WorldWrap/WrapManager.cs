@@ -373,7 +373,6 @@ public class WrapManager : MonoBehaviour
 
     private void MoveObject(GameObject objectToMove, Vector3 movementVector)
     {
-        Debug.Log(objectToMove);
         NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
