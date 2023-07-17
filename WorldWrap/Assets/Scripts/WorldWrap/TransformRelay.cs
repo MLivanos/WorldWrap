@@ -11,6 +11,7 @@ public class TransformRelay : NetworkBehaviour
     private NetworkVariable<Vector3> puppetRotation = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private WorldWrapNetworkManager worldWrapNetworkManager;
     private Vector3 lastPosition;
+    private Vector3 lastRotation;
     private string puppetName;
 
     private void Start()
@@ -37,9 +38,14 @@ public class TransformRelay : NetworkBehaviour
         return movement;
     }
 
-    public Vector3 GetRotation()
+    public Vector3 GetEulerAngles()
     {
         return puppetRotation.Value;
+    }
+
+    public Vector3 GetRotation()
+    {
+        return puppetRotation.Value - lastRotation;
     }
 
     public void Move(Vector3 movementVector)
@@ -73,16 +79,19 @@ public class TransformRelay : NetworkBehaviour
 
     public void Warp(Vector3 movementVector)
     {
+        Debug.Log(movementVector);
         puppetPosition.Value -= movementVector;
     }
 
-    public void SetLastPosition(Vector3 movementVector)
+    public void InitializeTransform(Vector3 initialPosition, Vector3 initialRotation)
     {
         if(IsOwner)
         {
-            puppetPosition.Value = movementVector;
+            puppetPosition.Value = initialPosition;
+            puppetRotation.Value = initialRotation;
         }
-        lastPosition = movementVector;
+        lastPosition = initialPosition;
+        lastRotation = initialRotation;
     }
 
     [ClientRpc]
