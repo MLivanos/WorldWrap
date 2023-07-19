@@ -60,7 +60,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         newPuppet.tag = "WorldWrapPuppet";
         puppetTransformRelays[puppetIndex] = puppetTransformRelay;
         puppets[puppetIndex] = newPuppet;
-        puppetTransformRelay.SetLastPosition(puppetTransformRelay.GetPosition());
+        puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
         numberOfPuppetsFound++;
@@ -85,8 +85,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private void UpdatePuppetPosition(int puppetIndex)
     {
         Vector3 movement = puppetTransformRelays[puppetIndex].GetMovement();
-        puppets[puppetIndex].transform.Translate(movement);
-        puppets[puppetIndex].transform.eulerAngles = puppetTransformRelays[puppetIndex].GetRotation();
+        puppets[puppetIndex].transform.Translate(movement, Space.World);
+        puppets[puppetIndex].transform.Rotate(puppetTransformRelays[puppetIndex].GetRotation());
     }
 
     private void SendPositionUpdate()
@@ -144,6 +144,13 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void OffsetTransform(Vector3 movementVector)
     {
+        clientPlayerRelay.Warp(movementVector);
+    }
+
+    public void WarpPlayer(Vector3 movementVector)
+    {
+        clientPlayerObject.transform.Translate(movementVector, Space.World);
+        SendPositionUpdate();
         clientPlayerRelay.Warp(movementVector);
     }
 }

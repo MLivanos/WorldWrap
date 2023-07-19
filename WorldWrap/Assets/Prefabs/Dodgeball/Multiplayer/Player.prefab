@@ -133,4 +133,5 @@ MonoBehaviour:
   health: 3
   rotationSensitivity: 300
   speed: 10
+  mainCameraFPPosition: {x: 0, y: 0.5, z: 0}
   grabbingRange: 10

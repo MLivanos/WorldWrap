@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class MPDBPlayer : DodgeballActor
@@ -11,15 +12,15 @@ public class MPDBPlayer : DodgeballActor
     private float xRotation;
     private float yRotation;
     // Camera variables
+    [SerializeField] private Vector3 mainCameraFPPosition;
     private Camera mainCamera;
     private GameObject mainCameraGameObject;
-    private Vector3 mainCameraFPPosition;
     // Interaction variables
     [SerializeField] private float grabbingRange;
 
     private void Start()
     {
-        //SetupCamera();
+        SetupCamera();
         SetupScreenMovement();
         playerRigidbody = gameObject.GetComponent<Rigidbody>();
         isHoldingObject = false;
@@ -36,9 +37,23 @@ public class MPDBPlayer : DodgeballActor
 
     private void SetupCamera()
     {
-        mainCamera = gameObject.GetComponentInChildren<Camera>();
+        FindCamera();
         mainCameraGameObject = mainCamera.gameObject;
-        mainCameraFPPosition = mainCameraGameObject.transform.localPosition;
+        mainCameraGameObject.transform.localPosition = mainCameraFPPosition;
+    }
+
+    private void FindCamera()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if (objectInScene.name == "Camera")
+            {
+                objectInScene.transform.parent = transform;
+                mainCamera = objectInScene.GetComponent<Camera>();
+                return;
+            }
+        }
     }
 
     private void SetupScreenMovement()
@@ -49,10 +64,10 @@ public class MPDBPlayer : DodgeballActor
 
     private void UpdatePosition()
     {
-        /*yRotation += Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSensitivity;
+        yRotation += Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSensitivity;
         xRotation -= Input.GetAxisRaw("Mouse Y") * Time.deltaTime * rotationSensitivity;
         xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
-        mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);*/
+        mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
         playerRigidbody.velocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
         playerRigidbody.velocity += transform.TransformDirection(Vector3.right) * speed * Input.GetAxisRaw("Horizontal");
@@ -73,7 +88,7 @@ public class MPDBPlayer : DodgeballActor
 
     private bool BallIsInSight(RaycastHit hit)
     {
-        /*Transform outlook = mainCamera.transform;
+        Transform outlook = mainCamera.transform;
         Collider[] ballColliders = BallsInGrabbingRange();
         foreach(Collider ball in ballColliders)
         {
@@ -83,7 +98,7 @@ public class MPDBPlayer : DodgeballActor
                 PickupObject(hit.rigidbody.gameObject);
                 return true;
             }
-        }*/
+        }
         return false;
     }
 
