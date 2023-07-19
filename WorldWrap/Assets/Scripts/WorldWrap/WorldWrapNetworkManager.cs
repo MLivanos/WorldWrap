@@ -146,4 +146,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         clientPlayerRelay.Warp(movementVector);
     }
+
+    public void WarpPlayer(Vector3 movementVector)
+    {
+        clientPlayerObject.transform.Translate(movementVector, Space.World);
+        SendPositionUpdate();
+        clientPlayerRelay.Warp(movementVector);
+    }
 }

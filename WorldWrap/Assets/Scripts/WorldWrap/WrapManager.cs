@@ -379,11 +379,17 @@ public class WrapManager : MonoBehaviour
             agent.Warp(objectToMove.transform.position + movementVector);
             return;
         }
-        if (isMultiplayer && objectToMove.tag == "Player")
+        if (IsMultiplayerClient(objectToMove))
         {
-            worldWrapNetworkManager.OffsetTransform(movementVector);
+            worldWrapNetworkManager.WarpPlayer(movementVector);
+            return;
         }
         objectToMove.transform.Translate(movementVector, Space.World);
+    }
+
+    private bool IsMultiplayerClient(GameObject objectToMove)
+    {
+        return isMultiplayer && objectToMove.tag == "Player";
     }
 
     private GameObject[,] DeepCopyMatrix(GameObject[,] matrix)

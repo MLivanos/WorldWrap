@@ -79,7 +79,6 @@ public class TransformRelay : NetworkBehaviour
 
     public void Warp(Vector3 movementVector)
     {
-        Debug.Log(movementVector);
         puppetPosition.Value -= movementVector;
     }
 
