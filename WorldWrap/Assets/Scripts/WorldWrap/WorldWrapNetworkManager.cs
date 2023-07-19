@@ -96,6 +96,13 @@ public class WorldWrapNetworkManager : MonoBehaviour
         lastPosition = clientPlayerObject.transform.position;
     }
 
+    private void SendPositionUpdate(Vector3 offset)
+    {
+        clientPlayerRelay.Move(clientPlayerObject.transform.position - lastPosition - offset);
+        clientPlayerRelay.SetRotation(clientPlayerObject.transform.eulerAngles);
+        lastPosition = clientPlayerObject.transform.position;
+    }
+
     public void CreatePlayerObject(TransformRelay relay)
     {
         clientPlayerObject = Instantiate(playerPrefab);
@@ -150,7 +157,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public void WarpPlayer(Vector3 movementVector)
     {
         clientPlayerObject.transform.Translate(movementVector, Space.World);
-        SendPositionUpdate();
-        clientPlayerRelay.Warp(movementVector);
+        SendPositionUpdate(movementVector);
     }
 }
