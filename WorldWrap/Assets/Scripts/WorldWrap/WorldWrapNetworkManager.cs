@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -10,15 +11,18 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private string puppetName;
     private List<GameObject> puppets;
     private List<TransformRelay> puppetTransformRelays;
-    private GameObject clientPlayerObject;
-    private TransformRelay clientPlayerRelay;
+    private List<GameObject> clientObjects;
+    private List<TransformRelay> clientRelays;
     private Vector3 lastPosition;
     private bool instantiated;
+    private int playerIndex;
 
     private void Start()
     {
         puppets = new List<GameObject>();
         puppetTransformRelays = new List<TransformRelay>();
+        clientObjects = new List<GameObject>();
+        clientRelays = new List<TransformRelay>();
     }
 
     private void FixedUpdate()
@@ -27,11 +31,24 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             return;
         }
+        UpdateAllPuppets();
+        SendAllUpdates();
+    }
+
+    private void UpdateAllPuppets()
+    {
         for(int puppetIndex = 0; puppetIndex < puppets.Count; puppetIndex++)
         {
             UpdatePuppetPosition(puppetIndex);
         }
-        SendPositionUpdate();
+    }
+
+    private void SendAllUpdates()
+    {
+        for(int objectIndex = 0; objectIndex < clientObjects.Count; objectIndex++)
+        {
+            SendPositionUpdate(objectIndex);
+        }
     }
 
     private bool HasPrefabName(string objectName)
@@ -57,7 +74,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void AddToPuppets(string senderName, GameObject newPuppetRelay)
     {
-        if (senderName == clientPlayerRelay.gameObject.name)
+        if (senderName == clientRelays[playerIndex].gameObject.name)
         {
             return;
         }
@@ -71,23 +88,23 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppets[puppetIndex].transform.Rotate(puppetTransformRelays[puppetIndex].GetRotation());
     }
 
-    private void SendPositionUpdate()
+    private void SendPositionUpdate(int objectIndex)
     {
-        clientPlayerRelay.Move(clientPlayerObject.transform.position - lastPosition);
-        clientPlayerRelay.SetRotation(clientPlayerObject.transform.eulerAngles);
-        lastPosition = clientPlayerObject.transform.position;
+        clientRelays[objectIndex].Move(clientObjects[objectIndex].transform.position - lastPosition);
+        clientRelays[objectIndex].SetRotation(clientObjects[objectIndex].transform.eulerAngles);
+        lastPosition = clientObjects[objectIndex].transform.position;
     }
 
-    private void SendPositionUpdate(Vector3 offset)
+    private void SendPositionUpdate(Vector3 offset, int objectIndex)
     {
-        clientPlayerRelay.Move(clientPlayerObject.transform.position - lastPosition - offset);
-        clientPlayerRelay.SetRotation(clientPlayerObject.transform.eulerAngles);
-        lastPosition = clientPlayerObject.transform.position;
+        clientRelays[objectIndex].Move(clientObjects[objectIndex].transform.position - lastPosition - offset);
+        clientRelays[objectIndex].SetRotation(clientObjects[objectIndex].transform.eulerAngles);
+        lastPosition = clientObjects[objectIndex].transform.position;
     }
 
     private bool ShouldNotCreatePuppet(GameObject newPuppetRelay)
     {
-        if (newPuppetRelay.GetComponent<TransformRelay>() == clientPlayerRelay)
+        if (newPuppetRelay.GetComponent<TransformRelay>() == clientRelays[playerIndex])
         {
             return true;
         }
@@ -96,22 +113,18 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void CreatePlayerObject(TransformRelay relay)
     {
-        clientPlayerObject = Instantiate(playerPrefab);
-        clientPlayerRelay = relay;
-        relay.Move(clientPlayerObject.transform.position);
-        relay.SetRotation(clientPlayerObject.transform.eulerAngles);
-        lastPosition = clientPlayerObject.transform.position;
+        playerIndex = clientObjects.Count;
+        clientObjects.Add(Instantiate(playerPrefab));
+        clientRelays.Add(relay);
+        relay.Move(clientObjects.Last().transform.position);
+        relay.SetRotation(clientObjects.Last().transform.eulerAngles);
+        lastPosition = clientObjects.Last().transform.position;
         instantiated = true;
     }
 
     public string GetPuppetName()
     {
         return puppetName;
-    }
-
-    public Vector3 GetInitialPosition()
-    {
-        return clientPlayerObject.transform.position;
     }
 
     public void FindPuppets()
@@ -142,12 +155,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void OffsetTransform(Vector3 movementVector)
     {
-        clientPlayerRelay.Warp(movementVector);
+        clientRelays[playerIndex].Warp(movementVector);
     }
 
     public void WarpPlayer(Vector3 movementVector)
     {
-        clientPlayerObject.transform.Translate(movementVector, Space.World);
-        SendPositionUpdate(movementVector);
+        clientObjects[playerIndex].transform.Translate(movementVector, Space.World);
+        SendPositionUpdate(movementVector, playerIndex);
     }
 }
