@@ -9,8 +9,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject puppetPrefab;
     [SerializeField] private string puppetName;
-    private GameObject[] puppets;
-    private TransformRelay[] puppetTransformRelays;
+    private List<GameObject> puppets;
+    private List<TransformRelay> puppetTransformRelays;
     private GameObject clientPlayerObject;
     private TransformRelay clientPlayerRelay;
     private Vector3 lastPosition;
@@ -19,8 +19,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void Start()
     {
-        puppets = new GameObject[maxNumberOfPlayers];
-        puppetTransformRelays = new TransformRelay[maxNumberOfPlayers];
+        puppets = new List<GameObject>();
+        puppetTransformRelays = new List<TransformRelay>();
         numberOfPuppetsFound = 0;
     }
 
@@ -42,24 +42,17 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return objectName.StartsWith(puppetName) && char.IsDigit(objectName[^1]);
     }
 
-    private void AddToPuppets(GameObject newPuppetRelay, int puppetIndex)
+    private void AddToPuppets(GameObject newPuppetRelay)
     {
-        // TODO: Abstract
-        if (newPuppetRelay.GetComponent<TransformRelay>() == clientPlayerRelay)
+        if (ShouldNotCreatePuppet(newPuppetRelay))
         {
-            return;
-        }
-        if (puppetIndex >= maxNumberOfPlayers)
-        {
-            Debug.LogError("Error: Number of players detected (" + (puppetIndex + 1) +
-            ") exceeds maximum number of players (" + maxNumberOfPlayers + ")");
             return;
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
         GameObject newPuppet = Instantiate(puppetPrefab);
         newPuppet.tag = "WorldWrapPuppet";
-        puppetTransformRelays[puppetIndex] = puppetTransformRelay;
-        puppets[puppetIndex] = newPuppet;
+        puppetTransformRelays.Add(puppetTransformRelay);
+        puppets.Add(newPuppet);
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
@@ -72,14 +65,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             return;
         }
-        for (int puppetIndex = 0; puppetIndex < maxNumberOfPlayers; puppetIndex++)
-        {
-            if (!puppets[puppetIndex])
-            {
-                AddToPuppets(newPuppetRelay, puppetIndex);
-                break;
-            }
-        }
+        AddToPuppets(newPuppetRelay);
     }
 
     private void UpdatePuppetPosition(int puppetIndex)
@@ -101,6 +87,15 @@ public class WorldWrapNetworkManager : MonoBehaviour
         clientPlayerRelay.Move(clientPlayerObject.transform.position - lastPosition - offset);
         clientPlayerRelay.SetRotation(clientPlayerObject.transform.eulerAngles);
         lastPosition = clientPlayerObject.transform.position;
+    }
+
+    private bool ShouldNotCreatePuppet(GameObject newPuppetRelay)
+    {
+        if (newPuppetRelay.GetComponent<TransformRelay>() == clientPlayerRelay)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void CreatePlayerObject(TransformRelay relay)
@@ -130,7 +125,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             if(HasPrefabName(objectInScene.name))
             {
-                AddToPuppets(objectInScene, numberOfPuppetsFound);
+                AddToPuppets(objectInScene);
             }
         }
     }
