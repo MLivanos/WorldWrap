@@ -90,9 +90,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void SendPositionUpdate(int objectIndex)
     {
-        clientRelays[objectIndex].Move(clientObjects[objectIndex].transform.position - lastPosition);
-        clientRelays[objectIndex].SetRotation(clientObjects[objectIndex].transform.eulerAngles);
-        lastPosition = clientObjects[objectIndex].transform.position;
+        SendPositionUpdate(Vector3.zero, objectIndex);
     }
 
     private void SendPositionUpdate(Vector3 offset, int objectIndex)
