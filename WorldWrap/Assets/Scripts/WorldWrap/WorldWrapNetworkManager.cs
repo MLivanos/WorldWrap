@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class WorldWrapNetworkManager : MonoBehaviour
 {
-    [SerializeField] private int maxNumberOfPlayers;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject puppetPrefab;
     [SerializeField] private string puppetName;
@@ -14,14 +13,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private GameObject clientPlayerObject;
     private TransformRelay clientPlayerRelay;
     private Vector3 lastPosition;
-    private int numberOfPuppetsFound;
     private bool instantiated;
 
     private void Start()
     {
         puppets = new List<GameObject>();
         puppetTransformRelays = new List<TransformRelay>();
-        numberOfPuppetsFound = 0;
     }
 
     private void FixedUpdate()
@@ -30,7 +27,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             return;
         }
-        for(int puppetIndex = 0; puppetIndex < numberOfPuppetsFound; puppetIndex++)
+        for(int puppetIndex = 0; puppetIndex < puppets.Count; puppetIndex++)
         {
             UpdatePuppetPosition(puppetIndex);
         }
@@ -56,7 +53,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
-        numberOfPuppetsFound++;
     }
 
     public void AddToPuppets(string senderName, GameObject newPuppetRelay)
