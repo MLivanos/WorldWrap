@@ -13,17 +13,25 @@ public class TransformRelay : NetworkBehaviour
     private Vector3 lastPosition;
     private Vector3 lastRotation;
     private string puppetName;
+    private int prefabIndex;
 
-    private void Start()
+    private void Awake()
     {
         FindWorldWrapNetworkManager();
         NameSelf();
+    }
+
+    private void Start()
+    {
         if (IsOwner)
         {
-            worldWrapNetworkManager.CreatePlayerObject(this);
-            worldWrapNetworkManager.FindPuppets();
-            AddToPuppetsServerRpc();
+            worldWrapNetworkManager.AddToClientObjects(this);
         }
+    }
+
+    public void Setup()
+    {
+        AddToPuppetsServerRpc();
     }
 
     public Vector3 GetPosition()
@@ -93,6 +101,16 @@ public class TransformRelay : NetworkBehaviour
         lastRotation = initialRotation;
     }
 
+    public int GetPrefabIndex()
+    {
+        return prefabIndex;
+    }
+
+    public void SetPrefabIndex(int indexNumber)
+    {
+        prefabIndex = indexNumber;
+    }
+
     [ClientRpc]
     private void AddToPuppetsClientRpc(string senderName)
     {
@@ -104,5 +122,5 @@ public class TransformRelay : NetworkBehaviour
     {
         AddToPuppetsClientRpc(gameObject.name);
     }
-
+    
 }

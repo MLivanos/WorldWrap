@@ -34,7 +34,6 @@ public class WrapManager : MonoBehaviour
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
-        // TODO: Abstract
         if (isUsingNavmesh)
         {
             CreateNavMeshLure();

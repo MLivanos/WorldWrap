@@ -1,20 +1,24 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class WorldWrapNetworkManager : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject puppetPrefab;
+    [SerializeField] private GameObject[] clientPrefabs;
+    [SerializeField] private GameObject[] puppetPrefabs;
+    [SerializeField] private GameObject transformRelayPrefab;
     [SerializeField] private string puppetName;
+    [SerializeField] private bool firstPrefabIsPlayer;
+    private WorldWrapNetworkRelay networkRelay;
+    private Transform transformRelayGroup;
     private List<GameObject> puppets;
     private List<TransformRelay> puppetTransformRelays;
     private List<GameObject> clientObjects;
     private List<TransformRelay> clientRelays;
     private Vector3 lastPosition;
-    private bool instantiated;
     private int playerIndex;
 
     private void Start()
@@ -23,14 +27,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppetTransformRelays = new List<TransformRelay>();
         clientObjects = new List<GameObject>();
         clientRelays = new List<TransformRelay>();
+        CreateTransformRelayGroup();
     }
 
     private void FixedUpdate()
     {
-        if (!instantiated)
-        {
-            return;
-        }
         UpdateAllPuppets();
         SendAllUpdates();
     }
@@ -53,7 +54,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private bool HasPrefabName(string objectName)
     {
-        return objectName.StartsWith(puppetName) && char.IsDigit(objectName[^1]);
+        return objectName.StartsWith(puppetName);
     }
 
     private void AddToPuppets(GameObject newPuppetRelay)
@@ -63,7 +64,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
             return;
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
-        GameObject newPuppet = Instantiate(puppetPrefab);
+        GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         newPuppet.tag = "WorldWrapPuppet";
         puppetTransformRelays.Add(puppetTransformRelay);
         puppets.Add(newPuppet);
@@ -79,6 +80,14 @@ public class WorldWrapNetworkManager : MonoBehaviour
             return;
         }
         AddToPuppets(newPuppetRelay);
+    }
+
+    public void AddToClientObjects(TransformRelay newRelay)
+    {
+        GameObject newClientObject = Instantiate(clientPrefabs[newRelay.GetPrefabIndex()]);
+        clientObjects.Add(newClientObject);
+        clientRelays.Add(newRelay);
+        newRelay.Setup();
     }
 
     private void UpdatePuppetPosition(int puppetIndex)
@@ -109,15 +118,32 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return false;
     }
 
-    public void CreatePlayerObject(TransformRelay relay)
+    private void CreateTransformRelayGroup()
     {
-        playerIndex = clientObjects.Count;
-        clientObjects.Add(Instantiate(playerPrefab));
-        clientRelays.Add(relay);
-        relay.Move(clientObjects.Last().transform.position);
-        relay.SetRotation(clientObjects.Last().transform.eulerAngles);
-        lastPosition = clientObjects.Last().transform.position;
-        instantiated = true;
+        transformRelayGroup = (new GameObject("TransformRelays")).transform;
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            if(HasPrefabName(objectInScene.name))
+            {
+                objectInScene.transform.parent = transformRelayGroup.transform;
+                AddToPuppets(objectInScene);
+            }
+        }
+    }
+
+    public void SetNetworkRelay(WorldWrapNetworkRelay relay)
+    {
+        networkRelay = relay;
+        if (firstPrefabIsPlayer)
+        {
+            InstantiateOnNetwork(0);
+        }
+    }
+
+    public void InstantiateOnNetwork(int prefabIndex)
+    {
+        networkRelay.InstantiateOnNetwork(prefabIndex);
     }
 
     public string GetPuppetName()
@@ -139,16 +165,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public int GetNumberOfPuppets()
     {
-        int numberOfPuppets = 0;
-        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
-        foreach (GameObject objectInScene in gameObjectsInScene)
-        {
-            if(HasPrefabName(objectInScene.name))
-            {
-                numberOfPuppets++;
-            }
-        }
-        return numberOfPuppets;
+        return puppets.Count + clientObjects.Count;
+    }
+
+    public GameObject GetTransformRelayPrefab()
+    {
+        return transformRelayPrefab;
     }
 
     public void OffsetTransform(Vector3 movementVector)
