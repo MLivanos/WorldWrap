@@ -8,17 +8,16 @@
 
 </div>
 
-- [WorldWrap: A Lightweight Framework for creating Seamless Wrapping WorldsIn The Unity Game Engine(v0.2.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-worldsin-the-unity-game-enginev020)
   - [Introduction](#introduction)
     - [0.2.0 Release Notes](#020-release-notes)
   - [How WorldWrap Works](#how-worldwrap-works)
   - [How To Use WorldWrap](#how-to-use-worldwrap)
+  - [Multiplayer](#multiplayer)
   - [Troubleshooting](#troubleshooting)
   - [Limitations](#limitations)
     - [Theorema Egregium (Or, Imperfect Global Shapes)](#theorema-egregium-or-imperfect-global-shapes)
     - [Performance Impact](#performance-impact)
     - [Small Worlds (And Workaround)](#small-worlds-and-workaround)
-    - [Multiplayer (And Workaround - to be added in Version 0.3.0)](#multiplayer-and-workaround---to-be-added-in-version-030)
   - [Future Development](#future-development)
   - [Support](#support)
 
@@ -29,7 +28,11 @@ Imagine you are standing in the middle of a field. The world appears like a flat
 
 How can we impart this feeling to the users of our games? We could create a curved world or make our game world on a sphere, but unless we make that world truly massive, the world will appear curved the whole time. We could teleport the user to the other end of the map when they walk around, but this would be jarring. Instead, WorldWrap accomplishes this effect by keeping the world as a series of tiles called blocks. When the user exits one block and enters another, the blocks rearrange themselves, any objects inside of them, and any Rigidbody objects moving between them to simulate the world wrapping around.
 
+<div align="center">
+  
 <img width="866" alt="Screenshot 2023-06-13 at 2 32 49 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/0e09957e-c3fd-4c1d-a7e0-4e04d45881a5">
+
+</div>
 
 The figure above demonstrates this idea. The figure initially is in the red square in the center (leftmost image). They move to the left and enter the blue square, continue left to the purple, and continue left to return to the initial red square.*
 
@@ -60,9 +63,11 @@ The 0.2.0 release allows WorldWrap to be used with Unity's NavMesh pathfinding A
 
 WorldWrap organizes the world into a matrix of tiles and, as the player walks around the world, rearranges those tiles to achieve the illusion of the game world taking place in some interesting shape.
 
+<div align="center">
 
 <img width="1053" alt="Screen Shot 2023-06-19 at 2 13 54 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/32ef6218-799e-4dd5-bf06-7deb962800f5">
 
+</div>
 
 UML class diagram for the WorldWrap Demo scene (v0.2.0).
 
@@ -72,7 +77,11 @@ In the Demo scene, if the player moves west from the red block, they end up in t
 
 Similarly, if the player moved north, eventually the WrapManager would shift the gameworld South. Effectively, the WrapManager keeps the player in the center of the world by moving tiles whenever it needs to, and the neighbors of every block stay the same (e.g. the red block is always east of the blue block, south of the green block, etc). To visualize the space this system is simulating, imagine rolling the world up into a cylinder, with the yellow block touching orange, blue touching purple, and gray touching white. Now, imagine twisting that cylinder such that the orange, yellow, and green blocks touch the teal gray, and white. This shape is a torus, colloquially referred to as a donut.
 
+<div align="center">
+
 <img width="621" alt="Screen Shot 2023-06-19 at 10 49 36 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/d80138b0-d1cc-4f28-a603-a1fba6c27d05">
+
+</div>
 
 The transformation from our 3x3 grid game world to a Torus.
 
@@ -92,7 +101,11 @@ You may also want to resize, reconfigure, and remove some WrapTriggers. Particul
 
 There are three fields for you to fill under the WrapManager component. The Setup Assistant will do its best to fill these in for you. The "Blocks" field should be set up with all of the blocks in the scene, however, they do not need to be in any particular order. The WrapManager will automatically detect the structure of your world. The Setup Assistant will also try to find your player character by finding the GameObject in the scene with the smallest [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) to the word "Player" (not case sensitive, null characters added when strings are of different size). Please ensure this field has your player's GameObject, as the Assistant can make a mistake. Please examine any warnings or errors the Setup Assistant shows. 
 
+<div align="center">
+
 <img width="1680" alt="Screen Shot 2023-06-19 at 10 53 15 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/ab34d4b9-a80f-473d-a672-ba3a85c4b3e2">
+
+</div>
 
 The WrapManager filled with fields.
 
@@ -102,11 +115,19 @@ You are now all set up! Please thoroughly test your scene to make sure all trigg
 
 *HOW TO USE MULTIPLAYER*
 
+<div align="center">
+  
 <img width="646" alt="Screenshot 2023-07-23 at 10 46 50 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/39365ca0-0cf8-4256-a113-58a6ce40f22e">
+
+</div>
 
 Diagram of how network objects are instantiated behind the scenes. Note that this process is accomplished via a single function call (WorldWrapNetworkManager.InstantiateOnNetwork()) from the perspective of a developer, and this process is the same for instantiating a player object when a new client connects.
 
+<div align="center">
+
 <img width="646" alt="Screenshot 2023-07-23 at 10 47 07 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/5bceff15-ee48-432c-830b-766af0f86548">
+
+</div>
 
 A diagram of how motion is logged and transforms updated. Note that this is automatically tracked by the WorldWrapNetworkManager.
 
