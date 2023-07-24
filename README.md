@@ -74,14 +74,13 @@ Similarly, if the player moved north, eventually the WrapManager would shift the
 
 <img width="621" alt="Screen Shot 2023-06-19 at 10 49 36 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/d80138b0-d1cc-4f28-a603-a1fba6c27d05">
 
-Transformation from our 3x3 grid game world to a Torus.
+The transformation from our 3x3 grid game world to a Torus.
 
 
 There are other ways to wrap worlds that can accomplish different shapes, such as the sphere shape below, but the current version of WorldWrap is designed to mimic toric space. Stay tuned to see more, or play around with the code and try to create something new yourself!
 
 
 ## How To Use WorldWrap
-
 
 For a full-worked example of WorldWrap, download the project and open up "Demo" in Unity. For a full-worked example of WorldWrap using NavMesh, open "DodgeballGame".
 
@@ -98,6 +97,18 @@ There are three fields for you to fill under the WrapManager component. The Setu
 The WrapManager filled with fields.
 
 You are now all set up! Please thoroughly test your scene to make sure all triggers are placed appropriately so that your game functions as desired. Note that objects with the WrapLayer tag (other than the blocks and their children) will not move. If your game is not wrapping as desired, see the Troubleshooting section.
+
+## Multiplayer
+
+*HOW TO USE MULTIPLAYER*
+
+<img width="646" alt="Screenshot 2023-07-23 at 10 46 50 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/39365ca0-0cf8-4256-a113-58a6ce40f22e">
+
+Diagram of how network objects are instantiated behind the scenes. Note that this process is accomplished via a single function call (WorldWrapNetworkManager.InstantiateOnNetwork()) from the perspective of a developer, and this process is the same for instantiating a player object when a new client connects.
+
+<img width="646" alt="Screenshot 2023-07-23 at 10 47 07 PM" src="https://github.com/MLivanos/WorldWrap/assets/59032623/5bceff15-ee48-432c-830b-766af0f86548">
+
+A diagram of how motion is logged and transforms updated. Note that this is automatically tracked by the WorldWrapNetworkManager.
 
 ## Troubleshooting
 
