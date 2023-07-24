@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.2.0)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0-Alpha1)
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
 
@@ -142,23 +142,13 @@ Unlike approaches that make use of extra cameras, however, WorldWrap's complexit
 
 In small worlds with few obstacles in between, the player may be able to see WorldWrap wrapping the world in action, which can reduce immersion. If each block minus WrapTrigger length is larger than the maximum render distance, then the effect will be undetectable. Smaller worlds may require some obstacles to distract the player from the horizon (e.g. trees, hills, buildings, etc). In the Demo scene, we use cubes to block the player's view of the horizon, but one should consider this before choosing WorldWrap for their game.
 
-
-### Multiplayer (And Workaround - to be added in Version 0.3.0)
-
-
-WorldWrap assumes that there is a single player whose actions dictate how the world will wrap around itself. If two players are moving simultaneously, there is no guarantee that we can create a good wrapping effect for both players. One possible workaround for this, however, is to run WorldWrap at the application leave for every player in a game, but have simple teleporting-edge-boundaries server side. That way, consistency is maintained and every user experiences the world as if it was wrapping around them.
-
-
-To be clear, WorldWrap is perfectly capable of handling single-player games with NPCs as is.
-
-
 ## Future Development
 
 
 WorldWrap is still under development, and I'm hoping to make it much more powerful in the future. Here is a list of future improvements, but feel free to suggest more:
 
 
-* Multiplayer support: Rendering wrap based on each player's perspective on the application layer while maintaining the global shape at the server level.
+* After the multiplayer update, I do not have new features planned. Let me know if there is any functionality you would like to see!
 
 
 ## Support
