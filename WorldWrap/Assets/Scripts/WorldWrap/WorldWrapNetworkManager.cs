@@ -111,9 +111,21 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private bool ShouldNotCreatePuppet(GameObject newPuppetRelay)
     {
-        if (newPuppetRelay.GetComponent<TransformRelay>() == clientRelays[playerIndex])
+        if (OwnsRelay(newPuppetRelay.GetComponent<TransformRelay>()))
         {
             return true;
+        }
+        return false;
+    }
+
+    private bool OwnsRelay(TransformRelay relay)
+    {
+        foreach(TransformRelay ownedRelay in clientRelays)
+        {
+            if (relay == ownedRelay)
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -135,6 +147,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public void SetNetworkRelay(WorldWrapNetworkRelay relay)
     {
         networkRelay = relay;
+        FindPuppets();
         if (firstPrefabIsPlayer)
         {
             InstantiateOnNetwork(0);
