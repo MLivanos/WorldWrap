@@ -202,9 +202,21 @@ public class WorldWrapNetworkManager : MonoBehaviour
         clientRelays[playerIndex].Warp(movementVector);
     }
 
-    public void WarpPlayer(Vector3 movementVector)
+    public void Warp(Vector3 movementVector, GameObject objectToMove)
     {
-        clientObjects[playerIndex].transform.Translate(movementVector, Space.World);
-        SendPositionUpdate(movementVector, playerIndex);
+        objectToMove.transform.Translate(movementVector, Space.World);
+        OffsetChildren(movementVector, objectToMove);
+    }
+
+    private void OffsetChildren(Vector3 movementVector, GameObject objectToMove)
+    {
+        SendPositionUpdate(movementVector, clientObjects.IndexOf(objectToMove));
+        foreach(Transform childTransform in objectToMove.transform)
+        {
+            if (clientObjects.Contains(childTransform.gameObject))
+            {
+                OffsetChildren(movementVector, childTransform.gameObject);
+            }
+        }
     }
 }

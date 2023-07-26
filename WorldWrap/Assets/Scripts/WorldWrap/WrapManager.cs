@@ -380,7 +380,7 @@ public class WrapManager : MonoBehaviour
         }
         if (IsMultiplayerClient(objectToMove))
         {
-            worldWrapNetworkManager.WarpPlayer(movementVector);
+            worldWrapNetworkManager.Warp(movementVector, objectToMove);
             return;
         }
         objectToMove.transform.Translate(movementVector, Space.World);
