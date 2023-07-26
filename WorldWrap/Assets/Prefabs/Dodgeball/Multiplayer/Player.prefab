@@ -131,7 +131,7 @@ MonoBehaviour:
   heldObjectPosition: {x: 0, y: 0.5, z: 1.5}
   throwStrength: 15
   health: 3
-  rotationSensitivity: 300
+  rotationSensitivity: 500
   speed: 10
   mainCameraFPPosition: {x: 0, y: 0.5, z: 0}
   grabbingRange: 10

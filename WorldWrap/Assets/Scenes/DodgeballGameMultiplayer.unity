@@ -1535,9 +1535,15 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 154706811}
-    PlayerPrefab: {fileID: 8628752190447563722, guid: a1e6536a570644cb585111e88c1240ba,
+    PlayerPrefab: {fileID: 2513805427565601899, guid: 6b59a14c154f145ff9d9f1d541bfed6e,
       type: 3}
-    NetworkPrefabs: []
+    NetworkPrefabs:
+    - Override: 0
+      Prefab: {fileID: 8628752190447563722, guid: a1e6536a570644cb585111e88c1240ba,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -6055,6 +6061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8851d5be41a7f4ef1be471bf089eea89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldWrapNetworkManager: {fileID: 1895850650}
   serverButton: {fileID: 1456357971}
   hostButton: {fileID: 1100683526}
   clientButton: {fileID: 704990259}
@@ -9896,12 +9903,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87261a5c453bb4c8eb40806988787df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxNumberOfPlayers: 2
-  playerPrefab: {fileID: 2610209613368273506, guid: b1324bd43ace74333ba06ef249022033,
-    type: 3}
-  puppetPrefab: {fileID: 2610209613368273506, guid: 220fcfb8d9bd743a9be8b7ae635c7f64,
+  clientPrefabs:
+  - {fileID: 2610209613368273506, guid: b1324bd43ace74333ba06ef249022033, type: 3}
+  - {fileID: 2863848475787073640, guid: 7633c8dec971c4d8eb47b05d4efecec8, type: 3}
+  puppetPrefabs:
+  - {fileID: 2610209613368273506, guid: 220fcfb8d9bd743a9be8b7ae635c7f64, type: 3}
+  - {fileID: 2863848475787073640, guid: 977979e8f83884e3fa84d97ff7bb381c, type: 3}
+  transformRelayPrefab: {fileID: 8628752190447563722, guid: a1e6536a570644cb585111e88c1240ba,
     type: 3}
   puppetName: PuppetObject
+  firstPrefabIsPlayer: 1
 --- !u!4 &1895850651
 Transform:
   m_ObjectHideFlags: 0

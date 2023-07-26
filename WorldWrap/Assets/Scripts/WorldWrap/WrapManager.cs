@@ -34,7 +34,6 @@ public class WrapManager : MonoBehaviour
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
-        // TODO: Abstract
         if (isUsingNavmesh)
         {
             CreateNavMeshLure();
@@ -381,7 +380,7 @@ public class WrapManager : MonoBehaviour
         }
         if (IsMultiplayerClient(objectToMove))
         {
-            worldWrapNetworkManager.WarpPlayer(movementVector);
+            worldWrapNetworkManager.Warp(movementVector, objectToMove);
             return;
         }
         objectToMove.transform.Translate(movementVector, Space.World);
