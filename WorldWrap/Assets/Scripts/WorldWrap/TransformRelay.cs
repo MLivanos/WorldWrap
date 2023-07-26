@@ -9,11 +9,11 @@ public class TransformRelay : NetworkBehaviour
 {
     private NetworkVariable<Vector3> puppetPosition = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<Vector3> puppetRotation = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<int> prefabIndex = new NetworkVariable<int>(default);
     private WorldWrapNetworkManager worldWrapNetworkManager;
     private Vector3 lastPosition;
     private Vector3 lastRotation;
     private string puppetName;
-    private int prefabIndex;
 
     private void Awake()
     {
@@ -103,12 +103,12 @@ public class TransformRelay : NetworkBehaviour
 
     public int GetPrefabIndex()
     {
-        return prefabIndex;
+        return prefabIndex.Value;
     }
 
     public void SetPrefabIndex(int indexNumber)
     {
-        prefabIndex = indexNumber;
+        prefabIndex.Value = indexNumber;
     }
 
     [ClientRpc]
@@ -122,5 +122,4 @@ public class TransformRelay : NetworkBehaviour
     {
         AddToPuppetsClientRpc(gameObject.name);
     }
-    
 }

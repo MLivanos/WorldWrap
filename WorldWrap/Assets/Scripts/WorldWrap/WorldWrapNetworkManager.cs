@@ -18,7 +18,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private List<TransformRelay> puppetTransformRelays;
     private List<GameObject> clientObjects;
     private List<TransformRelay> clientRelays;
-    private Vector3 lastPosition;
+    private List<Vector3> lastPositions;
     private int playerIndex;
 
     private void Start()
@@ -27,7 +27,17 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppetTransformRelays = new List<TransformRelay>();
         clientObjects = new List<GameObject>();
         clientRelays = new List<TransformRelay>();
+        lastPositions = new List<Vector3>();
         CreateTransformRelayGroup();
+    }
+
+    // To delete
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            InstantiateOnNetwork(1);
+        }
     }
 
     private void FixedUpdate()
@@ -86,6 +96,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         GameObject newClientObject = Instantiate(clientPrefabs[newRelay.GetPrefabIndex()]);
         clientObjects.Add(newClientObject);
+        lastPositions.Add(Vector3.zero);
         clientRelays.Add(newRelay);
         newRelay.Setup();
     }
@@ -104,9 +115,9 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void SendPositionUpdate(Vector3 offset, int objectIndex)
     {
-        clientRelays[objectIndex].Move(clientObjects[objectIndex].transform.position - lastPosition - offset);
+        clientRelays[objectIndex].Move(clientObjects[objectIndex].transform.position - lastPositions[objectIndex] - offset);
+        lastPositions[objectIndex] = clientObjects[objectIndex].transform.position;
         clientRelays[objectIndex].SetRotation(clientObjects[objectIndex].transform.eulerAngles);
-        lastPosition = clientObjects[objectIndex].transform.position;
     }
 
     private bool ShouldNotCreatePuppet(GameObject newPuppetRelay)
