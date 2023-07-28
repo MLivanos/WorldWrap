@@ -20,6 +20,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private List<TransformRelay> clientRelays;
     private List<Vector3> lastPositions;
     private int playerIndex;
+    // To delete
 
     private void Start()
     {
@@ -243,5 +244,24 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public bool IsClient(GameObject possibleClient)
     {
         return clientObjects.Contains(possibleClient);
+    }
+
+    public void RemoveClient(GameObject objectToRemove)
+    {
+        int indexToRemove = clientObjects.IndexOf(objectToRemove);
+        clientRelays[indexToRemove].RemovePuppetsServerRpc();
+        Destroy(clientObjects[indexToRemove]);
+        Destroy(clientRelays[indexToRemove]);
+        clientObjects.RemoveAt(indexToRemove);
+        clientRelays.RemoveAt(indexToRemove);
+        lastPositions.RemoveAt(indexToRemove);
+    }
+
+    public void RemovePuppet(TransformRelay relayToRemove)
+    {
+        int indexToRemove = puppetTransformRelays.IndexOf(relayToRemove);
+        Destroy(puppets[indexToRemove]);
+        puppetTransformRelays.RemoveAt(indexToRemove);
+        puppets.RemoveAt(indexToRemove);
     }
 }
