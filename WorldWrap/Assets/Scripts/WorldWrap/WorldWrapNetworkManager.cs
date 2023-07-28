@@ -231,16 +231,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         OffsetChildren(movementVector, objectToMove);
     }
 
-    public TransformRelay PuppetToTransform(GameObject puppetObject)
-    {
-        return puppetTransformRelays[puppets.IndexOf(puppetObject)];
-    }
-
-    public void ApplyForceToOtherClient(GameObject puppetObject, Vector3 force)
-    {
-        PuppetToTransform(puppetObject).ApplyForce(force);
-    }
-
     public void ApplyForce(TransformRelay clientRelay, Vector3 force)
     {
         Rigidbody clientRigidbody = clientObjects[clientRelays.IndexOf(clientRelay)].GetComponent<Rigidbody>();
