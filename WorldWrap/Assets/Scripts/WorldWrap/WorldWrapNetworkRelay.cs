@@ -8,6 +8,7 @@ using Unity.Netcode;
 public class WorldWrapNetworkRelay : NetworkBehaviour
 {
     [SerializeField] private GameObject transformRelayPrefab;
+    private GameObject newClientObject;
     private WorldWrapNetworkManager worldWrapNetworkManager;
     private ulong clientId;
 

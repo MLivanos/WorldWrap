@@ -136,6 +136,10 @@ public class TransformRelay : NetworkBehaviour
     [ClientRpc]
     private void RemovePuppetsClientRpc()
     {
+        if (IsOwner)
+        {
+            return;
+        }
         worldWrapNetworkManager.RemovePuppet(this);
     }
 
