@@ -6,6 +6,7 @@ public class WorldWrapNetworkRigidbody : MonoBehaviour
 {
     private Rigidbody puppetRigidbody;
     private TransformRelay clientTransformRelay;
+    private WorldWrapNetworkManager worldWrapNetworkManager;
 
     private void Start()
     {
@@ -14,11 +15,26 @@ public class WorldWrapNetworkRigidbody : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.impulse);
+        GameObject collisionGameObject = collision.collider.gameObject;
+        if (CollidedWithClient(collisionGameObject))
+        {
+            Debug.Log(collision.impulse);
+            clientTransformRelay.ApplyForce(collision.impulse * Time.fixedDeltaTime);
+        }
+    }
+
+    private bool CollidedWithClient(GameObject collisionGameObject)
+    {   
+        return collisionGameObject.GetComponent<Rigidbody>() && worldWrapNetworkManager.IsClient(collisionGameObject);
     }
 
     public void SetClientTransformRelay(TransformRelay transformRelay)
     {
         clientTransformRelay = transformRelay;
+    }
+
+    public void SetNetworkManager(WorldWrapNetworkManager networkManager)
+    {
+        worldWrapNetworkManager = networkManager;
     }
 }
