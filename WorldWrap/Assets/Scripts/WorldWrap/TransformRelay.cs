@@ -173,4 +173,10 @@ public class TransformRelay : NetworkBehaviour
         };
         ApplyForceClientRpc(force, clientRpcParams);
     }
+
+    [ServerRpc]
+    public void DespawnServerRpc()
+    {
+        OnNetworkDespawn();
+    }
 }

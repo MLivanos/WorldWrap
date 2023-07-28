@@ -257,7 +257,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         int indexToRemove = clientObjects.IndexOf(objectToRemove);
         clientRelays[indexToRemove].RemovePuppetsServerRpc();
         Destroy(clientObjects[indexToRemove]);
-        Destroy(clientRelays[indexToRemove]);
+        clientRelays[indexToRemove].DespawnServerRpc();
         clientObjects.RemoveAt(indexToRemove);
         clientRelays.RemoveAt(indexToRemove);
         lastPositions.RemoveAt(indexToRemove);
