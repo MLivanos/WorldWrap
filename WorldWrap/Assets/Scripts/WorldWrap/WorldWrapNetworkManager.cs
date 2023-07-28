@@ -20,6 +20,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private List<TransformRelay> clientRelays;
     private List<Vector3> lastPositions;
     private int playerIndex;
+    // To delete
+    private GameObject recentGO;
 
     private void Start()
     {
@@ -36,7 +38,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            InstantiateOnNetwork(1);
+            recentGO = InstantiateOnNetwork(1);
+        }
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            RemoveClient(recentGO);
         }
     }
 
@@ -56,7 +62,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private void SendAllUpdates()
     {
-        for(int objectIndex = 0; objectIndex < clientObjects.Count; objectIndex++)
+        for(int objectIndex = 0; objectIndex < clientRelays.Count; objectIndex++)
         {
             SendPositionUpdate(objectIndex);
         }
@@ -105,8 +111,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void AddToClientObjects(TransformRelay newRelay)
     {
-        GameObject newClientObject = Instantiate(clientPrefabs[newRelay.GetPrefabIndex()]);
-        clientObjects.Add(newClientObject);
         lastPositions.Add(Vector3.zero);
         clientRelays.Add(newRelay);
         newRelay.Setup();
@@ -188,9 +192,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
         }
     }
 
-    public void InstantiateOnNetwork(int prefabIndex)
+    public GameObject InstantiateOnNetwork(int prefabIndex)
     {
+        GameObject newClientObject = Instantiate(clientPrefabs[prefabIndex]);
+        clientObjects.Add(newClientObject);
         networkRelay.InstantiateOnNetwork(prefabIndex);
+        return newClientObject;
     }
 
     public string GetPuppetName()
@@ -231,16 +238,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         OffsetChildren(movementVector, objectToMove);
     }
 
-    public TransformRelay PuppetToTransform(GameObject puppetObject)
-    {
-        return puppetTransformRelays[puppets.IndexOf(puppetObject)];
-    }
-
-    public void ApplyForceToOtherClient(GameObject puppetObject, Vector3 force)
-    {
-        PuppetToTransform(puppetObject).ApplyForce(force);
-    }
-
     public void ApplyForce(TransformRelay clientRelay, Vector3 force)
     {
         Rigidbody clientRigidbody = clientObjects[clientRelays.IndexOf(clientRelay)].GetComponent<Rigidbody>();
@@ -253,5 +250,24 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public bool IsClient(GameObject possibleClient)
     {
         return clientObjects.Contains(possibleClient);
+    }
+
+    public void RemoveClient(GameObject objectToRemove)
+    {
+        int indexToRemove = clientObjects.IndexOf(objectToRemove);
+        clientRelays[indexToRemove].RemovePuppetsServerRpc();
+        Destroy(clientObjects[indexToRemove]);
+        clientRelays[indexToRemove].DespawnServerRpc();
+        clientObjects.RemoveAt(indexToRemove);
+        clientRelays.RemoveAt(indexToRemove);
+        lastPositions.RemoveAt(indexToRemove);
+    }
+
+    public void RemovePuppet(TransformRelay relayToRemove)
+    {
+        int indexToRemove = puppetTransformRelays.IndexOf(relayToRemove);
+        Destroy(puppets[indexToRemove]);
+        puppetTransformRelays.RemoveAt(indexToRemove);
+        puppets.RemoveAt(indexToRemove);
     }
 }

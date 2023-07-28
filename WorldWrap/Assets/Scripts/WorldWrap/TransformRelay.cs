@@ -133,10 +133,26 @@ public class TransformRelay : NetworkBehaviour
         worldWrapNetworkManager.ApplyForce(this, force);
     }
 
+    [ClientRpc]
+    private void RemovePuppetsClientRpc()
+    {
+        if (IsOwner)
+        {
+            return;
+        }
+        worldWrapNetworkManager.RemovePuppet(this);
+    }
+
     [ServerRpc]
     private void AddToPuppetsServerRpc()
     {
         AddToPuppetsClientRpc(gameObject.name);
+    }
+
+    [ServerRpc]
+    public void RemovePuppetsServerRpc()
+    {
+        RemovePuppetsClientRpc();
     }
 
     [ServerRpc]
@@ -156,5 +172,11 @@ public class TransformRelay : NetworkBehaviour
             }
         };
         ApplyForceClientRpc(force, clientRpcParams);
+    }
+
+    [ServerRpc]
+    public void DespawnServerRpc()
+    {
+        OnNetworkDespawn();
     }
 }
