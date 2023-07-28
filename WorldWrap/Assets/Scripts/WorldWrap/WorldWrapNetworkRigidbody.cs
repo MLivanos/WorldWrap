@@ -18,7 +18,6 @@ public class WorldWrapNetworkRigidbody : MonoBehaviour
         GameObject collisionGameObject = collision.collider.gameObject;
         if (CollidedWithClient(collisionGameObject))
         {
-            Debug.Log(collision.impulse);
             clientTransformRelay.ApplyForce(collision.impulse * Time.fixedDeltaTime);
         }
     }
