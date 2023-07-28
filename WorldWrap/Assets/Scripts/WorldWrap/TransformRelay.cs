@@ -13,12 +13,17 @@ public class TransformRelay : NetworkBehaviour
     private WorldWrapNetworkManager worldWrapNetworkManager;
     private Vector3 lastPosition;
     private Vector3 lastRotation;
+    private ulong clientId;
     private string puppetName;
 
     private void Awake()
     {
         FindWorldWrapNetworkManager();
         NameSelf();
+        if(IsOwner)
+        {
+            SetClientIdServerRpc(NetworkManager.Singleton.LocalClientId);
+        }
     }
 
     private void Start()
@@ -111,15 +116,45 @@ public class TransformRelay : NetworkBehaviour
         prefabIndex.Value = indexNumber;
     }
 
+    public void ApplyForce(Vector3 force)
+    {
+        ApplyForceServerRpc(force);
+    }
+
     [ClientRpc]
     private void AddToPuppetsClientRpc(string senderName)
     {
         worldWrapNetworkManager.AddToPuppets(senderName, gameObject);
     }
 
+    [ClientRpc]
+    private void ApplyForceClientRpc(Vector3 force, ClientRpcParams clientRpcParams = default)
+    {
+        worldWrapNetworkManager.ApplyForce(this, force);
+    }
+
     [ServerRpc]
     private void AddToPuppetsServerRpc()
     {
         AddToPuppetsClientRpc(gameObject.name);
+    }
+
+    [ServerRpc]
+    private void SetClientIdServerRpc(ulong clientIdNumber)
+    {
+        clientId = clientIdNumber;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ApplyForceServerRpc(Vector3 force)
+    {
+        ClientRpcParams clientRpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[]{clientId}
+            }
+        };
+        ApplyForceClientRpc(force, clientRpcParams);
     }
 }

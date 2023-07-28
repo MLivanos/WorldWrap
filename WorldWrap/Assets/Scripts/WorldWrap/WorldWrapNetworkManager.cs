@@ -75,12 +75,23 @@ public class WorldWrapNetworkManager : MonoBehaviour
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
         GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
+        SetupRigidbody(newPuppet, puppetTransformRelay);
         newPuppet.tag = "WorldWrapPuppet";
         puppetTransformRelays.Add(puppetTransformRelay);
         puppets.Add(newPuppet);
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
         newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
+    }
+
+    private void SetupRigidbody(GameObject newPuppet, TransformRelay puppetTransformRelay)
+    {
+        WorldWrapNetworkRigidbody newPuppetRigidbody = newPuppet.GetComponent<WorldWrapNetworkRigidbody>();
+        if (newPuppetRigidbody != null)
+        {
+            newPuppetRigidbody.SetClientTransformRelay(puppetTransformRelay);
+            newPuppetRigidbody.SetNetworkManager(this);
+        }
     }
 
     public void AddToPuppets(string senderName, GameObject newPuppetRelay)
@@ -155,6 +166,18 @@ public class WorldWrapNetworkManager : MonoBehaviour
         }
     }
 
+    private void OffsetChildren(Vector3 movementVector, GameObject objectToMove)
+    {
+        SendPositionUpdate(movementVector, clientObjects.IndexOf(objectToMove));
+        foreach(Transform childTransform in objectToMove.transform)
+        {
+            if (clientObjects.Contains(childTransform.gameObject))
+            {
+                OffsetChildren(movementVector, childTransform.gameObject);
+            }
+        }
+    }
+
     public void SetNetworkRelay(WorldWrapNetworkRelay relay)
     {
         networkRelay = relay;
@@ -208,15 +231,27 @@ public class WorldWrapNetworkManager : MonoBehaviour
         OffsetChildren(movementVector, objectToMove);
     }
 
-    private void OffsetChildren(Vector3 movementVector, GameObject objectToMove)
+    public TransformRelay PuppetToTransform(GameObject puppetObject)
     {
-        SendPositionUpdate(movementVector, clientObjects.IndexOf(objectToMove));
-        foreach(Transform childTransform in objectToMove.transform)
+        return puppetTransformRelays[puppets.IndexOf(puppetObject)];
+    }
+
+    public void ApplyForceToOtherClient(GameObject puppetObject, Vector3 force)
+    {
+        PuppetToTransform(puppetObject).ApplyForce(force);
+    }
+
+    public void ApplyForce(TransformRelay clientRelay, Vector3 force)
+    {
+        Rigidbody clientRigidbody = clientObjects[clientRelays.IndexOf(clientRelay)].GetComponent<Rigidbody>();
+        if(clientRigidbody != null)
         {
-            if (clientObjects.Contains(childTransform.gameObject))
-            {
-                OffsetChildren(movementVector, childTransform.gameObject);
-            }
+            clientRigidbody.AddForce(force, ForceMode.Impulse);
         }
+    }
+
+    public bool IsClient(GameObject possibleClient)
+    {
+        return clientObjects.Contains(possibleClient);
     }
 }
