@@ -14,6 +14,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private int numberOfRows;
     private int numberOfColumns;
     private bool isUsingNavmesh;
+    private bool isMultiplayer;
     private string worldWrapTag;
 
     [MenuItem("Window/WorldWrap")]
@@ -33,6 +34,7 @@ public class WorldWrapSetupEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUIUtility.labelWidth = 175;
         isUsingNavmesh = EditorGUILayout.Toggle("Using NavMesh: ", isUsingNavmesh);
+        isMultiplayer = EditorGUILayout.Toggle("Is Multiplayer: ", isMultiplayer);
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Setup WorldWrap"))
         {
@@ -77,14 +79,21 @@ public class WorldWrapSetupEditor : EditorWindow
             wrapManagerScript.SetIsUsingNavMesh(true);
             CreateNavMeshPlanes();
         }
+        if (isMultiplayer)
+        {
+            wrapManagerScript.UsingMultiplayer(true);
+            CreateWorldWrapNetworkManager();
+        }
     }
 
     private void SetupWrapManager()
     {
         wrapManagerObject = new GameObject("WrapManager");
+        // To delete
         Debug.Log(worldWrapTag);
         Debug.Log(wrapManagerObject.tag);
         wrapManagerObject.tag = worldWrapTag;
+        // To delete
         Debug.Log(wrapManagerObject.tag);
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
         wrapManagerScript.SetBlocksLength(numberOfRows * numberOfColumns);
@@ -162,6 +171,16 @@ public class WorldWrapSetupEditor : EditorWindow
         wrapTrigger.transform.position = position;
         wrapTrigger.GetComponent<Renderer>().material = clearMaterial;
         wrapTrigger.AddComponent(typeof(WrapTrigger));
+    }
+
+    private void CreateWorldWrapNetworkManager()
+    {
+        GameObject networkManagerObject = new GameObject("WorldWrapNetworkManager");
+        networkManagerObject.tag = worldWrapTag;
+        WorldWrapNetworkManager networkManagerComponent = networkManagerObject.AddComponent(typeof(WorldWrapNetworkManager)) as WorldWrapNetworkManager;
+        wrapManagerScript.SetNetworkManager(networkManagerObject);
+        Debug.LogWarning("Please ensure that Unity's Netcode for GameObjects is installed and that a NetworkManager object is created with the appropriate settings");
+        Debug.LogWarning("Please set NetworkRelay prefab. If you are using an unmodified copy of WorldWrap, this prefab can be found in WorldWrap/Assets/Prefabs/WorldWrapNetworkRelay");
     }
 
     private bool WorldWrapAlreadyExists()

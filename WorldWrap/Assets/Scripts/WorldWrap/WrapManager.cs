@@ -435,6 +435,7 @@ public class WrapManager : MonoBehaviour
         blocks[nextBlockIndex] = block;
     }
 
+    // RENAME: UsingNavMesh in v1.0.0
     public void SetIsUsingNavMesh(bool isUsing)
     {
         isUsingNavmesh = isUsing;
@@ -450,9 +451,19 @@ public class WrapManager : MonoBehaviour
         wrapLayer = wrapLayerNumber;
     }
 
+    public void UsingMultiplayer(bool usingMultiplayer)
+    {
+        isMultiplayer = true;
+    }
+
     public bool IsMultiplayer()
     {
         return isMultiplayer;
+    }
+
+    public void SetNetworkManager(GameObject networkManager)
+    {
+        worldWrapNetworkManagerObject = networkManager;
     }
 
     public void SetIsMultiplayer(bool multiplayer)
