@@ -89,12 +89,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private void SetupWrapManager()
     {
         wrapManagerObject = new GameObject("WrapManager");
-        // To delete
-        Debug.Log(worldWrapTag);
-        Debug.Log(wrapManagerObject.tag);
         wrapManagerObject.tag = worldWrapTag;
-        // To delete
-        Debug.Log(wrapManagerObject.tag);
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
         wrapManagerScript.SetBlocksLength(numberOfRows * numberOfColumns);
     }
