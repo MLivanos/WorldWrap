@@ -87,7 +87,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppets.Add(newPuppet);
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
         newPuppet.transform.position = puppetTransformRelay.GetPosition();
-        newPuppet.transform.eulerAngles = puppetTransformRelay.GetRotation();
+        Vector3 rotation = puppetTransformRelay.GetEulerAngles();
+        newPuppet.transform.eulerAngles = rotation;
     }
 
     private void SetupRigidbody(GameObject newPuppet, TransformRelay puppetTransformRelay)
@@ -194,9 +195,9 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public GameObject InstantiateOnNetwork(int prefabIndex)
     {
+        networkRelay.InstantiateOnNetwork(prefabIndex);
         GameObject newClientObject = Instantiate(clientPrefabs[prefabIndex]);
         clientObjects.Add(newClientObject);
-        networkRelay.InstantiateOnNetwork(prefabIndex);
         return newClientObject;
     }
 
