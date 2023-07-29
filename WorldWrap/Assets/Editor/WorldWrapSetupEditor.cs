@@ -27,6 +27,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private void OnGUI()
     {
         SetupTitle();
+        worldWrapTag = "WorldWrapObject";
         worldSize = EditorGUILayout.Vector3Field("World Size: ", worldSize);
         EditorGUILayout.BeginHorizontal();
         numberOfRows = EditorGUILayout.IntField("Number Of Rows: ", numberOfRows);
@@ -38,7 +39,6 @@ public class WorldWrapSetupEditor : EditorWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Setup WorldWrap"))
         {
-            worldWrapTag = "WorldWrapObject";
             CreatWorldWrapObjects();
         }
         if (GUILayout.Button("Clear WorldWrap"))
