@@ -174,7 +174,6 @@ public class WrapManager : MonoBehaviour
         if (ShouldWrap())
         {
             WrapWorld();
-            previousBlock = currentBlock;
         }
         initialTrigger = null;
         currentTrigger = null;
@@ -190,12 +189,13 @@ public class WrapManager : MonoBehaviour
         return shouldWrap;
     }
 
-    private void WrapWorld()
+    public void WrapWorld()
     {
         GameObject[,] newMatrix = GetTranslations();
         TranslateBlocks(GetBlockPositions(), newMatrix);
         blockMatrix = newMatrix;
         initialTrigger = null;
+        previousBlock = currentBlock;
     }
 
     public void LogBlockEntry(GameObject enterBlock)
