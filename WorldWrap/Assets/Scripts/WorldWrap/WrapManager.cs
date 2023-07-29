@@ -8,7 +8,6 @@ using UnityEngine.AI;
 public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
-    [SerializeField] private GameObject player;
     [SerializeField] private GameObject lureObject;
     [SerializeField] private GameObject worldWrapNetworkManagerObject;
     [SerializeField] private bool isUsingNavmesh;
@@ -19,6 +18,8 @@ public class WrapManager : MonoBehaviour
     private GameObject currentTrigger;
     private GameObject previousBlock;
     private GameObject currentBlock;
+    // DEFUNCT: Remove in v.1.0.0
+    private GameObject player;
     private int wrapLayer;
     private bool isTransitioning;
 
@@ -404,6 +405,7 @@ public class WrapManager : MonoBehaviour
         return newMatrix;
     }
 
+    // DEFUNCT: Remove in v.1.0.0
     public void SetPlayer(GameObject newPlayer)
     {
         player = newPlayer;
