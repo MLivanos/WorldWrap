@@ -8,7 +8,6 @@ using UnityEngine.AI;
 public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
-    [SerializeField] private GameObject player;
     [SerializeField] private GameObject lureObject;
     [SerializeField] private GameObject worldWrapNetworkManagerObject;
     [SerializeField] private bool isUsingNavmesh;
@@ -19,6 +18,8 @@ public class WrapManager : MonoBehaviour
     private GameObject currentTrigger;
     private GameObject previousBlock;
     private GameObject currentBlock;
+    // DEFUNCT: Remove in v.1.0.0
+    private GameObject player;
     private int wrapLayer;
     private bool isTransitioning;
 
@@ -404,6 +405,7 @@ public class WrapManager : MonoBehaviour
         return newMatrix;
     }
 
+    // DEFUNCT: Remove in v.1.0.0
     public void SetPlayer(GameObject newPlayer)
     {
         player = newPlayer;
@@ -433,6 +435,7 @@ public class WrapManager : MonoBehaviour
         blocks[nextBlockIndex] = block;
     }
 
+    // RENAME: UsingNavMesh in v1.0.0
     public void SetIsUsingNavMesh(bool isUsing)
     {
         isUsingNavmesh = isUsing;
@@ -448,9 +451,19 @@ public class WrapManager : MonoBehaviour
         wrapLayer = wrapLayerNumber;
     }
 
+    public void UsingMultiplayer(bool usingMultiplayer)
+    {
+        isMultiplayer = true;
+    }
+
     public bool IsMultiplayer()
     {
         return isMultiplayer;
+    }
+
+    public void SetNetworkManager(GameObject networkManager)
+    {
+        worldWrapNetworkManagerObject = networkManager;
     }
 
     public void SetIsMultiplayer(bool multiplayer)
