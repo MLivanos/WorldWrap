@@ -68,6 +68,7 @@ public class TransformRelay : NetworkBehaviour
 
     public void SetRotation(Vector3 rotationVector)
     {
+        //lastRotation = puppetRotation.Value;
         puppetRotation.Value = rotationVector;
     }
 

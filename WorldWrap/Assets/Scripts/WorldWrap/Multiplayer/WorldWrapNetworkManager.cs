@@ -194,9 +194,9 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public GameObject InstantiateOnNetwork(int prefabIndex)
     {
+        networkRelay.InstantiateOnNetwork(prefabIndex);
         GameObject newClientObject = Instantiate(clientPrefabs[prefabIndex]);
         clientObjects.Add(newClientObject);
-        networkRelay.InstantiateOnNetwork(prefabIndex);
         return newClientObject;
     }
 
