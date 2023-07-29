@@ -1,5 +1,21 @@
 # CHANGELOG:
 
+## v0.3.0 - Multiplayer
+
+### New Features:
+
+* Fully supports multiplayer through WorldWrap Relay
+* Adds a multiplayer dodgeball game one can connect to via local host
+* Integrates multiplayer settings into Setup Assistant
+
+### Bug Fixes:
+
+### Changes:
+
+* Setup Assistant no longer asks for defunct fields (to be removed in v1.0.0)
+
+### Removed:
+
 ## v0.2.0 - NavMesh Support & Setup Assistant
 
 ### New Features:
