@@ -28,6 +28,7 @@ public class BoundsTrigger : TriggerBehavior
         {
             SelfWrap newSelfWrap = otherGameObject.AddComponent(typeof(SelfWrap)) as SelfWrap;
             newSelfWrap.SetBounds(this);
+            wrapManager.AddToSelfWrappers(newSelfWrap.gameObject);
             return;
         }
         Vector3 otherPosition = GetNewPosition(otherGameObject.transform.position);
@@ -46,19 +47,19 @@ public class BoundsTrigger : TriggerBehavior
         Vector3 otherPosition = currentPosition;
         if (currentPosition.x <= lowerXBound)
         {
-            otherPosition.x = upperXBound;
+            otherPosition.x = otherPosition.x + 2*upperXBound;
         }
         else if (currentPosition.x >= upperXBound)
         {
-            otherPosition.x = lowerXBound;
+            otherPosition.x = otherPosition.x + 2*lowerXBound;
         }
         if (currentPosition.z <= lowerZBound)
         {
-            otherPosition.z = upperZBound;
+            otherPosition.z = otherPosition.z + 2*upperXBound;
         }
         else if (currentPosition.z >= upperZBound)
         {
-            otherPosition.z = lowerZBound;
+            otherPosition.z = otherPosition.z + 2*lowerZBound;
         }
         return otherPosition;
     }
