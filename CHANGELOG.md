@@ -7,6 +7,8 @@
 * Fully supports multiplayer through WorldWrap Relay
 * Adds a multiplayer dodgeball game one can connect to via local host
 * Integrates multiplayer settings into Setup Assistant
+* Adds a SafetyTrigger class - a TriggerBehavior which forces a wrap when the player exits outside its bounds. Useful for games with teleporting mechanics or to fix glitches caused by lag or improperly constructed WrapTriggers
+* Adds a SelfWrap class, allowing objects to be in charge of their own wraps. This component is added to objects when they leave the vertical bounds of the world and removed when they reenter the bounds. This is useful for games where objects may fly arbitrarily high into the sky.
 
 ### Bug Fixes:
 
