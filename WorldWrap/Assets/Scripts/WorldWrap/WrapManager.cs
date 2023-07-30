@@ -13,6 +13,7 @@ public class WrapManager : MonoBehaviour
     [SerializeField] private bool isUsingNavmesh;
     [SerializeField] private bool isMultiplayer;
     private WorldWrapNetworkManager worldWrapNetworkManager;
+    private List<GameObject> selfWrappers;
     private GameObject[,] blockMatrix;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
@@ -25,6 +26,7 @@ public class WrapManager : MonoBehaviour
 
     private void Start()
     {
+        selfWrappers = new List<GameObject>();
         initialTrigger = null;
         currentTrigger = null;
         // Automatically detect matrix structure of blocks
@@ -174,7 +176,6 @@ public class WrapManager : MonoBehaviour
         if (ShouldWrap())
         {
             WrapWorld();
-            previousBlock = currentBlock;
         }
         initialTrigger = null;
         currentTrigger = null;
@@ -190,12 +191,13 @@ public class WrapManager : MonoBehaviour
         return shouldWrap;
     }
 
-    private void WrapWorld()
+    public void WrapWorld()
     {
         GameObject[,] newMatrix = GetTranslations();
         TranslateBlocks(GetBlockPositions(), newMatrix);
         blockMatrix = newMatrix;
         initialTrigger = null;
+        previousBlock = currentBlock;
     }
 
     public void LogBlockEntry(GameObject enterBlock)
@@ -250,8 +252,13 @@ public class WrapManager : MonoBehaviour
 
     private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
     {
-        Vector3 movementVector;
+        Vector3 movementVector = Vector3.zero;
         HashSet<int> objectAlreadyMoved = new HashSet<int>();
+        int middleX = (int)oldPositions.GetLength(0) / 2;
+        int middleZ = (int)oldPositions.GetLength(1) / 2;
+        movementVector = oldPositions[middleX,middleZ] - newMatrix[middleX,middleZ].transform.position;
+        Debug.Log(movementVector);
+        TranslateSelfWrappers(movementVector);
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
@@ -291,6 +298,14 @@ public class WrapManager : MonoBehaviour
                 break;
             }
             triggerScript.removeResident(oldResident);
+        }
+    }
+
+    private void TranslateSelfWrappers(Vector3 movementVector)
+    {
+        foreach(GameObject objectWrapping in selfWrappers)
+        {
+            objectWrapping.transform.Translate(movementVector, Space.World);
         }
     }
 
@@ -469,5 +484,15 @@ public class WrapManager : MonoBehaviour
     public void SetIsMultiplayer(bool multiplayer)
     {
         isMultiplayer = multiplayer;
+    }
+
+    public void AddToSelfWrappers(GameObject selfWrapper)
+    {
+        selfWrappers.Add(selfWrapper);
+    }
+
+    public void RemoveSelfWrap(GameObject selfWrapper)
+    {
+        selfWrappers.Remove(selfWrapper);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class TriggerBehavior : MonoBehaviour
+public abstract class TriggerBehavior : MonoBehaviour
 {
     protected WrapManager wrapManager;
     protected int wrapLayer;
@@ -36,7 +36,6 @@ public class TriggerBehavior : MonoBehaviour
 
     protected bool IsCollidingWithPlayer(GameObject playerObject)
     {
-        //return playerObject.tag == "Player" && IsHandlingClientPlayer(playerObject);
         return playerObject.tag == "Player";
     }
 
