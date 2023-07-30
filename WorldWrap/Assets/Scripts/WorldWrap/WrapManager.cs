@@ -490,4 +490,9 @@ public class WrapManager : MonoBehaviour
     {
         selfWrappers.Add(selfWrapper);
     }
+
+    public void RemoveSelfWrap(GameObject selfWrapper)
+    {
+        selfWrappers.Remove(selfWrapper);
+    }
 }

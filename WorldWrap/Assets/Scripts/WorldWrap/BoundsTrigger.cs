@@ -42,6 +42,16 @@ public class BoundsTrigger : TriggerBehavior
         other.gameObject.transform.position = otherPosition;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        SelfWrap otherSelfWrap = other.gameObject.GetComponent<SelfWrap>();
+        if (otherSelfWrap)
+        {
+            wrapManager.RemoveSelfWrap(other.gameObject);
+            Destroy(otherSelfWrap);
+        }
+    }
+
     public Vector3 GetNewPosition(Vector3 currentPosition)
     {
         Vector3 otherPosition = currentPosition;
