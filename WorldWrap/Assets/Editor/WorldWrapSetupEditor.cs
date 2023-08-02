@@ -17,7 +17,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private bool isMultiplayer;
     private string worldWrapTag;
 
-    [MenuItem("Window/WorldWrap")]
+    [MenuItem("Window/WorldWrap Setup Assistant")]
 
     public static void ShowWidnow()
     {
@@ -73,6 +73,7 @@ public class WorldWrapSetupEditor : EditorWindow
         SetupWrapManager();
         SetupGlobalBounds();
         SetupBlocks();
+        SetupSafetyTrigger();
         ParentWrapManagers();
         if (isUsingNavmesh)
         {
@@ -102,6 +103,16 @@ public class WorldWrapSetupEditor : EditorWindow
         bounds.transform.localScale = worldSize;
         bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
         bounds.AddComponent(typeof(BoundsTrigger));
+    }
+
+    private void SetupSafetyTrigger()
+    {
+        bounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        bounds.name = "SafetyTrigger";
+        bounds.tag = worldWrapTag;
+        bounds.transform.localScale = new Vector3(2 * worldSize.x / numberOfRows, worldSize.y, 2 * worldSize.z / numberOfColumns);
+        bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent3", typeof(Material));
+        bounds.AddComponent(typeof(SafetyTrigger));
     }
 
     private void SetupBlocks()
