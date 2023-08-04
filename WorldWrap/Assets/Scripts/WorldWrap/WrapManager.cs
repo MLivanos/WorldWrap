@@ -257,7 +257,6 @@ public class WrapManager : MonoBehaviour
         int middleX = (int)oldPositions.GetLength(0) / 2;
         int middleZ = (int)oldPositions.GetLength(1) / 2;
         movementVector = oldPositions[middleX,middleZ] - newMatrix[middleX,middleZ].transform.position;
-        Debug.Log(movementVector);
         TranslateSelfWrappers(movementVector);
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
