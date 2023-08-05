@@ -133,7 +133,7 @@ public class WrapManager : MonoBehaviour
         float planeLength = Mathf.Max(plane1.transform.lossyScale.x, plane1.transform.lossyScale.z) * 10;
         float linkIncrement = planeLength / numberOfLinks;
         int longDirection = 0;
-        if (plane1.transform.position.z > plane1.transform.position.x)
+        if (Math.Abs(plane1.transform.position.z) < Math.Abs(plane1.transform.position.x))
         {
             longDirection = 2;
         }

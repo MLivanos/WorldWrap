@@ -4375,6 +4375,7 @@ GameObject:
   - component: {fileID: 1084014516}
   - component: {fileID: 1084014514}
   - component: {fileID: 1084014520}
+  - component: {fileID: 1084014521}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Untagged
@@ -4468,14 +4469,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084014513}
-  m_LocalRotation: {x: -0.2588186, y: -0, z: -0, w: 0.965926}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.7502, y: 7.3495817, z: 6.5018544}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1084014520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4486,6 +4487,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6cee4242cfa6545cdac98c44d7cbc77c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1084014521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084014513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f5f8ffe9a6845b5b5247ffbe35b63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
