@@ -93,7 +93,7 @@ public class MPDBPlayer : DodgeballActor
         foreach(Collider ball in ballColliders)
         {
             Physics.Raycast(outlook.position, ball.transform.position - outlook.position, out hit, grabbingRange);
-            if (hit.rigidbody != null && hit.rigidbody.tag == "Dodgeball")
+            if (hit.rigidbody != null && (hit.rigidbody.tag == "Dodgeball" || hit.rigidbody.gameObject.layer == LayerMask.NameToLayer("Dodgeballs")))
             {
                 PickupObject(hit.rigidbody.gameObject);
                 return true;
