@@ -17,7 +17,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private bool isMultiplayer;
     private string worldWrapTag;
 
-    [MenuItem("Window/WorldWrap")]
+    [MenuItem("Window/WorldWrap Setup Assistant")]
 
     public static void ShowWidnow()
     {
@@ -73,6 +73,7 @@ public class WorldWrapSetupEditor : EditorWindow
         SetupWrapManager();
         SetupGlobalBounds();
         SetupBlocks();
+        SetupSafetyTrigger();
         ParentWrapManagers();
         if (isUsingNavmesh)
         {
@@ -102,6 +103,16 @@ public class WorldWrapSetupEditor : EditorWindow
         bounds.transform.localScale = worldSize;
         bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
         bounds.AddComponent(typeof(BoundsTrigger));
+    }
+
+    private void SetupSafetyTrigger()
+    {
+        bounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        bounds.name = "SafetyTrigger";
+        bounds.tag = worldWrapTag;
+        bounds.transform.localScale = new Vector3(2 * worldSize.x / numberOfRows, worldSize.y, 2 * worldSize.z / numberOfColumns);
+        bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent3", typeof(Material));
+        bounds.AddComponent(typeof(SafetyTrigger));
     }
 
     private void SetupBlocks()
@@ -237,12 +248,12 @@ public class WorldWrapSetupEditor : EditorWindow
         float planeXOffset = worldSize.x / numberOfRows;
         float planeZScale = worldSize.z / 10.0f;
         float planeXScale = worldSize.x / 10.0f;
-        float planePosition = -1 * bounds.transform.lossyScale.z / 2.0f - 1.5f;
+        float planePosition = -1 * worldSize.z / 2.0f - 1.5f;
         GameObject navMeshLure = new GameObject("NavMeshLure");
         navMeshLure.tag = worldWrapTag;
         GameObject plane1 = CreateNavMeshPlane(planeXScale, 0.0f, planePosition, navMeshLure);
         GameObject plane2 = CreateNavMeshPlane(planeXScale, 180.0f, planePosition, navMeshLure);
-        planePosition = -1 * bounds.transform.lossyScale.x / 2.0f - 1.5f;
+        planePosition = -1 * worldSize.z / 2.0f - 1.5f;
         GameObject plane3 = CreateNavMeshPlane(planeZScale, 90.0f, planePosition, navMeshLure);
         GameObject plane4 = CreateNavMeshPlane(planeZScale, 270.0f, planePosition, navMeshLure);
         navMeshLure.transform.position = wrapManagerObject.transform.position;
