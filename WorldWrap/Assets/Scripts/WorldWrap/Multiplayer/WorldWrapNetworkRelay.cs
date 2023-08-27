@@ -40,6 +40,11 @@ public class WorldWrapNetworkRelay : NetworkBehaviour
         InstantiateOnNetworkServerRpc(clientId, prefabIndex);
     }
 
+    public ulong getClientID()
+    {
+        return clientId;
+    }
+
     [ServerRpc]
     private void InstantiateOnNetworkServerRpc(ulong clientID, int prefabIndex)
     {

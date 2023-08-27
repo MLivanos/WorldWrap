@@ -123,6 +123,14 @@ public class TransformRelay : NetworkBehaviour
         ApplyForceServerRpc(force);
     }
 
+    public void ChangeOwnership(ulong newClientID)
+    {
+        ChangeOwnershipServerRpc(newClientID);
+        GetComponent<NetworkObject>().ChangeOwnership(newClientID);
+        
+        clientId = newClientID;
+    }
+
     [ClientRpc]
     private void AddToPuppetsClientRpc(string senderName)
     {
@@ -143,6 +151,16 @@ public class TransformRelay : NetworkBehaviour
             return;
         }
         worldWrapNetworkManager.RemovePuppet(this);
+    }
+
+    [ClientRpc]
+    private void ChangeOwnershipClientRpc()
+    {
+        if (IsOwner)
+        {
+            worldWrapNetworkManager.RemoveClient(gameObject, false);
+            worldWrapNetworkManager.CreatePuppetObject(this);
+        }
     }
 
     [ServerRpc]
@@ -180,5 +198,12 @@ public class TransformRelay : NetworkBehaviour
     public void DespawnServerRpc()
     {
         OnNetworkDespawn();
+    }
+
+    [ServerRpc]
+    private void ChangeOwnershipServerRpc(ulong newClientID)
+    {
+        clientId = newClientID;
+        ChangeOwnershipClientRpc();
     }
 }

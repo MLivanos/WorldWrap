@@ -80,6 +80,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
             return;
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
+        CreatePuppetObject(puppetTransformRelay);
+    }
+
+    public void CreatePuppetObject(TransformRelay puppetTransformRelay)
+    {
         GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         SetupRigidbody(newPuppet, puppetTransformRelay);
         newPuppet.tag = "WorldWrapPuppet";
@@ -253,12 +258,19 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return clientObjects.Contains(possibleClient);
     }
 
-    public void RemoveClient(GameObject objectToRemove)
+    public void RemoveClient(GameObject objectToRemove, bool deleteClientObject = true)
     {
         int indexToRemove = clientObjects.IndexOf(objectToRemove);
-        clientRelays[indexToRemove].RemovePuppetsServerRpc();
+        if (deleteClientObject)
+        {
+            clientRelays[indexToRemove].RemovePuppetsServerRpc();
+            clientRelays[indexToRemove].DespawnServerRpc();
+        }
+        else
+        {
+            
+        }
         Destroy(clientObjects[indexToRemove]);
-        clientRelays[indexToRemove].DespawnServerRpc();
         clientObjects.RemoveAt(indexToRemove);
         clientRelays.RemoveAt(indexToRemove);
         lastPositions.RemoveAt(indexToRemove);
@@ -270,5 +282,15 @@ public class WorldWrapNetworkManager : MonoBehaviour
         Destroy(puppets[indexToRemove]);
         puppetTransformRelays.RemoveAt(indexToRemove);
         puppets.RemoveAt(indexToRemove);
+    }
+
+    public void ChangeOwnership(TransformRelay transformRelay)
+    {
+        transformRelay.ChangeOwnership(networkRelay.getClientID());
+    }
+
+    public void AcceptNewTransform(TransformRelay transformRelay)
+    {
+        puppetTransformRelays.Add(transformRelay);
     }
 }
