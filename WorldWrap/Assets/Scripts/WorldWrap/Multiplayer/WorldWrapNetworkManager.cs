@@ -87,7 +87,9 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         SetupRigidbody(newPuppet, puppetTransformRelay);
-        newPuppet.tag = "WorldWrapPuppet";
+        WorldWrapNetworkObject puppetScript = newPuppet.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
+        puppetScript.setClientID(puppetTransformRelay.OwnerClientId);
+        puppetScript.setTransformRelay(puppetTransformRelay);
         puppetTransformRelays.Add(puppetTransformRelay);
         puppets.Add(newPuppet);
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
