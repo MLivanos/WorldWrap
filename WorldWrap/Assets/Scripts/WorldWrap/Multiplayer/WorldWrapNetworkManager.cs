@@ -254,7 +254,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void ApplyForce(TransformRelay clientRelay, Vector3 force)
     {
-        Rigidbody clientRigidbody = clientObjects[clientRelays.IndexOf(clientRelay)].GetComponent<Rigidbody>();
+        int clientIndex = clientRelays.IndexOf(clientRelay);
+        if (clientIndex < 0)
+        {
+            return;
+        }
+        Rigidbody clientRigidbody = clientObjects[clientIndex].GetComponent<Rigidbody>();
         if(clientRigidbody != null)
         {
             clientRigidbody.AddForce(force, ForceMode.Impulse);
