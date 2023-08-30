@@ -87,9 +87,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         SetupRigidbody(newPuppet, puppetTransformRelay);
-        WorldWrapNetworkObject puppetScript = newPuppet.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
-        puppetScript.setClientID(puppetTransformRelay.OwnerClientId);
-        puppetScript.setTransformRelay(puppetTransformRelay);
+        SetupNetworkObjectScript(newPuppet, puppetTransformRelay);
         puppetTransformRelays.Add(puppetTransformRelay);
         puppets.Add(newPuppet);
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
@@ -108,6 +106,13 @@ public class WorldWrapNetworkManager : MonoBehaviour
         }
     }
 
+    private void SetupNetworkObjectScript(GameObject newObject, TransformRelay newRelay)
+    {
+        WorldWrapNetworkObject puppetScript = newObject.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
+        puppetScript.setClientID(newRelay.OwnerClientId);
+        puppetScript.setTransformRelay(newRelay);
+    }
+
     public void AddToPuppets(string senderName, GameObject newPuppetRelay)
     {
         if (senderName == clientRelays[playerIndex].gameObject.name)
@@ -121,6 +126,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         lastPositions.Add(Vector3.zero);
         clientRelays.Add(newRelay);
+        SetupNetworkObjectScript(clientObjects.Last(), newRelay);
         newRelay.Setup();
     }
 
