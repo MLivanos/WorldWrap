@@ -1,20 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class WorldWrapNetworkObject : MonoBehaviour
 {
     private TransformRelay relay;
-    private ulong clientID;
 
-    public ulong getClientID()
+    public ulong GetClientID()
     {
-        return clientID;
-    }
-
-    public void setClientID(ulong id)
-    {
-        clientID = id;
+        return relay.GetClientID();
     }
 
     public TransformRelay getTransformRelay()
@@ -25,5 +18,18 @@ public class WorldWrapNetworkObject : MonoBehaviour
     public void setTransformRelay(TransformRelay newRelay)
     {
         relay = newRelay;
+    }
+
+    private void OnTransformParentChanged()
+    {
+        if (transform.parent == null)
+        {
+            return;
+        }
+        WorldWrapNetworkObject parentNetworkObject = transform.parent.gameObject.GetComponent<WorldWrapNetworkObject>();
+        if (parentNetworkObject != null && parentNetworkObject.GetClientID() != relay.GetClientID())
+        {
+            relay.ChangeOwnership(parentNetworkObject.GetClientID());
+        }
     }
 }

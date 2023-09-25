@@ -85,6 +85,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void CreatePuppetObject(TransformRelay puppetTransformRelay)
     {
+        Debug.Log(puppetTransformRelay.GetPrefabIndex());
         GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         SetupRigidbody(newPuppet, puppetTransformRelay);
         SetupNetworkObjectScript(newPuppet, puppetTransformRelay);
@@ -109,7 +110,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private void SetupNetworkObjectScript(GameObject newObject, TransformRelay newRelay)
     {
         WorldWrapNetworkObject puppetScript = newObject.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
-        puppetScript.setClientID(newRelay.OwnerClientId);
         puppetScript.setTransformRelay(newRelay);
     }
 
@@ -271,6 +271,14 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return clientObjects.Contains(possibleClient);
     }
 
+    public void RemoveClient(TransformRelay relayToRemove, bool deleteClientObject = true)
+    {
+        int indexToRemove = clientRelays.IndexOf(relayToRemove);
+        GameObject objectToRemove = clientObjects[indexToRemove];
+        RemoveClient(objectToRemove, deleteClientObject);
+        
+    }
+
     public void RemoveClient(GameObject objectToRemove, bool deleteClientObject = true)
     {
         int indexToRemove = clientObjects.IndexOf(objectToRemove);
@@ -278,10 +286,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             clientRelays[indexToRemove].RemovePuppetsServerRpc();
             clientRelays[indexToRemove].DespawnServerRpc();
-        }
-        else
-        {
-            
         }
         Destroy(clientObjects[indexToRemove]);
         clientObjects.RemoveAt(indexToRemove);
@@ -295,11 +299,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         Destroy(puppets[indexToRemove]);
         puppetTransformRelays.RemoveAt(indexToRemove);
         puppets.RemoveAt(indexToRemove);
-    }
-
-    public void ChangeOwnership(TransformRelay transformRelay)
-    {
-        transformRelay.ChangeOwnership(networkRelay.getClientID());
     }
 
     public void AcceptNewTransform(TransformRelay transformRelay)
