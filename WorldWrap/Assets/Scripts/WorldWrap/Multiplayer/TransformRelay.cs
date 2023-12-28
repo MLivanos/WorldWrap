@@ -134,6 +134,11 @@ public class TransformRelay : NetworkBehaviour
         return gameObject.GetComponent<NetworkObject>().OwnerClientId;
     }
 
+    public void ChangePuppetToClient(GameObject puppet)
+    {
+        worldWrapNetworkManager.ChangePuppetToClient(puppet);
+    }
+
     [ClientRpc]
     private void AddToPuppetsClientRpc(string senderName)
     {
@@ -161,8 +166,16 @@ public class TransformRelay : NetworkBehaviour
     {
         if (IsOwner)
         {
-            worldWrapNetworkManager.RemoveClient(this, false);
-            //worldWrapNetworkManager.CreatePuppetObject(this);
+            worldWrapNetworkManager.ReplaceClientWithPuppet(this);
+        }
+    }
+
+    [ClientRpc]
+    private void AddToClientsClientRpc()
+    {
+        if (IsOwner)
+        {
+            worldWrapNetworkManager.AddClientRelay(this);
         }
     }
 
@@ -208,6 +221,9 @@ public class TransformRelay : NetworkBehaviour
     {
         clientId = newClientID;
         ChangeOwnershipClientRpc();
+        Debug.Log(IsOwner);
         GetComponent<NetworkObject>().ChangeOwnership(newClientID);
+        Debug.Log(IsOwner);
+        AddToClientsClientRpc();
     }
 }

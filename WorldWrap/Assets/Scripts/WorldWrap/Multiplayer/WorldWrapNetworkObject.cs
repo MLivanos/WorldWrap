@@ -30,6 +30,7 @@ public class WorldWrapNetworkObject : MonoBehaviour
         if (parentNetworkObject != null && parentNetworkObject.GetClientID() != relay.GetClientID())
         {
             relay.ChangeOwnership(parentNetworkObject.GetClientID());
+            relay.ChangePuppetToClient(gameObject);
         }
     }
 }
