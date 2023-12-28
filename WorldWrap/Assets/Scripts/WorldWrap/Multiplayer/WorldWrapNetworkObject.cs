@@ -20,6 +20,11 @@ public class WorldWrapNetworkObject : MonoBehaviour
         relay = newRelay;
     }
 
+    public bool IsOwned()
+    {
+        return relay.IsOwned();
+    }
+
     private void OnTransformParentChanged()
     {
         if (transform.parent == null)
