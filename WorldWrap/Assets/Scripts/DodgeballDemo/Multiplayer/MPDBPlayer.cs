@@ -121,7 +121,6 @@ public class MPDBPlayer : DodgeballActor
             Dodgeball ball = child.gameObject.GetComponent<Dodgeball>();
             if (ball)
             {
-                Debug.Log("!");
                 pickingUp = true;
                 PickupObject(child.gameObject, true);
                 pickingUp = false;

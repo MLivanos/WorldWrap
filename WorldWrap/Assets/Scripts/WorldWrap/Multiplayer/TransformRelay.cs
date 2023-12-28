@@ -34,6 +34,11 @@ public class TransformRelay : NetworkBehaviour
         }
     }
 
+    public bool IsOwned()
+    {
+        return IsOwner;
+    }
+
     public void Setup()
     {
         AddToPuppetsServerRpc();

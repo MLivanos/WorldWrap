@@ -403,7 +403,12 @@ public class WrapManager : MonoBehaviour
 
     private bool IsMultiplayerClient(GameObject objectToMove)
     {
-        return isMultiplayer && objectToMove.tag == "Player";
+        WorldWrapNetworkObject networkObject = objectToMove.GetComponent<WorldWrapNetworkObject>();
+        if (!networkObject)
+        {
+            return false;
+        }
+        return isMultiplayer && networkObject.IsOwned();
     }
 
     private GameObject[,] DeepCopyMatrix(GameObject[,] matrix)
