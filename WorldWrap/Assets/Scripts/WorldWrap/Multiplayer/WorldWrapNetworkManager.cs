@@ -135,12 +135,18 @@ public class WorldWrapNetworkManager : MonoBehaviour
         clientRelays.Add(newRelay);
     }
 
-    public void ChangePuppetToClient(GameObject newClient)
+    public void ChangePuppetToClient(GameObject oldPuppet, int prefabIndex)
     {
-        int oldPuppetIndex = puppets.IndexOf(newClient);
+        int oldPuppetIndex = puppets.IndexOf(oldPuppet);
         puppets.RemoveAt(oldPuppetIndex);
         puppetTransformRelays.RemoveAt(oldPuppetIndex);
+        GameObject newClient = Instantiate(clientPrefabs[prefabIndex]);
+        newClient.transform.parent = oldPuppet.transform.parent;
+        newClient.transform.position = oldPuppet.transform.position;
+        newClient.transform.eulerAngles = oldPuppet.transform.eulerAngles;
+        Destroy(oldPuppet);
         clientObjects.Add(newClient);
+        SetupNetworkObjectScript(clientObjects.Last(), clientRelays.Last());
     }
 
     private void UpdatePuppetPosition(int puppetIndex)

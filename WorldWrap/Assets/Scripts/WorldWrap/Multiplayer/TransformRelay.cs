@@ -136,7 +136,7 @@ public class TransformRelay : NetworkBehaviour
 
     public void ChangePuppetToClient(GameObject puppet)
     {
-        worldWrapNetworkManager.ChangePuppetToClient(puppet);
+        worldWrapNetworkManager.ChangePuppetToClient(puppet, prefabIndex.Value);
     }
 
     [ClientRpc]
