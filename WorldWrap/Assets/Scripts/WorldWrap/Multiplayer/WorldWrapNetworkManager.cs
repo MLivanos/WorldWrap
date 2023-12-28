@@ -133,12 +133,13 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         lastPositions.Add(Vector3.zero);
         clientRelays.Add(newRelay);
-        newRelay.Setup();
     }
 
     public void ChangePuppetToClient(GameObject newClient)
     {
         clientObjects.Add(newClient);
+        lastPositions[lastPositions.Count - 1] = newClient.transform.position;
+        clientRelays[clientRelays.Count - 1].InitializeTransform(newClient.transform.position, newClient.transform.eulerAngles);
     }
 
     private void UpdatePuppetPosition(int puppetIndex)
