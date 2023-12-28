@@ -131,7 +131,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void AddClientRelay(TransformRelay newRelay)
     {
-        lastPositions.Add(Vector3.zero);
+        lastPositions.Add(newRelay.GetPosition());
         clientRelays.Add(newRelay);
     }
 
@@ -141,14 +141,11 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppets.RemoveAt(oldPuppetIndex);
         puppetTransformRelays.RemoveAt(oldPuppetIndex);
         clientObjects.Add(newClient);
-        lastPositions[lastPositions.Count - 1] = newClient.transform.position;
-        clientRelays[clientRelays.Count - 1].InitializeTransform(newClient.transform.position, newClient.transform.eulerAngles);
     }
 
     private void UpdatePuppetPosition(int puppetIndex)
     {
         Vector3 movement = puppetTransformRelays[puppetIndex].GetMovement();
-        Debug.Log(movement);
         puppets[puppetIndex].transform.Translate(movement, Space.World);
         puppets[puppetIndex].transform.Rotate(puppetTransformRelays[puppetIndex].GetRotation());
     }
@@ -291,14 +288,20 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         int indexToReplace = clientRelays.IndexOf(relayToReplace);
         GameObject objectToRemove = clientObjects[indexToReplace];
-        GameObject newPuppet = clientObjects[indexToReplace];
+        GameObject oldClientObject = clientObjects[indexToReplace];
         TransformRelay newTransformRelay = clientRelays[indexToReplace];
+        GameObject newPuppet = Instantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
+        newPuppet.transform.position = oldClientObject.transform.position;
+        newPuppet.transform.eulerAngles = oldClientObject.transform.eulerAngles;
+        Destroy(oldClientObject);
         puppets.Add(newPuppet);
         puppetTransformRelays.Add(newTransformRelay);
         clientObjects.RemoveAt(indexToReplace);
         clientRelays.RemoveAt(indexToReplace);
         lastPositions.RemoveAt(indexToReplace);
-        newTransformRelay.InitializeTransform(objectToRemove.transform.position, objectToRemove.transform.eulerAngles);
+        SetupRigidbody(newPuppet, newTransformRelay);
+        SetupNetworkObjectScript(newPuppet, newTransformRelay);
+        newTransformRelay.InitializeTransform(newTransformRelay.GetPosition(), newTransformRelay.GetEulerAngles());
     }
 
     public void RemoveClient(TransformRelay relayToRemove, bool deleteClientObject = true)
