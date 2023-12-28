@@ -137,6 +137,9 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void ChangePuppetToClient(GameObject newClient)
     {
+        int oldPuppetIndex = puppets.IndexOf(newClient);
+        puppets.RemoveAt(oldPuppetIndex);
+        puppetTransformRelays.RemoveAt(oldPuppetIndex);
         clientObjects.Add(newClient);
         lastPositions[lastPositions.Count - 1] = newClient.transform.position;
         clientRelays[clientRelays.Count - 1].InitializeTransform(newClient.transform.position, newClient.transform.eulerAngles);
@@ -145,6 +148,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private void UpdatePuppetPosition(int puppetIndex)
     {
         Vector3 movement = puppetTransformRelays[puppetIndex].GetMovement();
+        Debug.Log(movement);
         puppets[puppetIndex].transform.Translate(movement, Space.World);
         puppets[puppetIndex].transform.Rotate(puppetTransformRelays[puppetIndex].GetRotation());
     }
@@ -293,6 +297,8 @@ public class WorldWrapNetworkManager : MonoBehaviour
         puppetTransformRelays.Add(newTransformRelay);
         clientObjects.RemoveAt(indexToReplace);
         clientRelays.RemoveAt(indexToReplace);
+        lastPositions.RemoveAt(indexToReplace);
+        newTransformRelay.InitializeTransform(objectToRemove.transform.position, objectToRemove.transform.eulerAngles);
     }
 
     public void RemoveClient(TransformRelay relayToRemove, bool deleteClientObject = true)

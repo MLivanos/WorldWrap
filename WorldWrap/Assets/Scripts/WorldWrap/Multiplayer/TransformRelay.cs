@@ -221,9 +221,7 @@ public class TransformRelay : NetworkBehaviour
     {
         clientId = newClientID;
         ChangeOwnershipClientRpc();
-        Debug.Log(IsOwner);
         GetComponent<NetworkObject>().ChangeOwnership(newClientID);
-        Debug.Log(IsOwner);
         AddToClientsClientRpc();
     }
 }
