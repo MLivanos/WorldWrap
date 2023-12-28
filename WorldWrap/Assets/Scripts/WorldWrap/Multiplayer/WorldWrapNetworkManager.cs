@@ -80,9 +80,14 @@ public class WorldWrapNetworkManager : MonoBehaviour
             return;
         }
         TransformRelay puppetTransformRelay = newPuppetRelay.GetComponent<TransformRelay>();
+        CreatePuppetObject(puppetTransformRelay);
+    }
+
+    public void CreatePuppetObject(TransformRelay puppetTransformRelay)
+    {
         GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         SetupRigidbody(newPuppet, puppetTransformRelay);
-        newPuppet.tag = "WorldWrapPuppet";
+        SetupNetworkObjectScript(newPuppet, puppetTransformRelay);
         puppetTransformRelays.Add(puppetTransformRelay);
         puppets.Add(newPuppet);
         puppetTransformRelay.InitializeTransform(puppetTransformRelay.GetPosition(), puppetTransformRelay.GetEulerAngles());
@@ -101,6 +106,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
         }
     }
 
+    private void SetupNetworkObjectScript(GameObject newObject, TransformRelay newRelay)
+    {
+        WorldWrapNetworkObject puppetScript = newObject.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
+        puppetScript.setTransformRelay(newRelay);
+    }
+
     public void AddToPuppets(string senderName, GameObject newPuppetRelay)
     {
         if (senderName == clientRelays[playerIndex].gameObject.name)
@@ -114,7 +125,28 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         lastPositions.Add(Vector3.zero);
         clientRelays.Add(newRelay);
+        SetupNetworkObjectScript(clientObjects.Last(), newRelay);
         newRelay.Setup();
+    }
+
+    public void AddClientRelay(TransformRelay newRelay)
+    {
+        lastPositions.Add(newRelay.GetPosition());
+        clientRelays.Add(newRelay);
+    }
+
+    public void ChangePuppetToClient(GameObject oldPuppet, int prefabIndex)
+    {
+        int oldPuppetIndex = puppets.IndexOf(oldPuppet);
+        puppets.RemoveAt(oldPuppetIndex);
+        puppetTransformRelays.RemoveAt(oldPuppetIndex);
+        GameObject newClient = Instantiate(clientPrefabs[prefabIndex]);
+        newClient.transform.parent = oldPuppet.transform.parent;
+        newClient.transform.position = oldPuppet.transform.position;
+        newClient.transform.eulerAngles = oldPuppet.transform.eulerAngles;
+        Destroy(oldPuppet);
+        clientObjects.Add(newClient);
+        SetupNetworkObjectScript(clientObjects.Last(), clientRelays.Last());
     }
 
     private void UpdatePuppetPosition(int puppetIndex)
@@ -241,7 +273,12 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void ApplyForce(TransformRelay clientRelay, Vector3 force)
     {
-        Rigidbody clientRigidbody = clientObjects[clientRelays.IndexOf(clientRelay)].GetComponent<Rigidbody>();
+        int clientIndex = clientRelays.IndexOf(clientRelay);
+        if (clientIndex < 0)
+        {
+            return;
+        }
+        Rigidbody clientRigidbody = clientObjects[clientIndex].GetComponent<Rigidbody>();
         if(clientRigidbody != null)
         {
             clientRigidbody.AddForce(force, ForceMode.Impulse);
@@ -253,12 +290,43 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return clientObjects.Contains(possibleClient);
     }
 
-    public void RemoveClient(GameObject objectToRemove)
+    public void ReplaceClientWithPuppet(TransformRelay relayToReplace)
+    {
+        int indexToReplace = clientRelays.IndexOf(relayToReplace);
+        GameObject objectToRemove = clientObjects[indexToReplace];
+        GameObject oldClientObject = clientObjects[indexToReplace];
+        TransformRelay newTransformRelay = clientRelays[indexToReplace];
+        GameObject newPuppet = Instantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
+        newPuppet.transform.position = oldClientObject.transform.position;
+        newPuppet.transform.eulerAngles = oldClientObject.transform.eulerAngles;
+        Destroy(oldClientObject);
+        puppets.Add(newPuppet);
+        puppetTransformRelays.Add(newTransformRelay);
+        clientObjects.RemoveAt(indexToReplace);
+        clientRelays.RemoveAt(indexToReplace);
+        lastPositions.RemoveAt(indexToReplace);
+        SetupRigidbody(newPuppet, newTransformRelay);
+        SetupNetworkObjectScript(newPuppet, newTransformRelay);
+        newTransformRelay.InitializeTransform(newTransformRelay.GetPosition(), newTransformRelay.GetEulerAngles());
+    }
+
+    public void RemoveClient(TransformRelay relayToRemove, bool deleteClientObject = true)
+    {
+        int indexToRemove = clientRelays.IndexOf(relayToRemove);
+        GameObject objectToRemove = clientObjects[indexToRemove];
+        RemoveClient(objectToRemove, deleteClientObject);
+        
+    }
+
+    public void RemoveClient(GameObject objectToRemove, bool deleteClientObject = true)
     {
         int indexToRemove = clientObjects.IndexOf(objectToRemove);
-        clientRelays[indexToRemove].RemovePuppetsServerRpc();
+        if (deleteClientObject)
+        {
+            clientRelays[indexToRemove].RemovePuppetsServerRpc();
+            clientRelays[indexToRemove].DespawnServerRpc();
+        }
         Destroy(clientObjects[indexToRemove]);
-        clientRelays[indexToRemove].DespawnServerRpc();
         clientObjects.RemoveAt(indexToRemove);
         clientRelays.RemoveAt(indexToRemove);
         lastPositions.RemoveAt(indexToRemove);
@@ -270,5 +338,10 @@ public class WorldWrapNetworkManager : MonoBehaviour
         Destroy(puppets[indexToRemove]);
         puppetTransformRelays.RemoveAt(indexToRemove);
         puppets.RemoveAt(indexToRemove);
+    }
+
+    public void AcceptNewTransform(TransformRelay transformRelay)
+    {
+        puppetTransformRelays.Add(transformRelay);
     }
 }
