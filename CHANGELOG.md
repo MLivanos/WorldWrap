@@ -1,10 +1,29 @@
 # CHANGELOG:
 
+## v0.3.0 - Multiplayer Support
+
+### New Features:
+
+* Multiplayer: WorldWrap is now multiplayer capable. WorldWrap will maintain wrapping worlds for all players, NPCs, and GameObjects while being completely consistent between clients.
+* Multiplayer dodgeball game provided for an example of how to create multiplayer games using WorldWrap
+* SelfWrap: Objects that exit the BoundsTrigger from the top will govern their own wrapping until they reenter the BoundsTrigger. Applied automatically, no changes need to be made to existing code. Tangibly, what this means is that objects can fly arbitrarily high in the sky and wrap without issue.
+* SafetyTrigger: A new trigger that can encase multiple blocks and trigger a wrap whenever the player exits this trigger. This means WorldWrap can handle the player teleporting anywhere on the map while maintaining the wrapping effect.
+
+### Bug Fixes:
+
+* Fixes issue with automatic NavMeshLure creation where NavMeshLure would be placed slightly off or into the world
+
+### Changes:
+
+* BoundsTrigger's GetNewPosition() function now maps any point in Euclidean space to WrapSpace, even those arbitrarily far away.
+
+### Removed:
+
 ## v0.2.0 - NavMesh Support & Setup Assistant
 
 ### New Features:
 
-* World Wrap Setup Wizard: Create a new WorldWrap project or implement WorldWrap in your existing world in seconds!
+* WorldWrap Setup Wizard: Create a new WorldWrap project or implement WorldWrap in your existing world in seconds!
 * Works with Unity’s NavMesh & NavMeshAgent
 * Addition of an example Dodgeball game that uses NavMesh and NavMeshAgent
 * Adds suite of unit tests to ensure changes to do affect core functionality
