@@ -13,7 +13,6 @@ public class SelfWrap : MonoBehaviour
     {
         if (!boundsTrigger.InsideBounds(transform.position.x, transform.position.z))
         {
-            Debug.Log("!");
             transform.position = boundsTrigger.GetNewPosition(transform.position);
         }
     }

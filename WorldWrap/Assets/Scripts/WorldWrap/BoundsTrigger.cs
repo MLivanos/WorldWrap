@@ -54,22 +54,26 @@ public class BoundsTrigger : TriggerBehavior
 
     public Vector3 GetNewPosition(Vector3 currentPosition)
     {
+        float xDistance = upperXBound - lowerXBound;
+        float zDistance = upperZBound - lowerXBound;
         Vector3 otherPosition = currentPosition;
+        // euclideanPosition +/-=(1+|euclideanPosition/axisLength|)*axisLength
+        // TODO: Test all corrections
         if (currentPosition.x <= lowerXBound)
         {
-            otherPosition.x = otherPosition.x + 2*upperXBound;
+            otherPosition.x = otherPosition.x + ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
         }
         else if (currentPosition.x >= upperXBound)
         {
-            otherPosition.x = otherPosition.x + 2*lowerXBound;
+            otherPosition.x = otherPosition.x - ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
         }
         if (currentPosition.z <= lowerZBound)
         {
-            otherPosition.z = otherPosition.z + 2*upperXBound;
+            otherPosition.z = otherPosition.z + ((int)Mathf.Abs(otherPosition.z/zDistance)+1)*zDistance;
         }
         else if (currentPosition.z >= upperZBound)
         {
-            otherPosition.z = otherPosition.z + 2*lowerZBound;
+            otherPosition.z = otherPosition.z - ((int)Mathf.Abs(otherPosition.z/zDistance)+1)*zDistance;
         }
         return otherPosition;
     }
