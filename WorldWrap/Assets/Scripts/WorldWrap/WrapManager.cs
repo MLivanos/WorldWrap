@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,8 +14,10 @@ public class WrapManager : MonoBehaviour
     [SerializeField] private bool isUsingNavmesh;
     [SerializeField] private bool isMultiplayer;
     private WorldWrapNetworkManager worldWrapNetworkManager;
+    private BoundsTrigger bounds;
     private List<GameObject> selfWrappers;
     private GameObject[,] blockMatrix;
+    private Vector3 referenceBlockInitialPosition;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
     private GameObject previousBlock;
@@ -34,6 +37,8 @@ public class WrapManager : MonoBehaviour
         Vector2[] coordinatesByZ;
         Dictionary<float, int> xToRow = new Dictionary<float, int>();
         Dictionary<float, int> zToColumn = new Dictionary<float, int>();
+        SetReferenceBlock();
+        FindBounds();
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
@@ -149,6 +154,52 @@ public class WrapManager : MonoBehaviour
             newLink.endPosition = newLinkPosition + plane1ToPlane2;
             NavMesh.AddLink(newLink);
         }
+    }
+
+    private void SetReferenceBlock()
+    {
+        try
+        {
+            referenceBlockInitialPosition = blocks[0].transform.position;
+        }
+        catch
+        {
+            Exception missingManagerException = new Exception("Error: No blocks detected in WrapManager's blocks list. Did you forget to add the blocks?");
+            Debug.LogException(missingManagerException);
+        }
+    }
+
+    private void FindBounds()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            bounds = objectInScene.GetComponent<BoundsTrigger>();
+            if (bounds)
+            {
+                return;
+            }
+        }
+        if (isMultiplayer)
+        {
+            Exception missingManagerException = new Exception("Error: No BoundsTrigger found. Please surround your world with a boundsTrigger.");
+            Debug.LogException(missingManagerException);
+        }
+        Debug.LogWarning("Warning: Cannot use SemanticWrap without a BoundsTrigger. We strongly reccomend surrounding your world with a BoundsTrigger.");
+    }
+
+    public Vector3 GetSemanticOffset()
+    {
+        return referenceBlockInitialPosition - blocks[0].transform.position;
+    }
+
+    public GameObject SemanticInstantiate(GameObject objectToInstantiate)
+    {
+        GameObject newObject = Instantiate(objectToInstantiate);
+        Vector3 semanticOffset = -1*GetSemanticOffset();
+        newObject.transform.Translate(semanticOffset);
+        newObject.transform.position = bounds.GetNewPosition(newObject.transform.position);
+        return newObject;
     }
 
     public void LogTriggerEntry(GameObject entryBlock)

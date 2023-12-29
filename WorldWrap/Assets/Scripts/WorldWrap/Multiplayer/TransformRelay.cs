@@ -31,6 +31,8 @@ public class TransformRelay : NetworkBehaviour
         if (IsOwner)
         {
             worldWrapNetworkManager.AddToClientObjects(this);
+            Vector3 offset = worldWrapNetworkManager.GetPuppetOffset();
+            SendOffsetServerRpc(offset.x, offset.z);
         }
     }
 
@@ -184,6 +186,17 @@ public class TransformRelay : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    private void SendOffsetClientRpc(float xOffset, float zOffset)
+    {
+        if (IsOwner)
+        {
+            return;
+        }
+        lastPosition[0] -= xOffset;
+        lastPosition[2] -= zOffset;
+    }
+
     [ServerRpc]
     private void AddToPuppetsServerRpc()
     {
@@ -219,6 +232,12 @@ public class TransformRelay : NetworkBehaviour
     public void DespawnServerRpc()
     {
         OnNetworkDespawn();
+    }
+
+    [ServerRpc]
+    public void SendOffsetServerRpc(float xOffset, float zOffset)
+    {
+        SendOffsetClientRpc(xOffset, zOffset);
     }
 
     [ServerRpc(RequireOwnership = false)]

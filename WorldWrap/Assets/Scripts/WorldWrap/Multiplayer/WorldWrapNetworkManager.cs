@@ -12,6 +12,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private GameObject transformRelayPrefab;
     [SerializeField] private string puppetName;
     [SerializeField] private bool firstPrefabIsPlayer;
+    private WrapManager wrapManager;
     private WorldWrapNetworkRelay networkRelay;
     private Transform transformRelayGroup;
     private List<GameObject> puppets;
@@ -30,6 +31,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         clientObjects = new List<GameObject>();
         clientRelays = new List<TransformRelay>();
         lastPositions = new List<Vector3>();
+        FindWrapManager();
         CreateTransformRelayGroup();
     }
 
@@ -68,6 +70,20 @@ public class WorldWrapNetworkManager : MonoBehaviour
         }
     }
 
+    private void FindWrapManager()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            wrapManager = objectInScene.GetComponent<WrapManager>();
+            if (wrapManager != null)
+            {
+                return;
+            }
+        }
+        // TODO: Raise error
+    }
+
     private bool HasPrefabName(string objectName)
     {
         return objectName.StartsWith(puppetName);
@@ -85,7 +101,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     public void CreatePuppetObject(TransformRelay puppetTransformRelay)
     {
-        GameObject newPuppet = Instantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
+        GameObject newPuppet = wrapManager.SemanticInstantiate(puppetPrefabs[puppetTransformRelay.GetPrefabIndex()]);
         SetupRigidbody(newPuppet, puppetTransformRelay);
         SetupNetworkObjectScript(newPuppet, puppetTransformRelay);
         puppetTransformRelays.Add(puppetTransformRelay);
@@ -140,7 +156,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         int oldPuppetIndex = puppets.IndexOf(oldPuppet);
         puppets.RemoveAt(oldPuppetIndex);
         puppetTransformRelays.RemoveAt(oldPuppetIndex);
-        GameObject newClient = Instantiate(clientPrefabs[prefabIndex]);
+        GameObject newClient = wrapManager.SemanticInstantiate(clientPrefabs[prefabIndex]);
         newClient.transform.parent = oldPuppet.transform.parent;
         newClient.transform.position = oldPuppet.transform.position;
         newClient.transform.eulerAngles = oldPuppet.transform.eulerAngles;
@@ -228,9 +244,14 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public GameObject InstantiateOnNetwork(int prefabIndex)
     {
         networkRelay.InstantiateOnNetwork(prefabIndex);
-        GameObject newClientObject = Instantiate(clientPrefabs[prefabIndex]);
+        GameObject newClientObject = wrapManager.SemanticInstantiate(clientPrefabs[prefabIndex]);
         clientObjects.Add(newClientObject);
         return newClientObject;
+    }
+
+    public Vector3 GetPuppetOffset()
+    {
+        return wrapManager.GetSemanticOffset();
     }
 
     public string GetPuppetName()
@@ -296,7 +317,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         GameObject objectToRemove = clientObjects[indexToReplace];
         GameObject oldClientObject = clientObjects[indexToReplace];
         TransformRelay newTransformRelay = clientRelays[indexToReplace];
-        GameObject newPuppet = Instantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
+        GameObject newPuppet = wrapManager.SemanticInstantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
         newPuppet.transform.position = oldClientObject.transform.position;
         newPuppet.transform.eulerAngles = oldClientObject.transform.eulerAngles;
         Destroy(oldClientObject);
