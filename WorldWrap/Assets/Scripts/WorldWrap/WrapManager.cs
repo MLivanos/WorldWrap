@@ -188,7 +188,7 @@ public class WrapManager : MonoBehaviour
         Debug.LogWarning("Warning: Cannot use SemanticWrap without a BoundsTrigger. We strongly reccomend surrounding your world with a BoundsTrigger.");
     }
 
-    private Vector3 GetSemanticOffset()
+    public Vector3 GetSemanticOffset()
     {
         return referenceBlockInitialPosition - blocks[0].transform.position;
     }
@@ -196,7 +196,7 @@ public class WrapManager : MonoBehaviour
     public GameObject SemanticInstantiate(GameObject objectToInstantiate)
     {
         GameObject newObject = Instantiate(objectToInstantiate);
-        Vector3 semanticOffset = bounds.GetNewPosition(-1*GetSemanticOffset());
+        Vector3 semanticOffset = -1*GetSemanticOffset();
         newObject.transform.Translate(semanticOffset);
         newObject.transform.position = bounds.GetNewPosition(newObject.transform.position);
         return newObject;
