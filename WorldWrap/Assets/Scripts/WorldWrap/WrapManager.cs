@@ -15,6 +15,7 @@ public class WrapManager : MonoBehaviour
     private WorldWrapNetworkManager worldWrapNetworkManager;
     private List<GameObject> selfWrappers;
     private GameObject[,] blockMatrix;
+    private Vector3 referenceBlockInitialPosition;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
     private GameObject previousBlock;
@@ -34,6 +35,7 @@ public class WrapManager : MonoBehaviour
         Vector2[] coordinatesByZ;
         Dictionary<float, int> xToRow = new Dictionary<float, int>();
         Dictionary<float, int> zToColumn = new Dictionary<float, int>();
+        SetReferenceBlock();
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
@@ -149,6 +151,32 @@ public class WrapManager : MonoBehaviour
             newLink.endPosition = newLinkPosition + plane1ToPlane2;
             NavMesh.AddLink(newLink);
         }
+    }
+
+    private void SetReferenceBlock()
+    {
+        try
+        {
+            referenceBlockInitialPosition = blocks[0].transform.position;
+        }
+        catch
+        {
+            Exception missingManagerException = new Exception("Error: No blocks detected in WrapManager's blocks list. Did you forget to add the blocks?");
+            Debug.LogException(missingManagerException);
+        }
+    }
+
+    private Vector3 GetSemanticOffset()
+    {
+        return referenceBlockInitialPosition - blocks[0].transform.position;
+    }
+
+    public GameObject SemanticInstantiate(GameObject objectToInstantiate)
+    {
+        GameObject newObject = Instantiate(objectToInstantiate);
+        newObject.transform.Translate(-1*GetSemanticOffset());
+        return newObject;
+        //TODO: Check if out of bounds with offset
     }
 
     public void LogTriggerEntry(GameObject entryBlock)

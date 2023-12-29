@@ -12,6 +12,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     [SerializeField] private GameObject transformRelayPrefab;
     [SerializeField] private string puppetName;
     [SerializeField] private bool firstPrefabIsPlayer;
+    private WrapManager wrapManager;
     private WorldWrapNetworkRelay networkRelay;
     private Transform transformRelayGroup;
     private List<GameObject> puppets;
@@ -30,6 +31,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         clientObjects = new List<GameObject>();
         clientRelays = new List<TransformRelay>();
         lastPositions = new List<Vector3>();
+        FindWrapManager();
         CreateTransformRelayGroup();
     }
 
@@ -66,6 +68,20 @@ public class WorldWrapNetworkManager : MonoBehaviour
         {
             SendPositionUpdate(objectIndex);
         }
+    }
+
+    private void FindWrapManager()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            wrapManager = objectInScene.GetComponent<WrapManager>();
+            if (wrapManager != null)
+            {
+                return;
+            }
+        }
+        // TODO: Raise error
     }
 
     private bool HasPrefabName(string objectName)
@@ -140,7 +156,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         int oldPuppetIndex = puppets.IndexOf(oldPuppet);
         puppets.RemoveAt(oldPuppetIndex);
         puppetTransformRelays.RemoveAt(oldPuppetIndex);
-        GameObject newClient = Instantiate(clientPrefabs[prefabIndex]);
+        GameObject newClient = wrapManager.SemanticInstantiate(clientPrefabs[prefabIndex]);
         newClient.transform.parent = oldPuppet.transform.parent;
         newClient.transform.position = oldPuppet.transform.position;
         newClient.transform.eulerAngles = oldPuppet.transform.eulerAngles;
@@ -228,7 +244,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
     public GameObject InstantiateOnNetwork(int prefabIndex)
     {
         networkRelay.InstantiateOnNetwork(prefabIndex);
-        GameObject newClientObject = Instantiate(clientPrefabs[prefabIndex]);
+        GameObject newClientObject = wrapManager.SemanticInstantiate(clientPrefabs[prefabIndex]);
         clientObjects.Add(newClientObject);
         return newClientObject;
     }
