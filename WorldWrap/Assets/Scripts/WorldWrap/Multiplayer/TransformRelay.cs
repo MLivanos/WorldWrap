@@ -193,8 +193,8 @@ public class TransformRelay : NetworkBehaviour
         {
             return;
         }
-        lastPosition[0] -= xOffset;
-        lastPosition[2] -= zOffset;
+        lastPosition.x -= xOffset;
+        lastPosition.z -= zOffset;
     }
 
     [ServerRpc]
