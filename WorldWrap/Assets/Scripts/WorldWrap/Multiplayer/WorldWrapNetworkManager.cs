@@ -89,7 +89,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return objectName.StartsWith(puppetName);
     }
 
-    private void AddToPuppets(GameObject newPuppetRelay)
+    public void AddToPuppets(GameObject newPuppetRelay)
     {
         if (ShouldNotCreatePuppet(newPuppetRelay))
         {
@@ -126,15 +126,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         WorldWrapNetworkObject puppetScript = newObject.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
         puppetScript.setTransformRelay(newRelay);
-    }
-
-    public void AddToPuppets(string senderName, GameObject newPuppetRelay)
-    {
-        if (senderName == clientRelays[playerIndex].gameObject.name)
-        {
-            return;
-        }
-        AddToPuppets(newPuppetRelay);
     }
 
     public void AddToClientObjects(TransformRelay newRelay)
@@ -195,14 +186,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private bool OwnsRelay(TransformRelay relay)
     {
-        foreach(TransformRelay ownedRelay in clientRelays)
-        {
-            if (relay == ownedRelay)
-            {
-                return true;
-            }
-        }
-        return false;
+        return relay.IsOwned();
     }
 
     private void CreateTransformRelayGroup()

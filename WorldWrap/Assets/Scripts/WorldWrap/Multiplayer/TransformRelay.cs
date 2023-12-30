@@ -149,7 +149,7 @@ public class TransformRelay : NetworkBehaviour
     [ClientRpc]
     private void AddToPuppetsClientRpc(string senderName)
     {
-        worldWrapNetworkManager.AddToPuppets(senderName, gameObject);
+        worldWrapNetworkManager.AddToPuppets(gameObject);
     }
 
     [ClientRpc]
