@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldWrapNetworkRigidbody : MonoBehaviour
 {
     private Rigidbody puppetRigidbody;
-    private TransformRelay clientTransformRelay;
+    private WorldWrapTransformRelay clientTransformRelay;
     private WorldWrapNetworkManager worldWrapNetworkManager;
 
     private void Start()
@@ -27,7 +27,7 @@ public class WorldWrapNetworkRigidbody : MonoBehaviour
         return collisionGameObject.GetComponent<Rigidbody>() && worldWrapNetworkManager.IsClient(collisionGameObject);
     }
 
-    public void SetClientTransformRelay(TransformRelay transformRelay)
+    public void SetClientTransformRelay(WorldWrapTransformRelay transformRelay)
     {
         clientTransformRelay = transformRelay;
     }

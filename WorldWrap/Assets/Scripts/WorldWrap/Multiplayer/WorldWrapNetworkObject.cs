@@ -3,19 +3,19 @@ using Unity.Netcode;
 
 public class WorldWrapNetworkObject : MonoBehaviour
 {
-    private TransformRelay relay;
+    private WorldWrapTransformRelay relay;
 
     public ulong GetClientID()
     {
         return relay.GetClientID();
     }
 
-    public TransformRelay getTransformRelay()
+    public WorldWrapTransformRelay getTransformRelay()
     {
         return relay;
     }
 
-    public void setTransformRelay(TransformRelay newRelay)
+    public void setTransformRelay(WorldWrapTransformRelay newRelay)
     {
         relay = newRelay;
     }
