@@ -89,7 +89,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         return objectName.StartsWith(puppetName);
     }
 
-    private void AddToPuppets(GameObject newPuppetRelay)
+    public void AddToPuppets(GameObject newPuppetRelay)
     {
         if (ShouldNotCreatePuppet(newPuppetRelay))
         {
@@ -126,15 +126,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
     {
         WorldWrapNetworkObject puppetScript = newObject.AddComponent(typeof(WorldWrapNetworkObject)) as WorldWrapNetworkObject;
         puppetScript.setTransformRelay(newRelay);
-    }
-
-    public void AddToPuppets(string senderName, GameObject newPuppetRelay)
-    {
-        if (senderName == clientRelays[playerIndex].gameObject.name)
-        {
-            return;
-        }
-        AddToPuppets(newPuppetRelay);
     }
 
     public void AddToClientObjects(TransformRelay newRelay)
@@ -195,14 +186,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
 
     private bool OwnsRelay(TransformRelay relay)
     {
-        foreach(TransformRelay ownedRelay in clientRelays)
-        {
-            if (relay == ownedRelay)
-            {
-                return true;
-            }
-        }
-        return false;
+        return relay.IsOwned();
     }
 
     private void CreateTransformRelayGroup()
@@ -317,7 +301,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         GameObject objectToRemove = clientObjects[indexToReplace];
         GameObject oldClientObject = clientObjects[indexToReplace];
         TransformRelay newTransformRelay = clientRelays[indexToReplace];
-        GameObject newPuppet = wrapManager.SemanticInstantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
+        GameObject newPuppet = Instantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
         newPuppet.transform.position = oldClientObject.transform.position;
         newPuppet.transform.eulerAngles = oldClientObject.transform.eulerAngles;
         Destroy(oldClientObject);
@@ -329,6 +313,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         SetupRigidbody(newPuppet, newTransformRelay);
         SetupNetworkObjectScript(newPuppet, newTransformRelay);
         newTransformRelay.InitializeTransform(newTransformRelay.GetPosition(), newTransformRelay.GetEulerAngles());
+        newTransformRelay.OffsetLastPosition(GetPuppetOffset());
     }
 
     public void RemoveClient(TransformRelay relayToRemove, bool deleteClientObject = true)
