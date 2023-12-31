@@ -10,7 +10,7 @@ Abstract class from which WrapTriggers, BoundsTrigger, and BlockTriggers inherit
 
 ## [BoundsTrigger : TriggerBehavior](https://github.com/MLivanos/WorldWrap/blob/main/API/BoundsTrigger.md)
 
-Trigger wraps helps NPCs and objects around the world when they reach the end.
+Trigger wraps NPCs and objects around the world when they reach the end.
 
 ## [BlockTrigger : TriggerBehavior](https://github.com/MLivanos/WorldWrap/blob/main/API/BlockTrigger.md)
 
@@ -19,3 +19,29 @@ Trigger that informs the WrapManager about where the player is and object relati
 ## [WrapTrigger : TriggerBehavior](https://github.com/MLivanos/WorldWrap/blob/main/API/WrapTrigger.md)
 
 Trigger that informs the WrapManager of when the player is leaving and entering a block.
+
+## SafetyTrigger : TriggerBehavior
+
+Trigger larger than a BlockTrigger but smaller than a BoundsTrigger. Initiates wraps when the player leaves it. This is useful for games that employ any teleporting mechanics and can fix any issues in wrapping due to lag or improper WrapTrigger placement. 
+
+## SelfWrap : Monobehavior
+
+This script allows non-player objects to be in charge of their own wraps. The BoundsTrigger will add this component if an object leaves the vertical bounds of the world and removes this component when it returns inside the global bounds. Useful in games where objects may be shot arbitrarily high into the sky. 
+
+# Multiplayer Specific Classes
+
+## WorldWrapNetworkManager : MonoBehaviour
+
+The WorldWrapNetworkManager (WWNM) is in charge of transmitting information from relays to the client and from the client to the rest of the network. They update the transforms of each client's players and the objects throughout the scene. There should be exactly one (1) WWNM in the scene for a multiplayer game. Do not use a WWNM for a singleplayer game.
+
+## WorldWrapNetworkRelay : NetworkBehaviour
+
+Relay in charge of instantiating new GameObjects across the network and keeps track of connection information.
+
+## WorldWrapTransformRelay : NetworkBehaviour
+
+Relay keeps track of a client's object and tells the rest of the network how it moves and rotates. It also tells other clients when a new GameObject is created or destroyed on the network.
+
+## WorldWrapNetworkRigidbody : MonoBehaviour
+
+Communicates information about collisions between puppet objects and other Rigidbodies in the scene. This body goes on puppets, and only when simulating consistent collisions is important for a particular object.

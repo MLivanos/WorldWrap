@@ -7,7 +7,7 @@
 * Multiplayer: WorldWrap is now multiplayer capable. WorldWrap will maintain wrapping worlds for all players, NPCs, and GameObjects while being completely consistent between clients.
 * Multiplayer dodgeball game provided for an example of how to create multiplayer games using WorldWrap
 * SelfWrap: Objects that exit the BoundsTrigger from the top will govern their own wrapping until they reenter the BoundsTrigger. Applied automatically, no changes need to be made to existing code. Tangibly, what this means is that objects can fly arbitrarily high in the sky and wrap without issue.
-* SafetyTrigger: A new trigger that can encase multiple blocks and trigger a wrap whenever the player exits this trigger. This means WorldWrap can handle the player teleporting anywhere on the map while maintaining the wrapping effect.
+* SafetyTrigger: TriggerBehavior which forces a wrap when the player exits outside its bounds. Useful for games with teleporting mechanics or to fix glitches caused by lag or improperly constructed WrapTriggers
 
 ### Bug Fixes:
 
