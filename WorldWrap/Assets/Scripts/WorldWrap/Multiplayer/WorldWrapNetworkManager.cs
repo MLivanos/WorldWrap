@@ -301,7 +301,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         GameObject objectToRemove = clientObjects[indexToReplace];
         GameObject oldClientObject = clientObjects[indexToReplace];
         TransformRelay newTransformRelay = clientRelays[indexToReplace];
-        GameObject newPuppet = wrapManager.SemanticInstantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
+        GameObject newPuppet = Instantiate(puppetPrefabs[newTransformRelay.GetPrefabIndex()]);
         newPuppet.transform.position = oldClientObject.transform.position;
         newPuppet.transform.eulerAngles = oldClientObject.transform.eulerAngles;
         Destroy(oldClientObject);
@@ -313,6 +313,7 @@ public class WorldWrapNetworkManager : MonoBehaviour
         SetupRigidbody(newPuppet, newTransformRelay);
         SetupNetworkObjectScript(newPuppet, newTransformRelay);
         newTransformRelay.InitializeTransform(newTransformRelay.GetPosition(), newTransformRelay.GetEulerAngles());
+        newTransformRelay.OffsetLastPosition(GetPuppetOffset());
     }
 
     public void RemoveClient(TransformRelay relayToRemove, bool deleteClientObject = true)

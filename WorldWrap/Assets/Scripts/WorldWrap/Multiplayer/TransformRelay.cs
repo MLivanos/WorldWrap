@@ -103,6 +103,11 @@ public class TransformRelay : NetworkBehaviour
     {
         puppetPosition.Value -= movementVector;
     }
+    
+    public void OffsetLastPosition(Vector3 offset)
+    {
+        lastPosition -= offset;
+    }
 
     public void InitializeTransform(Vector3 initialPosition, Vector3 initialRotation)
     {
@@ -134,6 +139,11 @@ public class TransformRelay : NetworkBehaviour
     {
         ChangeOwnershipServerRpc(newClientID);
         clientId = newClientID;
+    }
+
+    public void ZeroLastPosition()
+    {
+        lastPosition = worldWrapNetworkManager.GetPuppetOffset();
     }
 
     public ulong GetClientID()
@@ -184,6 +194,7 @@ public class TransformRelay : NetworkBehaviour
         {
             worldWrapNetworkManager.AddClientRelay(this);
         }
+        lastRotation = puppetRotation.Value;
     }
 
     [ClientRpc]
@@ -193,7 +204,7 @@ public class TransformRelay : NetworkBehaviour
         {
             return;
         }
-        lastPosition = worldWrapNetworkManager.GetPuppetOffset();
+        ZeroLastPosition();
         lastPosition.x -= xOffset;
         lastPosition.z -= zOffset;
     }
