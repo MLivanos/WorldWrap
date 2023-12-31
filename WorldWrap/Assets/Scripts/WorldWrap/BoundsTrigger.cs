@@ -21,25 +21,17 @@ public class BoundsTrigger : TriggerBehavior
 
     private void OnTriggerExit(Collider other)
     {
-        Vector3 otherPosition = other.gameObject.transform.position;
-        float otherX = otherPosition.x;
-        float otherZ = otherPosition.z;
-        if (otherX <= lowerXBound)
+        GameObject otherGameObject = other.gameObject;
+        float otherX = otherGameObject.transform.position.x;
+        float otherZ = otherGameObject.transform.position.z;
+        if (InsideBounds(otherX, otherZ))
         {
-            otherPosition.x = upperXBound;
+            SelfWrap newSelfWrap = otherGameObject.AddComponent(typeof(SelfWrap)) as SelfWrap;
+            newSelfWrap.SetBounds(this);
+            wrapManager.AddToSelfWrappers(newSelfWrap.gameObject);
+            return;
         }
-        else if (otherX >= upperXBound)
-        {
-            otherPosition.x = lowerXBound;
-        }
-        if (otherZ <= lowerZBound)
-        {
-            otherPosition.z = upperZBound;
-        }
-        else if (otherZ >= upperZBound)
-        {
-            otherPosition.z = lowerZBound;
-        }
+        Vector3 otherPosition = GetNewPosition(otherGameObject.transform.position);
         // NavMeshAgents will glitch if transform is modified directly
         NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
         if (agent != null)
@@ -50,6 +42,42 @@ public class BoundsTrigger : TriggerBehavior
         other.gameObject.transform.position = otherPosition;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        SelfWrap otherSelfWrap = other.gameObject.GetComponent<SelfWrap>();
+        if (otherSelfWrap)
+        {
+            wrapManager.RemoveSelfWrap(other.gameObject);
+            Destroy(otherSelfWrap);
+        }
+    }
+
+    public Vector3 GetNewPosition(Vector3 currentPosition)
+    {
+        float xDistance = upperXBound - lowerXBound;
+        float zDistance = upperZBound - lowerXBound;
+        Vector3 otherPosition = currentPosition;
+        // euclideanPosition +/-=(1+|euclideanPosition/axisLength|)*axisLength
+        // TODO: Test all corrections
+        if (currentPosition.x <= lowerXBound)
+        {
+            otherPosition.x = otherPosition.x + ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
+        }
+        else if (currentPosition.x >= upperXBound)
+        {
+            otherPosition.x = otherPosition.x - ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
+        }
+        if (currentPosition.z <= lowerZBound)
+        {
+            otherPosition.z = otherPosition.z + ((int)Mathf.Abs(otherPosition.z/zDistance)+1)*zDistance;
+        }
+        else if (currentPosition.z >= upperZBound)
+        {
+            otherPosition.z = otherPosition.z - ((int)Mathf.Abs(otherPosition.z/zDistance)+1)*zDistance;
+        }
+        return otherPosition;
+    }
+
     public Vector2 getXBounds()
     {
         return new Vector2(lowerXBound, upperXBound);
@@ -58,5 +86,10 @@ public class BoundsTrigger : TriggerBehavior
     public Vector2 getZBounds()
     {
         return new Vector2(lowerZBound, upperZBound);
+    }
+
+    public bool InsideBounds(float otherX, float otherZ)
+    {
+        return otherX > lowerXBound && otherX < upperXBound && otherZ > lowerZBound && otherZ < upperZBound;
     }
 }

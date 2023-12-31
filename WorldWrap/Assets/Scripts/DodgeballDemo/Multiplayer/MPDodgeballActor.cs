@@ -56,5 +56,4 @@ public class MPDodgeballActor : NetworkBehaviour
     {
         return isHoldingObject;
     }
-
 }

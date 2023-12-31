@@ -40,10 +40,6 @@ public class CharacterController : MonoBehaviour
         {
             Interact();
         }
-    }
-
-    private void FixedUpdate()
-    {
         UpdatePosition();
     }
 

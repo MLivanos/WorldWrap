@@ -1,20 +1,21 @@
 # CHANGELOG:
 
-## v0.3.0 - Multiplayer
+## v0.3.0 - Multiplayer Support
 
 ### New Features:
 
-* Fully supports multiplayer through WorldWrap Relay
-* Adds a multiplayer dodgeball game one can connect to via local host
-* Integrates multiplayer settings into Setup Assistant
-* Adds a SafetyTrigger class - a TriggerBehavior which forces a wrap when the player exits outside its bounds. Useful for games with teleporting mechanics or to fix glitches caused by lag or improperly constructed WrapTriggers
-* Adds a SelfWrap class, allowing objects to be in charge of their own wraps. This component is added to objects when they leave the vertical bounds of the world and removed when they reenter the bounds. This is useful for games where objects may fly arbitrarily high into the sky.
+* Multiplayer: WorldWrap is now multiplayer capable. WorldWrap will maintain wrapping worlds for all players, NPCs, and GameObjects while being completely consistent between clients.
+* Multiplayer dodgeball game provided for an example of how to create multiplayer games using WorldWrap
+* SelfWrap: Objects that exit the BoundsTrigger from the top will govern their own wrapping until they reenter the BoundsTrigger. Applied automatically, no changes need to be made to existing code. Tangibly, what this means is that objects can fly arbitrarily high in the sky and wrap without issue.
+* SafetyTrigger: TriggerBehavior which forces a wrap when the player exits outside its bounds. Useful for games with teleporting mechanics or to fix glitches caused by lag or improperly constructed WrapTriggers
 
 ### Bug Fixes:
 
+* Fixes issue with automatic NavMeshLure creation where NavMeshLure would be placed slightly off or into the world
+
 ### Changes:
 
-* Setup Assistant no longer asks for defunct fields (to be removed in v1.0.0)
+* BoundsTrigger's GetNewPosition() function now maps any point in Euclidean space to WrapSpace, even those arbitrarily far away.
 
 ### Removed:
 

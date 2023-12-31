@@ -17,6 +17,7 @@ public class MPDBPlayer : DodgeballActor
     private GameObject mainCameraGameObject;
     // Interaction variables
     [SerializeField] private float grabbingRange;
+    private bool pickingUp;
 
     private void Start()
     {
@@ -93,9 +94,11 @@ public class MPDBPlayer : DodgeballActor
         foreach(Collider ball in ballColliders)
         {
             Physics.Raycast(outlook.position, ball.transform.position - outlook.position, out hit, grabbingRange);
-            if (hit.rigidbody != null && hit.rigidbody.tag == "Dodgeball")
+            if (hit.rigidbody != null && (hit.rigidbody.tag == "Dodgeball" || hit.rigidbody.gameObject.layer == LayerMask.NameToLayer("Dodgeballs")))
             {
+                pickingUp = true;
                 PickupObject(hit.rigidbody.gameObject);
+                pickingUp = false;
                 return true;
             }
         }
@@ -105,5 +108,23 @@ public class MPDBPlayer : DodgeballActor
     private Collider[] BallsInGrabbingRange()
     {
         return Physics.OverlapSphere(gameObject.transform.position, grabbingRange / 2.0f, ~LayerMask.NameToLayer("Dodgeballs"));
+    }
+
+    private void OnTransformChildrenChanged()
+    {
+        if (pickingUp)
+        {
+            return;
+        }
+        foreach (Transform child in transform)
+        {
+            Dodgeball ball = child.gameObject.GetComponent<Dodgeball>();
+            if (ball)
+            {
+                pickingUp = true;
+                PickupObject(child.gameObject, true);
+                pickingUp = false;
+            }
+        }
     }
 }
