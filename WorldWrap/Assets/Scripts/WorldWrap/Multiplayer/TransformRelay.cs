@@ -193,6 +193,7 @@ public class TransformRelay : NetworkBehaviour
         {
             return;
         }
+        lastPosition = worldWrapNetworkManager.GetPuppetOffset();
         lastPosition.x -= xOffset;
         lastPosition.z -= zOffset;
     }
