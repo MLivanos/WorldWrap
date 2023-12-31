@@ -8074,7 +8074,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2009386968}
-  - component: {fileID: 2009386967}
+  - component: {fileID: 2009386969}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8082,41 +8082,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2009386967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009386966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e9850360eb82470698f295427d64301, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficulty: 0
-  numberOfEnemies: 1
-  initialDodgeballPosition: {x: -12.75, y: 1.15, z: 4.5}
-  initialNumberOfDodgeballs: 6
-  maximumNumberOfDodgeballs: 14
-  dodgeballSpawnFrequency: 2.5
-  enemyThrowStrengthByDifficulty:
-  - 8
-  - 20
-  - 40
-  enemySpreadByDifficulty:
-  - 20
-  - 10
-  - 1
-  enemySpeedByDifficulty:
-  - 5
-  - 9
-  - 12
-  enemyHealthByDifficulty: 010000000300000005000000
-  dodgeBallPrefab: {fileID: 2863848475787073640, guid: 7633c8dec971c4d8eb47b05d4efecec8,
-    type: 3}
-  enemyPrefab: {fileID: 9131835840657053792, guid: fd080a7ed53354d6e9f8cf647d3db943,
-    type: 3}
 --- !u!4 &2009386968
 Transform:
   m_ObjectHideFlags: 0
@@ -8132,6 +8097,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2009386969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009386966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39028ef422c314eb48b088bdef1d7715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dodgeballIndex: 1
+  networkManagerGameObject: {fileID: 1895850649}
 --- !u!1 &2044709768
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,8 +21,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
     private List<TransformRelay> clientRelays;
     private List<Vector3> lastPositions;
     private int playerIndex;
-    // To delete
-    private GameObject recentGO;
 
     private void Start()
     {
@@ -33,19 +31,6 @@ public class WorldWrapNetworkManager : MonoBehaviour
         lastPositions = new List<Vector3>();
         FindWrapManager();
         CreateTransformRelayGroup();
-    }
-
-    // To delete
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            recentGO = InstantiateOnNetwork(1);
-        }
-        if(Input.GetKeyDown(KeyCode.X))
-        {
-            RemoveClient(recentGO);
-        }
     }
 
     private void FixedUpdate()
