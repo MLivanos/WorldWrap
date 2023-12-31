@@ -20,13 +20,13 @@ Trigger that informs the WrapManager about where the player is and object relati
 
 Trigger that informs the WrapManager of when the player is leaving and entering a block.
 
-## SafetyTrigger : TriggerBehavior
+## [SafetyTrigger : TriggerBehavior](https://github.com/MLivanos/WorldWrap/blob/main/API/SafetyTrigger.md)
 
 Trigger larger than a BlockTrigger but smaller than a BoundsTrigger. Initiates wraps when the player leaves it. This is useful for games that employ any teleporting mechanics and can fix any issues in wrapping due to lag or improper WrapTrigger placement. 
 
-## SelfWrap : Monobehavior
+## [SelfWrap : Monobehavior](https://github.com/MLivanos/WorldWrap/blob/main/API/SelfWrap.md)
 
-This script allows non-player objects to be in charge of their own wraps. The BoundsTrigger will add this component if an object leaves the vertical bounds of the world and removes this component when it returns inside the global bounds. Useful in games where objects may be shot arbitrarily high into the sky. 
+This script allows non-player objects to govern their own wraps. The BoundsTrigger will add this component if an object leaves the vertical bounds of the world and removes this component when it returns inside the global bounds. Useful in games where objects may be shot arbitrarily high into the sky. 
 
 # Multiplayer Specific Classes
 
