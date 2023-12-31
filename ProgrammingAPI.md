@@ -45,3 +45,7 @@ Relay keeps track of a client's object and tells the rest of the network how it 
 ## WorldWrapNetworkRigidbody : MonoBehaviour
 
 Communicates information about collisions between puppet objects and other Rigidbodies in the scene. This body goes on puppets, and only when simulating consistent collisions is important for a particular object.
+
+## WorldWrapNetworkObject : MonoBehaviour
+
+Contains information about object ownership. This script changes object ownership when parented by another clinet. Use of the WorldWrapNetwork Object is governed by the WorldWrapNetworkManager automatically without need for programmer intervention.
