@@ -16,6 +16,7 @@
 ### Changes:
 
 * BoundsTrigger's GetNewPosition() function now maps any point in Euclidean space to WrapSpace, even those arbitrarily far away.
+* Adds icons to all WorldWrap classes for easier visualization in the scene editor
 
 ### Removed:
 
