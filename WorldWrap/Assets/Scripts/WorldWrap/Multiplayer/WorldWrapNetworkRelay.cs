@@ -48,7 +48,7 @@ public class WorldWrapNetworkRelay : NetworkBehaviour
     [ServerRpc]
     private void InstantiateOnNetworkServerRpc(ulong clientID, int prefabIndex)
     {
-        TransformRelay newRelay = Instantiate(transformRelayPrefab).GetComponent<TransformRelay>();
+        WorldWrapTransformRelay newRelay = Instantiate(transformRelayPrefab).GetComponent<WorldWrapTransformRelay>();
         newRelay.SetPrefabIndex(prefabIndex);
         newRelay.gameObject.GetComponent<NetworkObject>().SpawnWithOwnership(clientID);
     }
