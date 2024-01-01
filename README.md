@@ -1,14 +1,16 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0-Alpha1)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0)
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
 
 
 </div>
 
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev030)
   - [Introduction](#introduction)
+    - [0.3.0 Release Notes](#030-release-notes)
     - [0.2.0 Release Notes](#020-release-notes)
   - [How WorldWrap Works](#how-worldwrap-works)
   - [How To Use WorldWrap](#how-to-use-worldwrap)
@@ -51,9 +53,15 @@ Some other reasons to consider WorldWrap for your next game:
 
 🤖 Pathfinding AI - NPCs can navigate WorldWrap perfectly without extra effort on your part.
 
+🛜 Multiplayer Support - WorldWrap is now completely multiplayer capable. The software takes care of the fact that multiple players may wrap in different directions and maintains the effect for any number of players
+
 🌐 Open-Source - All code is available for free on my GitHub.
 
 🛠 Developer Friendly - From the Setup Assistant that will help you make your world ready to wrap in minutes to developer tools such as unit tests, WorldWrap is made with the developer's interests in mind.
+
+### 0.3.0 Release Notes
+
+The 0.3.0 release fully integrates multiplayer support! Every player will see the wrapping effect on their own end while maintaining all objects' relative positions. There are some other stability and power enhancements, so make sure to check the Change Log for an exhaustive list.
 
 ### 0.2.0 Release Notes
 
@@ -181,6 +189,8 @@ WorldWrap is still under development, and I'm hoping to make it much more powerf
 
 
 * After the multiplayer update, I do not have new features planned. Let me know if there is any functionality you would like to see!
+* I'll be working on making some tutortial videos for making both single and multiplayer games. Hopefully this will be helpful if you'd like to use the system in your own projects!
+* I'm also going to be making some games using the software to hopefully give people some inspiration.
 
 
 ## Support
