@@ -24,7 +24,7 @@ public class SafetyTriggerTest : WorldWrapTest
     {
         base.SetupVariables();
         translateDistance = 36.0f;
-        waitTime = 2.5f;
+        waitTime = 0.05f;
         player = FindGameObjectByName("Player");
         actor = player.GetComponent<UnitTestActor>();
         GameObject bounds = FindGameObjectByName("GlobalBounds");
