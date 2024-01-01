@@ -12,7 +12,7 @@ ___
 
 ### **GameObject transformRelayPrefab**
 
-Prefab for a [WorldWrapTransformRelay](https://github.com/MLivanos/WorldWrap/blob/main/API/Multiplayer/WorldWrapNetworkRelay.md).
+Prefab for a [WorldWrapTransformRelay](https://github.com/MLivanos/WorldWrap/blob/main/API/Multiplayer/WorldWrapTransformRelay.md).
 
 ### **WorldWrapNetworkManager worldWrapNetworkManager**
 
