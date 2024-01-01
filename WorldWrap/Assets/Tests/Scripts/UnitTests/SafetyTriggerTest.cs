@@ -126,7 +126,7 @@ public class SafetyTriggerTest : WorldWrapTest
         player.transform.Translate(translateDistance, 0, translateDistance);
         yield return new WaitForSeconds(waitTime);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
-        Assert.AreEqual(GetXZPosition(cyanBlock).normalized, Vector2.down);
+        Assert.AreEqual(GetXZPosition(blueBlock).normalized, Vector2.down);
         Assert.IsTrue(PlayerInBounds());
     }
 
