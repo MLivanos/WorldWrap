@@ -18,12 +18,14 @@ public class SafetyTriggerTest : WorldWrapTest
     private GameObject yellowBlock;
     private GameObject cyanBlock;
     private float translateDistance;
+    private float smallTranslateDistance;
     private float waitTime;
 
     protected override void SetupVariables()
     {
         base.SetupVariables();
         translateDistance = 36.0f;
+        smallTranslateDistance = 25.0f;
         waitTime = 0.05f;
         player = FindGameObjectByName("Player");
         actor = player.GetComponent<UnitTestActor>();
@@ -39,6 +41,11 @@ public class SafetyTriggerTest : WorldWrapTest
         cyanBlock = FindChildByName(bounds, "CyanBlock");
     }
 
+    private void CenterAroundRed()
+    {
+        player.transform.position = redBlock.transform.position;
+    }
+
     private bool PlayerInBounds()
     {
         Vector3 playerPosition = player.transform.position;
@@ -48,10 +55,8 @@ public class SafetyTriggerTest : WorldWrapTest
     [UnityTest, Order(1)]
     public IEnumerator TeleportingWestInitiatesWrap()
     {
-        LoadScene();
-        yield return new WaitForSeconds(3.0f);
         SetupVariables();
-        player.transform.position = new Vector3(0,player.transform.position.y,0);
+        CenterAroundRed();
         yield return new WaitForSeconds(waitTime);
         player.transform.Translate(-translateDistance, 0, 0);
         yield return new WaitForSeconds(waitTime);
@@ -128,6 +133,28 @@ public class SafetyTriggerTest : WorldWrapTest
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.AreEqual(GetXZPosition(blueBlock).normalized, Vector2.down);
         Assert.IsTrue(PlayerInBounds());
+    }
+
+    [UnityTest, Order(9)]
+    public IEnumerator BypassingWrapTriggersToSafetyInitiatesWrapEast()
+    {
+        player.transform.Translate(smallTranslateDistance, 0, 0);
+        yield return MoveActor(new Vector3(7, 0, 0));
+        Assert.AreEqual(GetXZPosition(cyanBlock), Vector2.zero);
+        Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.right);
+        Assert.IsTrue(PlayerInBounds());
+        player.transform.position = Vector3.zero;
+    }
+
+    [UnityTest, Order(10)]
+    public IEnumerator BypassingWrapTriggersToSafetyInitiatesWrapWest()
+    {
+        player.transform.Translate(-smallTranslateDistance, 0, 0);
+        yield return MoveActor(new Vector3(-7, 0, 0));
+        Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
+        Assert.AreEqual(GetXZPosition(greenBlock).normalized, Vector2.left);
+        Assert.IsTrue(PlayerInBounds());
+        player.transform.position = Vector3.zero;
     }
 
 }

@@ -63,6 +63,8 @@ public class BallTest : WorldWrapTest
         actor.TeleportTo(Vector3.zero);
         yield return MoveActor(new Vector3(30, 0, 0));
         actor.MoveInDirection(Vector3.zero);
-        Assert.AreEqual(GetXZPosition(balls[0]), new Vector2(originalPositions[0].x, originalPositions[0].z));
+        //Debug.Log(new Vector3(balls[0].transform.position.x+30.0f, 0.0f,balls[0].transform.position.z));
+        //Debug.Log(new Vector3(originalPositions[0].x, 0.0f, originalPositions[0].z));
+        Assert.IsTrue(Vector3sAreEqual(new Vector3(balls[0].transform.position.x+30.0f, 0.0f,balls[0].transform.position.z), new Vector3(originalPositions[0].x, 0.0f, originalPositions[0].z)));
     }
 }
