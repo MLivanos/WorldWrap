@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0-Beta1)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0)
 
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
@@ -18,7 +18,7 @@ All past, current, and future iterations of WorldWrap are/will be free, but if y
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.0-Beta1)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev030-beta1)
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev030)
   - [Introduction](#introduction)
     - [0.3.0 Release Notes](#030-release-notes)
     - [0.2.0 Release Notes](#020-release-notes)
