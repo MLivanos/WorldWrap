@@ -25,9 +25,9 @@ public class DodgeballActor : MonoBehaviour
         return health;
     }
 
-    protected void PickupObject(GameObject ball)
+    protected void PickupObject(GameObject ball, bool override_ = false)
     {
-        if (isHoldingObject)
+        if (isHoldingObject && !override_)
         {
             return;
         }

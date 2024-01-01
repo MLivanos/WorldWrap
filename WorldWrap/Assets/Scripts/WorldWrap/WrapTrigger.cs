@@ -7,7 +7,7 @@ public class WrapTrigger : TriggerBehavior
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (IsCollidingWithPlayer(other.gameObject))
         {
             wrapManager.LogTriggerEntry(gameObject);
         }
@@ -15,7 +15,7 @@ public class WrapTrigger : TriggerBehavior
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (IsCollidingWithPlayer(other.gameObject))
         {
             wrapManager.LogTriggerExit(gameObject);
         }

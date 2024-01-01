@@ -14,10 +14,10 @@ public class WorldWrapSetupEditor : EditorWindow
     private int numberOfRows;
     private int numberOfColumns;
     private bool isUsingNavmesh;
-    private bool isExisting;
+    private bool isMultiplayer;
     private string worldWrapTag;
 
-    [MenuItem("Window/WorldWrap")]
+    [MenuItem("Window/WorldWrap Setup Assistant")]
 
     public static void ShowWidnow()
     {
@@ -27,6 +27,7 @@ public class WorldWrapSetupEditor : EditorWindow
     private void OnGUI()
     {
         SetupTitle();
+        worldWrapTag = "WorldWrapObject";
         worldSize = EditorGUILayout.Vector3Field("World Size: ", worldSize);
         EditorGUILayout.BeginHorizontal();
         numberOfRows = EditorGUILayout.IntField("Number Of Rows: ", numberOfRows);
@@ -34,11 +35,10 @@ public class WorldWrapSetupEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUIUtility.labelWidth = 175;
         isUsingNavmesh = EditorGUILayout.Toggle("Using NavMesh: ", isUsingNavmesh);
-        //isExisting = EditorGUILayout.Toggle("Setting Up An Existing Scene: ", isExisting, GUILayout.ExpandWidth(true));
+        isMultiplayer = EditorGUILayout.Toggle("Is Multiplayer: ", isMultiplayer);
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Setup WorldWrap"))
         {
-            worldWrapTag = "WorldWrapObject";
             CreatWorldWrapObjects();
         }
         if (GUILayout.Button("Clear WorldWrap"))
@@ -73,24 +73,26 @@ public class WorldWrapSetupEditor : EditorWindow
         SetupWrapManager();
         SetupGlobalBounds();
         SetupBlocks();
+        SetupSafetyTrigger();
         ParentWrapManagers();
         if (isUsingNavmesh)
         {
             wrapManagerScript.SetIsUsingNavMesh(true);
             CreateNavMeshPlanes();
         }
+        if (isMultiplayer)
+        {
+            wrapManagerScript.UsingMultiplayer(true);
+            CreateWorldWrapNetworkManager();
+        }
     }
 
     private void SetupWrapManager()
     {
         wrapManagerObject = new GameObject("WrapManager");
-        Debug.Log(worldWrapTag);
-        Debug.Log(wrapManagerObject.tag);
         wrapManagerObject.tag = worldWrapTag;
-        Debug.Log(wrapManagerObject.tag);
         wrapManagerScript = wrapManagerObject.AddComponent(typeof(WrapManager)) as WrapManager;
         wrapManagerScript.SetBlocksLength(numberOfRows * numberOfColumns);
-        findPlayer();
     }
 
     private void SetupGlobalBounds()
@@ -101,6 +103,16 @@ public class WorldWrapSetupEditor : EditorWindow
         bounds.transform.localScale = worldSize;
         bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent1", typeof(Material));
         bounds.AddComponent(typeof(BoundsTrigger));
+    }
+
+    private void SetupSafetyTrigger()
+    {
+        bounds = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        bounds.name = "SafetyTrigger";
+        bounds.tag = worldWrapTag;
+        bounds.transform.localScale = new Vector3(2 * worldSize.x / numberOfRows, worldSize.y, 2 * worldSize.z / numberOfColumns);
+        bounds.GetComponent<Renderer>().material = (Material)Resources.Load("Translucent3", typeof(Material));
+        bounds.AddComponent(typeof(SafetyTrigger));
     }
 
     private void SetupBlocks()
@@ -167,45 +179,14 @@ public class WorldWrapSetupEditor : EditorWindow
         wrapTrigger.AddComponent(typeof(WrapTrigger));
     }
 
-    private void findPlayer()
+    private void CreateWorldWrapNetworkManager()
     {
-        GameObject playerObject = null;
-        string objectName = "";
-        int hammingDistance;
-        bool hasPlayerInName;
-        int minimumHammingDistance = int.MaxValue;
-        bool existsAnotherCandidate = false;
-        foreach (GameObject objectInScene in FindObjectsOfType(typeof(GameObject))) 
-        {
-            objectName = objectInScene.name.ToLower();
-            hammingDistance = HammingDistanceToPlayer(objectName);
-            hasPlayerInName = objectName.Contains("player");
-            if (hasPlayerInName &&  hammingDistance < minimumHammingDistance)
-            {
-                minimumHammingDistance = hammingDistance;
-                playerObject = objectInScene;
-                existsAnotherCandidate = false;
-                wrapManagerScript.SetPlayer(playerObject);
-            }
-            else if (objectName.Contains("player") &&  hammingDistance == minimumHammingDistance)
-            {
-                existsAnotherCandidate = true;
-            }
-        }
-        if (playerObject == null)
-        {
-            Debug.LogWarning("WorldWrap requires an object to be designated as the player. No such object was found automatically. Please add one to the Player field under WrapManager.", wrapManagerObject);
-        }
-        if (existsAnotherCandidate)
-        {
-            Debug.LogWarning(string.Format("WorldWrap requires an object to be designated as the player. We beleive {0} is your player object, but we may be wrong. Please check if this is correct, and change the player object in the Player field if need be.", objectName), wrapManagerObject);
-        }
-    }
-
-    private int HammingDistanceToPlayer(string inputString)
-    {
-        // Number of letters that are not 'player'
-        return inputString.Length - 6;
+        GameObject networkManagerObject = new GameObject("WorldWrapNetworkManager");
+        networkManagerObject.tag = worldWrapTag;
+        WorldWrapNetworkManager networkManagerComponent = networkManagerObject.AddComponent(typeof(WorldWrapNetworkManager)) as WorldWrapNetworkManager;
+        wrapManagerScript.SetNetworkManager(networkManagerObject);
+        Debug.LogWarning("Please ensure that Unity's Netcode for GameObjects is installed and that a NetworkManager object is created with the appropriate settings");
+        Debug.LogWarning("Please set NetworkRelay prefab. If you are using an unmodified copy of WorldWrap, this prefab can be found in WorldWrap/Assets/Prefabs/WorldWrapNetworkRelay");
     }
 
     private bool WorldWrapAlreadyExists()
@@ -267,12 +248,12 @@ public class WorldWrapSetupEditor : EditorWindow
         float planeXOffset = worldSize.x / numberOfRows;
         float planeZScale = worldSize.z / 10.0f;
         float planeXScale = worldSize.x / 10.0f;
-        float planePosition = -1 * bounds.transform.lossyScale.z / 2.0f - 1.5f;
+        float planePosition = -1 * worldSize.z / 2.0f - 1.5f;
         GameObject navMeshLure = new GameObject("NavMeshLure");
         navMeshLure.tag = worldWrapTag;
         GameObject plane1 = CreateNavMeshPlane(planeXScale, 0.0f, planePosition, navMeshLure);
         GameObject plane2 = CreateNavMeshPlane(planeXScale, 180.0f, planePosition, navMeshLure);
-        planePosition = -1 * bounds.transform.lossyScale.x / 2.0f - 1.5f;
+        planePosition = -1 * worldSize.z / 2.0f - 1.5f;
         GameObject plane3 = CreateNavMeshPlane(planeZScale, 90.0f, planePosition, navMeshLure);
         GameObject plane4 = CreateNavMeshPlane(planeZScale, 270.0f, planePosition, navMeshLure);
         navMeshLure.transform.position = wrapManagerObject.transform.position;

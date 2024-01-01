@@ -2,25 +2,34 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class WrapManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] blocks;
-    [SerializeField] private GameObject player;
     [SerializeField] private GameObject lureObject;
+    [SerializeField] private GameObject worldWrapNetworkManagerObject;
     [SerializeField] private bool isUsingNavmesh;
+    [SerializeField] private bool isMultiplayer;
+    private WorldWrapNetworkManager worldWrapNetworkManager;
+    private BoundsTrigger bounds;
+    private List<GameObject> selfWrappers;
     private GameObject[,] blockMatrix;
+    private Vector3 referenceBlockInitialPosition;
     private GameObject initialTrigger;
     private GameObject currentTrigger;
     private GameObject previousBlock;
     private GameObject currentBlock;
+    // DEFUNCT: Remove in v.1.0.0
+    private GameObject player;
     private int wrapLayer;
     private bool isTransitioning;
 
     private void Start()
     {
+        selfWrappers = new List<GameObject>();
         initialTrigger = null;
         currentTrigger = null;
         // Automatically detect matrix structure of blocks
@@ -28,12 +37,18 @@ public class WrapManager : MonoBehaviour
         Vector2[] coordinatesByZ;
         Dictionary<float, int> xToRow = new Dictionary<float, int>();
         Dictionary<float, int> zToColumn = new Dictionary<float, int>();
+        SetReferenceBlock();
+        FindBounds();
         SortCoordinates(out coordinatesByX, out coordinatesByZ);
         SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
         FillMatrix(xToRow, zToColumn);
         if (isUsingNavmesh)
         {
             CreateNavMeshLure();
+        }
+        if (isMultiplayer)
+        {
+            worldWrapNetworkManager = worldWrapNetworkManagerObject.GetComponent<WorldWrapNetworkManager>();
         }
         wrapLayer = LayerMask.NameToLayer("WorldWrapObjects");
     }
@@ -123,7 +138,7 @@ public class WrapManager : MonoBehaviour
         float planeLength = Mathf.Max(plane1.transform.lossyScale.x, plane1.transform.lossyScale.z) * 10;
         float linkIncrement = planeLength / numberOfLinks;
         int longDirection = 0;
-        if (plane1.transform.position.z > plane1.transform.position.x)
+        if (Math.Abs(plane1.transform.position.z) < Math.Abs(plane1.transform.position.x))
         {
             longDirection = 2;
         }
@@ -139,6 +154,52 @@ public class WrapManager : MonoBehaviour
             newLink.endPosition = newLinkPosition + plane1ToPlane2;
             NavMesh.AddLink(newLink);
         }
+    }
+
+    private void SetReferenceBlock()
+    {
+        try
+        {
+            referenceBlockInitialPosition = blocks[0].transform.position;
+        }
+        catch
+        {
+            Exception missingManagerException = new Exception("Error: No blocks detected in WrapManager's blocks list. Did you forget to add the blocks?");
+            Debug.LogException(missingManagerException);
+        }
+    }
+
+    private void FindBounds()
+    {
+        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject objectInScene in gameObjectsInScene)
+        {
+            bounds = objectInScene.GetComponent<BoundsTrigger>();
+            if (bounds)
+            {
+                return;
+            }
+        }
+        if (isMultiplayer)
+        {
+            Exception missingManagerException = new Exception("Error: No BoundsTrigger found. Please surround your world with a boundsTrigger.");
+            Debug.LogException(missingManagerException);
+        }
+        Debug.LogWarning("Warning: Cannot use SemanticWrap without a BoundsTrigger. We strongly reccomend surrounding your world with a BoundsTrigger.");
+    }
+
+    public Vector3 GetSemanticOffset()
+    {
+        return referenceBlockInitialPosition - blocks[0].transform.position;
+    }
+
+    public GameObject SemanticInstantiate(GameObject objectToInstantiate)
+    {
+        GameObject newObject = Instantiate(objectToInstantiate);
+        Vector3 semanticOffset = -1*GetSemanticOffset();
+        newObject.transform.Translate(semanticOffset);
+        newObject.transform.position = bounds.GetNewPosition(newObject.transform.position);
+        return newObject;
     }
 
     public void LogTriggerEntry(GameObject entryBlock)
@@ -166,7 +227,6 @@ public class WrapManager : MonoBehaviour
         if (ShouldWrap())
         {
             WrapWorld();
-            previousBlock = currentBlock;
         }
         initialTrigger = null;
         currentTrigger = null;
@@ -182,12 +242,13 @@ public class WrapManager : MonoBehaviour
         return shouldWrap;
     }
 
-    private void WrapWorld()
+    public void WrapWorld()
     {
         GameObject[,] newMatrix = GetTranslations();
         TranslateBlocks(GetBlockPositions(), newMatrix);
         blockMatrix = newMatrix;
         initialTrigger = null;
+        previousBlock = currentBlock;
     }
 
     public void LogBlockEntry(GameObject enterBlock)
@@ -242,8 +303,12 @@ public class WrapManager : MonoBehaviour
 
     private void TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)
     {
-        Vector3 movementVector;
+        Vector3 movementVector = Vector3.zero;
         HashSet<int> objectAlreadyMoved = new HashSet<int>();
+        int middleX = (int)oldPositions.GetLength(0) / 2;
+        int middleZ = (int)oldPositions.GetLength(1) / 2;
+        movementVector = oldPositions[middleX,middleZ] - newMatrix[middleX,middleZ].transform.position;
+        TranslateSelfWrappers(movementVector);
         for(int row = 0; row < oldPositions.GetLength(0); row++)
         {
             for(int column = 0; column < oldPositions.GetLength(1); column++)
@@ -283,6 +348,14 @@ public class WrapManager : MonoBehaviour
                 break;
             }
             triggerScript.removeResident(oldResident);
+        }
+    }
+
+    private void TranslateSelfWrappers(Vector3 movementVector)
+    {
+        foreach(GameObject objectWrapping in selfWrappers)
+        {
+            objectWrapping.transform.Translate(movementVector, Space.World);
         }
     }
 
@@ -371,7 +444,22 @@ public class WrapManager : MonoBehaviour
             agent.Warp(objectToMove.transform.position + movementVector);
             return;
         }
+        if (IsMultiplayerClient(objectToMove))
+        {
+            worldWrapNetworkManager.Warp(movementVector, objectToMove);
+            return;
+        }
         objectToMove.transform.Translate(movementVector, Space.World);
+    }
+
+    private bool IsMultiplayerClient(GameObject objectToMove)
+    {
+        WorldWrapNetworkObject networkObject = objectToMove.GetComponent<WorldWrapNetworkObject>();
+        if (!networkObject)
+        {
+            return false;
+        }
+        return isMultiplayer && networkObject.IsOwned();
     }
 
     private GameObject[,] DeepCopyMatrix(GameObject[,] matrix)
@@ -387,6 +475,7 @@ public class WrapManager : MonoBehaviour
         return newMatrix;
     }
 
+    // DEFUNCT: Remove in v.1.0.0
     public void SetPlayer(GameObject newPlayer)
     {
         player = newPlayer;
@@ -416,6 +505,7 @@ public class WrapManager : MonoBehaviour
         blocks[nextBlockIndex] = block;
     }
 
+    // RENAME: UsingNavMesh in v1.0.0
     public void SetIsUsingNavMesh(bool isUsing)
     {
         isUsingNavmesh = isUsing;
@@ -429,5 +519,35 @@ public class WrapManager : MonoBehaviour
     public void SetWrapLayer(int wrapLayerNumber)
     {
         wrapLayer = wrapLayerNumber;
+    }
+
+    public void UsingMultiplayer(bool usingMultiplayer)
+    {
+        isMultiplayer = true;
+    }
+
+    public bool IsMultiplayer()
+    {
+        return isMultiplayer;
+    }
+
+    public void SetNetworkManager(GameObject networkManager)
+    {
+        worldWrapNetworkManagerObject = networkManager;
+    }
+
+    public void SetIsMultiplayer(bool multiplayer)
+    {
+        isMultiplayer = multiplayer;
+    }
+
+    public void AddToSelfWrappers(GameObject selfWrapper)
+    {
+        selfWrappers.Add(selfWrapper);
+    }
+
+    public void RemoveSelfWrap(GameObject selfWrapper)
+    {
+        selfWrappers.Remove(selfWrapper);
     }
 }
