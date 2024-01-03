@@ -18,7 +18,7 @@ public class SelfWrapTest : WorldWrapTest
     protected override void SetupVariables()
     {
         base.SetupVariables();
-        newHeight = 90.0f;
+        newHeight = 120.0f;
         verticalDuck = FindGameObjectByName("Duck");
         diagonalDuck = FindGameObjectByName("Duck1");
         horizontalDuck = FindGameObjectByName("Duck2");
