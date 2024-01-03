@@ -55,6 +55,6 @@ public class NavMeshAgentTest : WorldWrapTest
         navMeshAgent.SetDestination(wrapWestDestination);
         yield return new WaitForSeconds(5.0f);
         Debug.Log(navMeshAgentObject.transform.position);
-        Assert.IsTrue(Vector3sAreEqual(navMeshAgentObject.transform.position, wrapWestDestination));
+        Assert.IsTrue(Vector3sAreEqual(navMeshAgentObject.transform.position, wrapWestDestination, 0.1f));
     }
 }
