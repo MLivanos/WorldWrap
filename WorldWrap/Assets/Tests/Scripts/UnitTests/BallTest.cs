@@ -25,11 +25,6 @@ public class BallTest : WorldWrapTest
         }
     }
 
-    private bool Vector3sAreEqual(Vector3 a, Vector3 b, float threshold = 0.01f)
-    {
-        return Math.Abs(a.x - b.x) < threshold && Math.Abs(a.y - b.y) < threshold && Math.Abs(a.z - b.z) < threshold;
-    }
-
     [UnityTest, Order(1)]
     public IEnumerator BallRemainsInSameRelativePositionWhileHolding()
     {
