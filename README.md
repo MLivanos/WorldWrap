@@ -8,8 +8,8 @@
 
 ![Static Badge](https://img.shields.io/badge/Version-0.3.1-blue)
 ![GitHub License](https://img.shields.io/github/license/MLivanos/WorldWrap?link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Flicense%2FMLivanos%2FWorldWrap%3Flink%3Dhttps%253A%252F%252Fgithub.com%252FMLivanos%252FWorldWrap%252Fblob%252FDOCS-MultiplayerREADMEUpdate%252FLICENSE)
-![Static Badge](https://img.shields.io/badge/Unit%20Tests-43%2F43%20Passed-brightgreen?link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
-![Static Badge](https://img.shields.io/badge/Code%20Coverage-93%25-green)
+![Static Badge](https://img.shields.io/badge/Unit%20Tests-48%2F48%20Passed-brightgreen?link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
+![Static Badge](https://img.shields.io/badge/Code%20Coverage-100%25-brightgreen)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MLivanos/WorldWrap/dev)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap)
