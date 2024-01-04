@@ -36,7 +36,9 @@ public class BoundsTrigger : TriggerBehavior
         NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
+            Vector3 agentDestination = agent.destination;
             agent.Warp(otherPosition);
+            agent.destination = agentDestination;
             return;
         }
         other.gameObject.transform.position = otherPosition;

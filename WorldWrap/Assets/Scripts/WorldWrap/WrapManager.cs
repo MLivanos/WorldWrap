@@ -26,6 +26,7 @@ public class WrapManager : MonoBehaviour
     private GameObject player;
     private int wrapLayer;
     private bool isTransitioning;
+    private bool zeroMagnitudeWrapTriggered;
 
     private void Start()
     {
@@ -53,6 +54,14 @@ public class WrapManager : MonoBehaviour
         wrapLayer = LayerMask.NameToLayer("WorldWrapObjects");
     }
 
+    private void Update()
+    {
+        if (zeroMagnitudeWrapTriggered)
+        {
+            zeroMagnitudeWrapTriggered = false;
+        }
+    }
+
     // Given the unorganized array of blocks, organize them into a matrix
     private void SortCoordinates(out Vector2[] coordinatesByX, out Vector2[] coordinatesByZ)
     {
@@ -71,8 +80,7 @@ public class WrapManager : MonoBehaviour
     // Detect matrix shape and instantiate it
     private void SetupMatrix(Vector2[] coordinatesByX, Vector2[] coordinatesByZ, Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn)
     {
-        int numberOfRows = 1;
-        int numberOfColumns = 1;
+        int numberOfRows = 1, numberOfColumns = 1;
         float previousX = coordinatesByX[0].x;
         float previousZ = coordinatesByZ[0].y;
         xToRow[previousX] = 0;
@@ -258,6 +266,10 @@ public class WrapManager : MonoBehaviour
             previousBlock = enterBlock;
         }
         currentBlock = enterBlock;
+        if (zeroMagnitudeWrapTriggered)
+        {
+            WrapWorld();
+        }
     }
 
     public void LogBlockExit(GameObject exitBlock)
@@ -278,6 +290,7 @@ public class WrapManager : MonoBehaviour
         Vector3 translationVector = currentBlock.transform.position - previousBlock.transform.position;
         if (translationVector.magnitude == 0.0f)
         {
+            zeroMagnitudeWrapTriggered = true;
             return blockMatrix;
         }
         if (translationVector.x > 0)
@@ -441,7 +454,9 @@ public class WrapManager : MonoBehaviour
         NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
+            Vector3 agentDestination = agent.destination;
             agent.Warp(objectToMove.transform.position + movementVector);
+            agent.destination = agentDestination;
             return;
         }
         if (IsMultiplayerClient(objectToMove))

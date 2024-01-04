@@ -9,13 +9,13 @@ public class BlockTrigger : TriggerBehavior
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsCollidingWithPlayer(other.gameObject))
-        {
-            wrapManager.LogBlockEntry(gameObject);
-        }
         if (other.tag != "WorldWrapObject" && other.gameObject.layer != wrapManager.GetWrapLayer())
         {
             residents.Add(other.gameObject);
+        }
+        if (IsCollidingWithPlayer(other.gameObject))
+        {
+            wrapManager.LogBlockEntry(gameObject);
         }
     }
 

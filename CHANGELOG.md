@@ -1,5 +1,20 @@
 # CHANGELOG:
 
+## v0.3.1 - More Unit Tests & Bug Fixes
+
+### New Features:
+
+* More unit tests, including those for the new single player classes.
+
+### Bug Fixes:
+
+* Resolves race condition between SafetyTrigger's OnTriggerExit and BlockTrigger's OnTriggerEnter. This allows the player to be able to wrap if they are teleported very far away from the origin, but won't effect the game if you do not have a teleporting mechanic.
+* Resolves issue that would cause a NavMeshAgent to lose its destination after a wrap.
+
+### Changes:
+
+### Removed:
+
 ## v0.3.0 - Multiplayer Support
 
 ### New Features:
