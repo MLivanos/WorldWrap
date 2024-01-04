@@ -60,7 +60,6 @@ public class BoundsTrigger : TriggerBehavior
         float zDistance = upperZBound - lowerXBound;
         Vector3 otherPosition = currentPosition;
         // euclideanPosition +/-=(1+|euclideanPosition/axisLength|)*axisLength
-        // TODO: Test all corrections
         if (currentPosition.x <= lowerXBound)
         {
             otherPosition.x = otherPosition.x + ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
