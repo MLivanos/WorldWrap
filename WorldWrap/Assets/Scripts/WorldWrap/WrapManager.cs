@@ -33,25 +33,22 @@ public class WrapManager : MonoBehaviour
         selfWrappers = new List<GameObject>();
         initialTrigger = null;
         currentTrigger = null;
-        // Automatically detect matrix structure of blocks
-        Vector2[] coordinatesByX;
-        Vector2[] coordinatesByZ;
-        Dictionary<float, int> xToRow = new Dictionary<float, int>();
-        Dictionary<float, int> zToColumn = new Dictionary<float, int>();
-        SetReferenceBlock();
-        FindBounds();
-        SortCoordinates(out coordinatesByX, out coordinatesByZ);
-        SetupMatrix(coordinatesByX, coordinatesByZ, xToRow, zToColumn);
-        FillMatrix(xToRow, zToColumn);
+        WrapManagerSetup setupHelper = gameObject.AddComponent(typeof(WrapManagerSetup)) as WrapManagerSetup;
+        setupHelper.Setup(blocks,lureObject);
+        blockMatrix = setupHelper.GetBlockMatrix();
+        referenceBlockInitialPosition = setupHelper.SetReferenceBlock();
+        bounds = setupHelper.FindBounds();
         if (isUsingNavmesh)
         {
-            CreateNavMeshLure();
+            setupHelper.CreateNavMeshLure();
         }
         if (isMultiplayer)
         {
             worldWrapNetworkManager = worldWrapNetworkManagerObject.GetComponent<WorldWrapNetworkManager>();
         }
         wrapLayer = LayerMask.NameToLayer("WorldWrapObjects");
+        CheckBounds();
+        Destroy(setupHelper);
     }
 
     private void Update()
@@ -62,131 +59,11 @@ public class WrapManager : MonoBehaviour
         }
     }
 
-    // Given the unorganized array of blocks, organize them into a matrix
-    private void SortCoordinates(out Vector2[] coordinatesByX, out Vector2[] coordinatesByZ)
+    private void CheckBounds()
     {
-        Vector2[] coordinates = new Vector2[blocks.Length];
-        for(int blockIndex = 0; blockIndex < blocks.Length; blockIndex += 1)
+        if (bounds)
         {
-            float blockX = blocks[blockIndex].transform.position.x;
-            float blockZ = blocks[blockIndex].transform.position.z;
-            coordinates[blockIndex] = new Vector2(blockX, blockZ);
-        }
-        List<Vector2> coordinatesList = new List<Vector2>(coordinates);
-        coordinatesByX = coordinatesList.OrderBy(v => v.x).ToArray();
-        coordinatesByZ = coordinatesList.OrderBy(v => v.y).ToArray();
-    }
-
-    // Detect matrix shape and instantiate it
-    private void SetupMatrix(Vector2[] coordinatesByX, Vector2[] coordinatesByZ, Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn)
-    {
-        int numberOfRows = 1, numberOfColumns = 1;
-        float previousX = coordinatesByX[0].x;
-        float previousZ = coordinatesByZ[0].y;
-        xToRow[previousX] = 0;
-        zToColumn[previousZ] = 0;
-        for(int blockIndex = 0; blockIndex < blocks.Length; blockIndex += 1)
-        {
-            float x = coordinatesByX[blockIndex].x;
-            float z = coordinatesByZ[blockIndex].y;
-            if(x != previousX)
-            {
-                xToRow[x] = numberOfRows;
-                numberOfRows += 1;
-                previousX = x;
-            }
-            if(z != previousZ)
-            {
-                zToColumn[z] = numberOfColumns;
-                numberOfColumns += 1;
-                previousZ = z;
-            }
-        }
-        blockMatrix = new GameObject[numberOfRows,numberOfColumns];
-    }
-
-    // Add blocks to their position according to where they exist in the world.
-    private void FillMatrix(Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn)
-    {        
-        foreach(GameObject block in blocks)
-        {
-            int row = xToRow[block.transform.position.x];
-            int column = zToColumn[block.transform.position.z];
-            blockMatrix[row, column] = block;
-        }
-    }
-
-    private void CreateNavMeshLure()
-    {
-        Dictionary<float, GameObject> xToLure = new Dictionary<float, GameObject>();
-        Dictionary<float, GameObject> zToLure = new Dictionary<float, GameObject>();
-        foreach(Transform lurePlane in lureObject.transform)
-        {
-            if (xToLure.ContainsKey(lurePlane.position.x))
-            {
-                AddNavMeshLinks(lurePlane.gameObject, xToLure[lurePlane.position.x]);
-            }
-            else if (zToLure.ContainsKey(lurePlane.position.z))
-            {
-                AddNavMeshLinks(lurePlane.gameObject, zToLure[lurePlane.position.z]);
-            }
-            else
-            {
-                xToLure[lurePlane.position.x] = lurePlane.gameObject;
-                zToLure[lurePlane.position.z] = lurePlane.gameObject;
-            }
-        }
-    }
-
-    private void AddNavMeshLinks(GameObject plane1, GameObject plane2, int numberOfLinks = 20)
-    {
-        Vector3 plane1ToPlane2 = plane2.transform.position - plane1.transform.position;
-        Vector3 newLinkPosition;
-        // TODO: Replace with more precise figure than *10
-        float planeLength = Mathf.Max(plane1.transform.lossyScale.x, plane1.transform.lossyScale.z) * 10;
-        float linkIncrement = planeLength / numberOfLinks;
-        int longDirection = 0;
-        if (Math.Abs(plane1.transform.position.z) < Math.Abs(plane1.transform.position.x))
-        {
-            longDirection = 2;
-        }
-        for (int linkNumber = 0; linkNumber < numberOfLinks; linkNumber++)
-        {
-            newLinkPosition = plane1.transform.position;
-            newLinkPosition[longDirection] += -planeLength / 2 + linkNumber * linkIncrement;
-            NavMeshLinkData newLink = new NavMeshLinkData();
-            newLink.area = 0;
-            newLink.bidirectional = true;
-            newLink.costModifier = 0.02f;
-            newLink.startPosition = newLinkPosition;
-            newLink.endPosition = newLinkPosition + plane1ToPlane2;
-            NavMesh.AddLink(newLink);
-        }
-    }
-
-    private void SetReferenceBlock()
-    {
-        try
-        {
-            referenceBlockInitialPosition = blocks[0].transform.position;
-        }
-        catch
-        {
-            Exception missingManagerException = new Exception("Error: No blocks detected in WrapManager's blocks list. Did you forget to add the blocks?");
-            Debug.LogException(missingManagerException);
-        }
-    }
-
-    private void FindBounds()
-    {
-        GameObject[] gameObjectsInScene = SceneManager.GetActiveScene().GetRootGameObjects();
-        foreach (GameObject objectInScene in gameObjectsInScene)
-        {
-            bounds = objectInScene.GetComponent<BoundsTrigger>();
-            if (bounds)
-            {
-                return;
-            }
+            return;
         }
         if (isMultiplayer)
         {
