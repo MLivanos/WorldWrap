@@ -23,9 +23,6 @@ public class WrapManager : MonoBehaviour
     private GameObject currentTrigger;
     private GameObject previousBlock;
     private GameObject currentBlock;
-    // DEFUNCT: Remove in v.1.0.0
-    private GameObject player;
-    private int wrapLayer;
     private bool isTransitioning;
     private bool zeroMagnitudeWrapTriggered;
 
@@ -49,7 +46,6 @@ public class WrapManager : MonoBehaviour
             worldWrapNetworkManager = worldWrapNetworkManagerObject.GetComponent<WorldWrapNetworkManager>();
         }
         wrapper.Setup(blockMatrix, worldWrapNetworkManager);
-        wrapLayer = LayerMask.NameToLayer("WorldWrapObjects");
         CheckBounds();
         Destroy(setupHelper);
     }
@@ -150,12 +146,6 @@ public class WrapManager : MonoBehaviour
         }
     }
 
-    // DEFUNCT: Remove in v.1.0.0
-    public void SetPlayer(GameObject newPlayer)
-    {
-        player = newPlayer;
-    }
-
     public void SetLureObject(GameObject navMeshLure)
     {
         lureObject = navMeshLure;
@@ -184,16 +174,6 @@ public class WrapManager : MonoBehaviour
     public void SetIsUsingNavMesh(bool isUsing)
     {
         isUsingNavmesh = isUsing;
-    }
-
-    public int GetWrapLayer()
-    {
-        return wrapLayer;
-    }
-
-    public void SetWrapLayer(int wrapLayerNumber)
-    {
-        wrapLayer = wrapLayerNumber;
     }
 
     public void UsingMultiplayer(bool usingMultiplayer)

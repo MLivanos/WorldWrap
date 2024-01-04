@@ -9,7 +9,7 @@ public class BlockTrigger : TriggerBehavior
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "WorldWrapObject" && other.gameObject.layer != wrapManager.GetWrapLayer())
+        if (other.tag != "WorldWrapObject")
         {
             residents.Add(other.gameObject);
         }
