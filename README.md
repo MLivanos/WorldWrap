@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.1)
 
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
@@ -10,6 +10,8 @@
 ![GitHub License](https://img.shields.io/github/license/MLivanos/WorldWrap?link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Flicense%2FMLivanos%2FWorldWrap%3Flink%3Dhttps%253A%252F%252Fgithub.com%252FMLivanos%252FWorldWrap%252Fblob%252FDOCS-MultiplayerREADMEUpdate%252FLICENSE)
 ![Static Badge](https://img.shields.io/badge/Unit%20Tests-48%2F48%20Passed-brightgreen?link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
 ![Static Badge](https://img.shields.io/badge/Code%20Coverage-100%25-brightgreen)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/MLivanos/WorldWrap)
+![Static Badge](https://img.shields.io/badge/Snyk%20Security-Monitored-8042d1)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MLivanos/WorldWrap/dev)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap)
@@ -19,7 +21,7 @@ All past, current, and future iterations of WorldWrap are/will be free, but if y
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev030)
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.1)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev031)
   - [Introduction](#introduction)
     - [0.3.0 Release Notes](#030-release-notes)
     - [0.2.0 Release Notes](#020-release-notes)
