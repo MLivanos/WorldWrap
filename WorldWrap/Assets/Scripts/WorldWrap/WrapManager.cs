@@ -80,8 +80,7 @@ public class WrapManager : MonoBehaviour
     // Detect matrix shape and instantiate it
     private void SetupMatrix(Vector2[] coordinatesByX, Vector2[] coordinatesByZ, Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn)
     {
-        int numberOfRows = 1;
-        int numberOfColumns = 1;
+        int numberOfRows = 1, numberOfColumns = 1;
         float previousX = coordinatesByX[0].x;
         float previousZ = coordinatesByZ[0].y;
         xToRow[previousX] = 0;
@@ -457,7 +456,7 @@ public class WrapManager : MonoBehaviour
         {
             Vector3 agentDestination = agent.destination;
             agent.Warp(objectToMove.transform.position + movementVector);
-            agentDestination = agentDestination;
+            agent.destination = agentDestination;
             return;
         }
         if (IsMultiplayerClient(objectToMove))
