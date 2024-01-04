@@ -125,6 +125,8 @@ There are three fields for you to fill under the WrapManager component. The Setu
 
 WorldWrap contains dozens of unit tests that you can use to verify that any changes you make to the code do not break anything elsewhere in the code. At time of writing, WorldWrap contains 48 unit tests covering 100% of the code*. These include tests for the wrapping behavior of the player, wrapping behavior of NPC's, objects' relative positions, the SafetyTrigger, the SelfWrap component, and NavMesh compatibility. Note that, to best simulate actual use, we employ a scripted series of events that unfold in a scene in real time. These rely on timers, and therefore may give inconsistent results. While we encourage anyone trying to extend WorldWrap for their own purposes to thoroughly validate their code, a unit test occasionally failing while generally passing is not necessarily an indication that the feature is broken.
 
+PHOTOSENSITIVE DEVELOPERS: Because the Unit Tests are testing a large number of wraps in quick succession, the screen will, at times, flash at ~20 Hz. A flash warning will appear on the screen during unit tests for this reason.
+
 *Code coverage is calculated on lines of code covered, and only reflects the single-player WorldWrap classes.
 
 <div align="center">
