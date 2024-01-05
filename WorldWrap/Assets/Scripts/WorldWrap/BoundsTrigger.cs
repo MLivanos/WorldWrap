@@ -59,12 +59,12 @@ public class BoundsTrigger : TriggerBehavior
         float xDistance = upperXBound - lowerXBound;
         float zDistance = upperZBound - lowerXBound;
         Vector3 otherPosition = currentPosition;
-        float xOffset = calculateWrapDirection(otherPosition.x, upperXBound, lowerXBound) * calculateEuclideanOffset(otherPosition.x, xDistance);
-        float zOffset = calculateWrapDirection(otherPosition.z, upperZBound, lowerZBound) * calculateEuclideanOffset(otherPosition.z, zDistance);
+        float xOffset = calculateWrapDirection(otherPosition.x, upperXBound, lowerXBound) * calculateWrapMagnitude(otherPosition.x, xDistance);
+        float zOffset = calculateWrapDirection(otherPosition.z, upperZBound, lowerZBound) * calculateWrapMagnitude(otherPosition.z, zDistance);
         return otherPosition + new Vector3(xOffset, 0, zOffset);
     }
 
-    private float calculateEuclideanOffset(float axisPosition, float axisDistance)
+    private float calculateWrapMagnitude(float axisPosition, float axisDistance)
     {
         // euclideanPosition +/-=(1+|euclideanPosition/axisLength|)*axisLength
         return ((int)Mathf.Abs(axisPosition/axisDistance)+1)*axisDistance;
