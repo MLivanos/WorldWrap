@@ -454,9 +454,11 @@ public class WrapManager : MonoBehaviour
         NavMeshAgent agent = objectToMove.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
+            bool agentIsStopped = agent.velocity == Vector3.zero;
             Vector3 agentDestination = agent.destination;
             agent.Warp(objectToMove.transform.position + movementVector);
             agent.destination = agentDestination;
+            agent.isStopped = agentIsStopped;
             return;
         }
         if (IsMultiplayerClient(objectToMove))
