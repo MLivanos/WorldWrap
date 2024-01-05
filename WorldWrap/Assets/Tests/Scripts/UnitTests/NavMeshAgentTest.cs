@@ -14,6 +14,7 @@ public class NavMeshAgentTest : WorldWrapTest
     private GameObject navMeshAgentObject;
     private NavMeshAgent navMeshAgent;
     private GameObject navMeshLure;
+    private Vector3 initialPosition;
     private Vector3 westPosition;
     private Vector3 northPosition;
     private Vector3 wrapWestDestination;
@@ -25,6 +26,7 @@ public class NavMeshAgentTest : WorldWrapTest
     {
         base.SetupVariables();
         navMeshAgentObject = FindGameObjectByName("NavMeshAgent");
+        initialPosition = navMeshAgentObject.transform.position;
         navMeshAgent = navMeshAgentObject.GetComponent<NavMeshAgent>();
         navMeshLure = FindGameObjectByName("NavMeshLure");
         bounds = FindGameObjectByName("GlobalBounds");
@@ -89,5 +91,6 @@ public class NavMeshAgentTest : WorldWrapTest
         navMeshAgent.SetDestination(goSouthPosition);
         yield return new WaitForSeconds(2.0f);
         Assert.IsTrue(Vector3sAreEqual(navMeshAgentObject.transform.position, goSouthPosition, 10.0f));
+        navMeshAgent.Warp(initialPosition);
     }
 }
