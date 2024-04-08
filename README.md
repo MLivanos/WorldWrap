@@ -6,16 +6,24 @@
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
 
-![Static Badge](https://img.shields.io/badge/Version-0.3.1-blue)
-![GitHub License](https://img.shields.io/github/license/MLivanos/WorldWrap?link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Flicense%2FMLivanos%2FWorldWrap%3Flink%3Dhttps%253A%252F%252Fgithub.com%252FMLivanos%252FWorldWrap%252Fblob%252FDOCS-MultiplayerREADMEUpdate%252FLICENSE)
-![Static Badge](https://img.shields.io/badge/Unit%20Tests-48%2F48%20Passed-brightgreen?link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
-![Static Badge](https://img.shields.io/badge/Code%20Coverage-100%25-brightgreen)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/MLivanos/WorldWrap)
-![Static Badge](https://img.shields.io/badge/Snyk%20Security-Monitored-8042d1)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MLivanos/WorldWrap/dev)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap)
-![GitHub Repo stars](https://img.shields.io/github/stars/MLivanos/WorldWrap)
+
+![Static Badge](https://img.shields.io/badge/Version-0.3.1-blue?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/MLivanos/WorldWrap?style=flat-square&link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Flicense%2FMLivanos%2FWorldWrap%3Flink%3Dhttps%253A%252F%252Fgithub.com%252FMLivanos%252FWorldWrap%252Fblob%252FDOCS-MultiplayerREADMEUpdate%252FLICENSE)
+
+
+![Static Badge](https://img.shields.io/badge/Unit%20Tests-48%2F48%20Passed-brightgreen?style=flat-square&link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
+![Static Badge](https://img.shields.io/badge/Code%20Coverage-100%25-brightgreen?style=flat-square)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/MLivanos/WorldWrap?style=flat-square&logo=code%20climate)
+![Static Badge](https://img.shields.io/badge/Snyk%20Security-Monitored-8042d1?style=flat-square&logo=snyk)
+
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MLivanos/WorldWrap/dev?style=flat-square)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap?style=flat-square)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap?style=flat-square)
+
+![Static Badge](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white&link=https%3A%2F%2Fko-fi.com%2Fmichaellivanos)
+![Static Badge](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white&link=https://www.youtube.com/@ProdigiousMike/videos)
+![GitHub Repo stars](https://img.shields.io/github/stars/MLivanos/WorldWrap?style=for-the-badge&logo=github&color=gold)
 
 All past, current, and future iterations of WorldWrap are/will be free, but if you'd like, you can send a tip through my [Ko-fi](https://ko-fi.com/michaellivanos)
 
