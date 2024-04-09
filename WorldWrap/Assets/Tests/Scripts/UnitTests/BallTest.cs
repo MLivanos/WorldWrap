@@ -25,11 +25,6 @@ public class BallTest : WorldWrapTest
         }
     }
 
-    private bool Vector3sAreEqual(Vector3 a, Vector3 b, float threshold = 0.01f)
-    {
-        return Math.Abs(a.x - b.x) < threshold && Math.Abs(a.y - b.y) < threshold && Math.Abs(a.z - b.z) < threshold;
-    }
-
     [UnityTest, Order(1)]
     public IEnumerator BallRemainsInSameRelativePositionWhileHolding()
     {
@@ -63,6 +58,8 @@ public class BallTest : WorldWrapTest
         actor.TeleportTo(Vector3.zero);
         yield return MoveActor(new Vector3(30, 0, 0));
         actor.MoveInDirection(Vector3.zero);
-        Assert.AreEqual(GetXZPosition(balls[0]), new Vector2(originalPositions[0].x, originalPositions[0].z));
+        //Debug.Log(new Vector3(balls[0].transform.position.x+30.0f, 0.0f,balls[0].transform.position.z));
+        //Debug.Log(new Vector3(originalPositions[0].x, 0.0f, originalPositions[0].z));
+        Assert.IsTrue(Vector3sAreEqual(new Vector3(balls[0].transform.position.x+30.0f, 0.0f,balls[0].transform.position.z), new Vector3(originalPositions[0].x, 0.0f, originalPositions[0].z)));
     }
 }

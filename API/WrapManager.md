@@ -2,7 +2,7 @@
 
 [Go To File](https://github.com/MLivanos/WorldWrap/blob/main/WorldWrap/Assets/Scripts/WorldWrap/WrapManager.cs)
 
-The WrapManager handles information from various trigger behaviors and is responsible for determining when a wrap is required, rearranging blocks after wraps, and performaning the wraps. There should be exactly 1 (one) wrap manager per scene which requires wraps.
+The WrapManager handles information from various trigger behaviors and is responsible for determining when a wrap is required. There should be exactly 1 (one) wrap manager per scene which requires wraps.
 
 ## **Properties**
 
@@ -50,10 +50,6 @@ The current block the user is inside that contains a BlockTrigger. Used to deter
 
 True if the player is exiting one block and entering around. Used to determine when to wrap.
 
-### **wrapLayer: int (DEPRECATED)**
-
-The layer all of the WorldWrap objects are inside. This has been replaced by a tag and will be fully deprecated in verion 1.x.x.
-
 ## **Methods**
 
 ___
@@ -64,65 +60,9 @@ ___
 
 Called when object is created in the scene. Sets up block matrix and NavMesh if applicable.
 
-### **SortCoordinates(out Vector2[] coordinatesByX, out Vector2[] coordinatesByZ) -> void**
-
-Sorts blocks by their X and Z coordinates.
-
-### **SetupMatrix(Vector2[] coordinatesByX, Vector2[] coordinatesByZ, Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn) -> void**
-
-Sets up matrix after sorting coordinates.
-
-### **FillMatrix(Dictionary<float, int> xToRow, Dictionary<float, int> zToColumn) -> void**
-
-Fills BlockMatrix after SetupMatrix is called.
-
-### **AddNavMeshLinks() -> void**
-
-Adds NavMeshLinks to NavMeshLure. This allows NavMeshAgents to navigate the world efficiently.
-
 ### **ShouldWrap() -> void**
 
 Returns true if the condition for a wrap has been met: The player entered one wrap trigger, exited out another, and is now in a different block. Returns false otherwise.
-
-### **WrapWorld() -> void**
-
-Wraps the world in the direction of currentBlock - previousBlock.
-
-### **GetTranslations() -> GameObject[,]**
-
-Depending on how the player moved, creates and returns a new matrix which represents the wrapped world.
-
-### **TranslateBlocks(Vector3[,] oldPositions, GameObject[,] newMatrix)**
-
-Translates blocks based on the BlockMatrix and newMatrix returned from GetTranslations. Calls TranslateObjects to maintain local position of every Rigidbody root GameObject in each block.
-
-### **TranslateObjects(GameObject block, Vector3 movementVector, HashSet<int> objectAlreadyMoved) -> void**
-
-Called from TranslateBlocks(). Translates the root Rigidbody GameObjects in each block.
-
-### **MoveObject(GameObject objectToMove, Vector3 movementVector) -> void**
-
-Moves a single GameObject, using NavMesh.warp in the case of a NavMeshObject.
-
-### **GetBlockPositions() -> Vector3[,]**
-
-Returns the position of every block in the block matrix as a matrix of Vector3s.
-
-### **TranslateLeft(GameObject[,] newMatrix, GameObject[,] oldMatrix) -> void**
-
-Translates all blocks left via TranslateBlock(). The leftmost blocks is moved to the rightmost column.
-
-### **TranslateRight(GameObject[,] newMatrix, GameObject[,] oldMatrix) -> void**
-
-Translates all blocks right via TranslateBlock(). The rightmost blocks is moved to the leftmost column.
-
-### **TranslateUp(GameObject[,] newMatrix, GameObject[,] oldMatrix) -> void**
-
-Translates all blocks up via TranslateBlock(). The topmost blocks is moved to the bottom row.
-
-### **TranslateDown(GameObject[,] newMatrix, GameObject[,] oldMatrix) -> void**
-
-Translates all blocks down via TranslateBlock(). The bottom blocks is moved to the topmost row.
 
 ## Public
 

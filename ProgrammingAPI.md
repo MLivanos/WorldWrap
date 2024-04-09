@@ -2,7 +2,15 @@
 
 ## [WrapManager : MonoBehaviour](https://github.com/MLivanos/WorldWrap/blob/main/API/WrapManager.md)
 
-The WrapManager handles information from various trigger behaviors and is responsible for determining when a wrap is required, rearranging blocks after wraps, and performaning the wraps. There should be exactly 1 (one) wrap manager per scene which requires wraps.
+The WrapManager handles information from various trigger behaviors and is responsible for determining when a wrap is required. There should be exactly 1 (one) wrap manager per scene which requires wraps.
+
+## [WorldWrapper : MonoBehaviour](https://github.com/MLivanos/WorldWrap/blob/main/API/WorldWrapper.md)
+
+The WorldWrapper is used to determine vectors for wrapping and translating blocks and objects.
+
+## [WrapManagerSetup : MonoBehaviour](https://github.com/MLivanos/WorldWrap/blob/main/API/WrapManagerSetup.md)
+
+Setups up variables for WrapManager.
 
 ## [TriggerBehavior : MonoBehaviour](https://github.com/MLivanos/WorldWrap/blob/main/API/TriggerBehavior.md)
 
