@@ -29,7 +29,7 @@ All past, current, and future iterations of WorldWrap are/will be free, but if y
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.1)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev031)
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v1.0.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev031)
   - [Introduction](#introduction)
     - [0.3.0 Release Notes](#030-release-notes)
     - [0.2.0 Release Notes](#020-release-notes)
