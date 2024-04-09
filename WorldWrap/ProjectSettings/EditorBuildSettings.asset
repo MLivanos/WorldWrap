@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Demo.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Tests/Scenes/UnitTestScene.unity
     guid: acff65bc450ca4ef889d9c4e7b88ab69
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DodgeballGameMultiplayer.unity
     guid: 766047f542f514187b97bb646b9ca750
   m_configObjects: {}
