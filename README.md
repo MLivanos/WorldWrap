@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.1)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v1.0.0)
 
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
