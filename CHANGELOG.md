@@ -1,5 +1,17 @@
 # CHANGELOG:
 
+## v1.0.0 - More Unit Tests & Bug Fixes
+
+### New Features:
+
+### Bug Fixes:
+
+### Changes:
+
+* Refactors WrapManager class into component subclasses: WrapManager, WrapManagerSetup, WorldWrapper classes
+
+### Removed:
+
 ## v0.3.1 - More Unit Tests & Bug Fixes
 
 ### New Features:
