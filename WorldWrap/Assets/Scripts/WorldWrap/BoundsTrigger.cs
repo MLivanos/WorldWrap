@@ -36,7 +36,11 @@ public class BoundsTrigger : TriggerBehavior
         NavMeshAgent agent = other.gameObject.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
+            bool agentIsStopped = agent.velocity == Vector3.zero;
+            Vector3 agentDestination = agent.destination;
             agent.Warp(otherPosition);
+            agent.destination = agentDestination;
+            agent.isStopped = agentIsStopped;
             return;
         }
         other.gameObject.transform.position = otherPosition;
@@ -57,25 +61,21 @@ public class BoundsTrigger : TriggerBehavior
         float xDistance = upperXBound - lowerXBound;
         float zDistance = upperZBound - lowerXBound;
         Vector3 otherPosition = currentPosition;
+        float xOffset = calculateWrapDirection(otherPosition.x, upperXBound, lowerXBound) * calculateWrapMagnitude(otherPosition.x, xDistance);
+        float zOffset = calculateWrapDirection(otherPosition.z, upperZBound, lowerZBound) * calculateWrapMagnitude(otherPosition.z, zDistance);
+        return otherPosition + new Vector3(xOffset, 0, zOffset);
+    }
+
+    private float calculateWrapMagnitude(float axisPosition, float axisDistance)
+    {
         // euclideanPosition +/-=(1+|euclideanPosition/axisLength|)*axisLength
-        // TODO: Test all corrections
-        if (currentPosition.x <= lowerXBound)
-        {
-            otherPosition.x = otherPosition.x + ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
-        }
-        else if (currentPosition.x >= upperXBound)
-        {
-            otherPosition.x = otherPosition.x - ((int)Mathf.Abs(otherPosition.x/xDistance)+1)*xDistance;
-        }
-        if (currentPosition.z <= lowerZBound)
-        {
-            otherPosition.z = otherPosition.z + ((int)Mathf.Abs(otherPosition.z/zDistance)+1)*zDistance;
-        }
-        else if (currentPosition.z >= upperZBound)
-        {
-            otherPosition.z = otherPosition.z - ((int)Mathf.Abs(otherPosition.z/zDistance)+1)*zDistance;
-        }
-        return otherPosition;
+        return ((int)Mathf.Abs(axisPosition/axisDistance)+1)*axisDistance;
+    }
+
+    private float calculateWrapDirection(float axisPosition, float upperPosition, float lowerPosition)
+    {
+        float axisProportion = Mathf.Floor((axisPosition - lowerPosition)/(upperPosition-lowerPosition));
+        return -1 * Mathf.Clamp(axisProportion, -1, 1);
     }
 
     public Vector2 getXBounds()

@@ -1,29 +1,41 @@
 <div align="center">
 
 
-# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v0.3.0)
+# WorldWrap:<br />A Lightweight Framework For<br />Creating Seamless Wrapping 3D Worlds<br />In The Unity Game Engine<br />(v1.0.0)
 
 
 <img width="1000" alt="WorldWrapLogo" src="https://github.com/MLivanos/WorldWrap/assets/59032623/146963a8-7c19-47e8-b219-a60bc086badd">
 
-![Static Badge](https://img.shields.io/badge/Version-0.3.0-blue)
-![GitHub License](https://img.shields.io/github/license/MLivanos/WorldWrap?link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Flicense%2FMLivanos%2FWorldWrap%3Flink%3Dhttps%253A%252F%252Fgithub.com%252FMLivanos%252FWorldWrap%252Fblob%252FDOCS-MultiplayerREADMEUpdate%252FLICENSE)
-![Static Badge](https://img.shields.io/badge/Unit%20Tests-24%2F24%20Passed-brightgreen?link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MLivanos/WorldWrap/dev)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap)
-![GitHub Repo stars](https://img.shields.io/github/stars/MLivanos/WorldWrap)
+
+![Static Badge](https://img.shields.io/badge/Version-0.3.1-blue?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/MLivanos/WorldWrap?style=flat-square&link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Flicense%2FMLivanos%2FWorldWrap%3Flink%3Dhttps%253A%252F%252Fgithub.com%252FMLivanos%252FWorldWrap%252Fblob%252FDOCS-MultiplayerREADMEUpdate%252FLICENSE)
+
+
+![Static Badge](https://img.shields.io/badge/Unit%20Tests-48%2F48%20Passed-brightgreen?style=flat-square&link=https%3A%2F%2Fgithub.com%2FMLivanos%2FWorldWrap%2Ftree%2Fmain%2FWorldWrap%2FAssets%2FTests%2FScripts%2FUnitTests)
+![Static Badge](https://img.shields.io/badge/Code%20Coverage-100%25-brightgreen?style=flat-square)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/MLivanos/WorldWrap?style=flat-square&logo=code%20climate)
+![Static Badge](https://img.shields.io/badge/Snyk%20Security-Monitored-8042d1?style=flat-square&logo=snyk)
+
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MLivanos/WorldWrap/dev?style=flat-square)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap?style=flat-square)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap?style=flat-square)
+
+![Static Badge](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white&link=https%3A%2F%2Fko-fi.com%2Fmichaellivanos)
+![Static Badge](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white&link=https://www.youtube.com/@ProdigiousMike/videos)
+![GitHub Repo stars](https://img.shields.io/github/stars/MLivanos/WorldWrap?style=for-the-badge&logo=github&color=gold)
 
 All past, current, and future iterations of WorldWrap are/will be free, but if you'd like, you can send a tip through my [Ko-fi](https://ko-fi.com/michaellivanos)
 
 </div>
 
-- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v0.3.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev030)
+- [WorldWrap:A Lightweight Framework ForCreating Seamless Wrapping 3D WorldsIn The Unity Game Engine(v1.0.0)](#worldwrapa-lightweight-framework-forcreating-seamless-wrapping-3d-worldsin-the-unity-game-enginev031)
   - [Introduction](#introduction)
     - [0.3.0 Release Notes](#030-release-notes)
     - [0.2.0 Release Notes](#020-release-notes)
   - [How WorldWrap Works](#how-worldwrap-works)
   - [How To Use WorldWrap](#how-to-use-worldwrap)
+  - [Unit Tests](#unit-tests)
   - [Multiplayer](#multiplayer)
   - [Troubleshooting](#troubleshooting)
   - [Limitations](#limitations)
@@ -117,7 +129,15 @@ After these objects are set up, add your terrain to the scene, being sure to spl
 
 You may also want to resize, reconfigure, and remove some WrapTriggers. Particularly, the end of a WrapTrigger should represent when the player is firmly "inside" the next block. Wraps occur when the player enters one WrapTrigger, moves into another WrapTrigger, and exits into another block. Therefore, the smaller WrapTrigger the more wraps will occur. Since wraps can be expensive, it is generally advisable to make WrapTriggers larger, but this is dependent on your specific world. See the demo scenes for examples of WrapTriggers being sized to a world.
 
-There are three fields for you to fill under the WrapManager component. The Setup Assistant will do its best to fill these in for you. The "Blocks" field should be set up with all of the blocks in the scene, however, they do not need to be in any particular order. The WrapManager will automatically detect the structure of your world. The Setup Assistant will also try to find your player character by finding the GameObject in the scene with the smallest [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) to the word "Player" (not case sensitive, null characters added when strings are of different size). Please ensure this field has your player's GameObject, as the Assistant can make a mistake. Please examine any warnings or errors the Setup Assistant shows. 
+There are three fields for you to fill under the WrapManager component. The Setup Assistant will do its best to fill these in for you. The "Blocks" field should be set up with all of the blocks in the scene, however, they do not need to be in any particular order. The WrapManager will automatically detect the structure of your world. The Setup Assistant will also try to find your player character by finding the GameObject in the scene with the smallest [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) to the word "Player" (not case sensitive, null characters added when strings are of different size). Please ensure this field has your player's GameObject, as the Assistant can make a mistake. Please examine any warnings or errors the Setup Assistant shows.
+
+## Unit Tests
+
+WorldWrap contains dozens of unit tests that you can use to verify that any changes you make to the code do not break anything elsewhere in the code. At time of writing, WorldWrap contains 48 unit tests covering 100% of the code*. These include tests for the wrapping behavior of the player, wrapping behavior of NPC's, objects' relative positions, the SafetyTrigger, the SelfWrap component, and NavMesh compatibility. Note that, to best simulate actual use, we employ a scripted series of events that unfold in a scene in real time. These rely on timers, and therefore may give inconsistent results. While we encourage anyone trying to extend WorldWrap for their own purposes to thoroughly validate their code, a unit test occasionally failing while generally passing is not necessarily an indication that the feature is broken.
+
+PHOTOSENSITIVE DEVELOPERS: Because the Unit Tests are testing a large number of wraps in quick succession, the screen will, at times, flash at ~20 Hz. A flash warning will appear on the screen during unit tests for this reason.
+
+*Code coverage is calculated on lines of code covered, and only reflects the single-player WorldWrap classes.
 
 <div align="center">
 
