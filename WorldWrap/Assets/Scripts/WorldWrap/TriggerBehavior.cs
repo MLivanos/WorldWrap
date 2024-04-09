@@ -7,7 +7,6 @@ using UnityEngine;
 public abstract class TriggerBehavior : MonoBehaviour
 {
     protected WrapManager wrapManager;
-    protected int wrapLayer;
 
     protected virtual void Start()
     {
@@ -21,7 +20,6 @@ public abstract class TriggerBehavior : MonoBehaviour
             Debug.LogException(missingManagerException);
         }
         gameObject.GetComponent<BoxCollider>().isTrigger = true;
-        wrapLayer = wrapManager.GetWrapLayer();
     }
 
     protected bool IsHandlingClientPlayer(GameObject playerObject)
