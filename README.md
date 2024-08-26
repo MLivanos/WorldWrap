@@ -21,7 +21,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MLivanos/WorldWrap?style=flat-square)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/MLivanos/WorldWrap?style=flat-square)
 
-[![Static Badge](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](link=https://ko-fi.com/michaellivanos)
+[![Static Badge](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/michaellivanos)
 [![Static Badge](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=MyriUorYnZM)
 ![GitHub Repo stars](https://img.shields.io/github/stars/MLivanos/WorldWrap?style=for-the-badge&logo=github&color=gold)
 
