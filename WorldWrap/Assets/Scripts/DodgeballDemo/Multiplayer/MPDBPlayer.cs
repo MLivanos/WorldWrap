@@ -70,8 +70,8 @@ public class MPDBPlayer : DodgeballActor
         xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
         mainCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
-        playerRigidbody.velocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
-        playerRigidbody.velocity += transform.TransformDirection(Vector3.right) * speed * Input.GetAxisRaw("Horizontal");
+        playerRigidbody.linearVelocity = transform.TransformDirection(Vector3.forward) * speed * Input.GetAxisRaw("Vertical");
+        playerRigidbody.linearVelocity += transform.TransformDirection(Vector3.right) * speed * Input.GetAxisRaw("Horizontal");
     }
 
     private void Interact()

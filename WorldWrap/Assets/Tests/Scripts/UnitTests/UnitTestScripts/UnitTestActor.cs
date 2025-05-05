@@ -18,7 +18,7 @@ public class UnitTestActor : MonoBehaviour
 
     public void MoveInDirection(Vector3 direction)
     {
-        actorRigidbody.velocity = direction;
+        actorRigidbody.linearVelocity = direction;
     }
 
     public void PickUp(GameObject objectToPickup)

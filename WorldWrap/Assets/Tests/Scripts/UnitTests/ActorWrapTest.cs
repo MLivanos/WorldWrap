@@ -145,7 +145,7 @@ public class ActorWrapTest : WorldWrapTest
     public IEnumerator MovingToRedBlockFromBlueWrapsWorldDown()
     {
         yield return MoveUp();
-        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        player.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         Assert.AreEqual(GetXZPosition(blueBlock).normalized, Vector2.down);
         Assert.AreEqual(GetXZPosition(redBlock), Vector2.zero);
         Assert.IsTrue(PlayerInBounds());

@@ -64,7 +64,7 @@ public class SelfWrapTest : WorldWrapTest
     [UnityTest, Order(4)]
     public IEnumerator DucksMaintainRelativePositionAfterWrapWest()
     {
-        horizontalDuck.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        horizontalDuck.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         horizontalDuck.transform.position = new Vector3(0, horizontalDuck.transform.position.y, 0);
         Vector3 oldPosition = horizontalDuck.transform.position;
         player.transform.Translate(new Vector3(-30,0,0));

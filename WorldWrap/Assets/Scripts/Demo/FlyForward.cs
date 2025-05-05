@@ -10,13 +10,13 @@ public class FlyForward : MonoBehaviour
     private void Start()
     {
         objectRigidBody = gameObject.GetComponent<Rigidbody>();
-        objectRigidBody.velocity = transform.TransformDirection(Vector3.forward) * speed;
+        objectRigidBody.linearVelocity = transform.TransformDirection(Vector3.forward) * speed;
     }
 
     public void ChangeVelocity(float newSpeed)
     {
         speed = newSpeed;
-        objectRigidBody.velocity = transform.TransformDirection(Vector3.forward) * speed;
+        objectRigidBody.linearVelocity = transform.TransformDirection(Vector3.forward) * speed;
     }
 
 }
